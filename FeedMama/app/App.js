@@ -9,12 +9,12 @@ export default function App() {
   //return <LoginScreen/>
   return(
     <ImageBackground
-      source={require("../FeedMama/app/assets/Static/BG - Light.png")}
+      source={require("./assets/Static/BG - Light.png")}
       resizeMode="cover"
       style={styles.background}>
 
         <Image
-          source={require("../FeedMama/app/assets/Static/FeedMama Logo - Primary White.png")}
+          source={require("./assets/Static/FeedMama Logo - Primary White.png")}
           resizeMode="contain"
           style={styles.logo}
         ></Image>
@@ -33,7 +33,7 @@ export default function App() {
                 height: 58,
                 marginTop: "5%"
               }}
-              source={require("../FeedMama/app/assets/Buttons/Login Button - White.png")}
+              source={require("./assets/Buttons/Login Button - White.png")}
               resizeMode="contain">
 
             </ImageBackground>
@@ -48,7 +48,7 @@ export default function App() {
                 height: 58,
                 marginTop: "2%",
               }}
-              source={require("../FeedMama/app/assets/Buttons/Sign Up Button - White.png")}
+              source={require("./assets/Buttons/Sign Up Button - White.png")}
               resizeMode="contain">
 
             </ImageBackground>
