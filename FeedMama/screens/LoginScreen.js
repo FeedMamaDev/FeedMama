@@ -16,13 +16,13 @@ function LoginScreen(props) {
   return (
     <View style={styles.container}>
       <ImageBackground
-        source={require("../app/assets/initialbackground.jpg")}
+        source={require("../FeedMama/app/assets/Static/BG - Light.png")}
         resizeMode="contain"
         style={styles.image}
         imageStyle={styles.image_imageStyle}
       >
         <Image
-          source={require("../app/assets/FeedMamaWhiteLogo.jpg")}
+          source={require("../FeedMama/app/assets/Static/FeedMama Logo - Primary White.png")}
           resizeMode="contain"
           style={styles.image2}
         ></Image>
@@ -36,7 +36,7 @@ function LoginScreen(props) {
           <Text style={styles.staySignedIn}>Stay Signed In</Text>
         </View>
         <ImageBackground
-          source={require("../app/assets/WhiteLoginButton.jpg")}
+          source={require("../FeedMama/app/assets/Buttons/Login Button - White.png")}
           resizeMode="contain"
           style={styles.image3}
           imageStyle={styles.image3_imageStyle}
@@ -47,7 +47,7 @@ function LoginScreen(props) {
           ></TouchableOpacity>
         </ImageBackground>
         <Image
-          source={require("../app/assets/WhiteSignUpButton.jpg")}
+          source={require("../FeedMama/app/assets/Buttons/Sign Up Button - White.png")}
           resizeMode="contain"
           style={styles.image4}
         ></Image>
