@@ -1,12 +1,22 @@
 //import { StatusBar } from 'expo-status-bar';
+import { useState } from 'react';
 import { ImageBackground, StyleSheet, TouchableOpacity, View, TextInput, Image } from 'react-native';
-//import LoginScreen from './screens/LoginScreen';
+import LoginScreen from '../FeedMama/screens/LoginScreen';
 //import SignUpUserTypeScreen from'.screens/SignUpUserTypeScreen'
 //import { NavigationContainer } from '@react-navigation/native';
 //import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 export default function App() {
-  //return <LoginScreen/>
+  return <LoginScreen/>
+
+    const [email, setEmail] = useState();
+    const [password, setPassword] = useState();
+
+    function PrintEP() {
+      console.log(email);
+      console.log(password);
+    }
+
   return(
     <ImageBackground
       source={require("../FeedMama/app/assets/Static/BG-Light.png")}
@@ -22,10 +32,28 @@ export default function App() {
         <View
           style={styles.container}>
 
-        <TextInput style={styles.input} placeholder={"Username"}/>
-        <TextInput style={styles.input} placeholder={"Password"}/>
+        <TextInput 
+          style={styles.input} 
+          placeholder="Email"
+          autoCapitalize="none"
+          autoCorrect={false}
+          icon="email"
+          keyboardType='email-address'
+          textContentType='emailAddress'
+          onChangeText={text => setEmail(text)}
+          />
 
-          <TouchableOpacity>
+        <TextInput 
+          style={styles.input} 
+          placeholder={"Password"}
+          autoCapitalize="none"
+          icon="lock"
+          secureTextEntry
+          textContentType='password'
+          onChangeText={text => setPassword(text)}
+          />
+
+          <TouchableOpacity onPress={() => PrintEP()}>
 
             <ImageBackground
               style={{
