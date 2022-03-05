@@ -2,83 +2,121 @@ import { useState } from 'react';
 import { ImageBackground, StyleSheet, TouchableOpacity, View, TextInput, Image } from 'react-native';
 
 function SignUpUserTypeScreen(props){
-    <View
-        style={styles.container}>
+  const [userType, setEmail] = useState();
 
-        <TouchableOpacity>
+  function printUserType() {
+    console.log(userType);
+  }
+  return(
+      <View
+          style={styles.containerVert}>
 
-            <ImageBackground
+          <Image
+            source={require("./app/assets/Static/FeedMamaSecLogo.png")}
+            resizeMode="contain"
+          ></Image>
+
+          <Image
+            source={require("./app/assets/Static/Whoareyou.png")}
+            resizeMode="contain"
+            style={styles.signUpTitle}
+          ></Image>
+
+          <TouchableOpacity onPress={() => printUserType()}>
+
+              <ImageBackground
+                  style={styles.primaryButton}
+                  source={require("./app/assets/Buttons/CustomerButton.png")}
+                  resizeMode="contain">
+
+              </ImageBackground>
+
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={() => printUserType()}>
+
+              <ImageBackground
+                  style={styles.primaryButton}
+                  source={require("./app/assets/Buttons/MotherButton.png")}
+                  resizeMode="contain">
+
+              </ImageBackground>
+
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={() => printUserType()}>
+
+              <ImageBackground
+                  style={styles.primaryButton}
+                  source={require("./app/assets/Buttons/RestaurantButton.png")}
+                  resizeMode="contain">
+
+              </ImageBackground>
+
+          </TouchableOpacity>
+
+          <View
+            style={styles.containerHorz}>
+            <TouchableOpacity
+              style={{
+                marginRight: "15%"
+              }}>
+
+              <ImageBackground
                 style={{
-                width: 200,
-                height: 58,
-                marginTop: "5%"
+                  width: 80,
+                  height: 80
                 }}
-                source={require("../app/assets/Buttons/CustomerButton.png")}
+                source={require("./app/assets/Buttons/BackButton.png")}
                 resizeMode="contain">
 
-            </ImageBackground>
+              </ImageBackground>
 
-        </TouchableOpacity>
+            </TouchableOpacity>
 
-        <TouchableOpacity>
+            <TouchableOpacity
+              style={{
+                marginLeft: "15%",
+              }} onPress={() => printUserType()}>
+            
+              <ImageBackground
+                  style={{
+                    width: 80,
+                    height: 80
+                  }}
+                  source={require("./app/assets/Buttons/ImaPhysician.png")}
+                  resizeMode="contain">
 
-            <ImageBackground
-                style={{
-                width: 200,
-                height: 58,
-                marginTop: "2%",
-                }}
-                source={require("../app/assets/Buttons/MotherButton.png")}
-                resizeMode="contain">
+              </ImageBackground>
 
-            </ImageBackground>
+            </TouchableOpacity>
+          </View>
 
-        </TouchableOpacity>
-
-        <TouchableOpacity>
-
-            <ImageBackground
-                style={{
-                width: 200,
-                height: 58,
-                marginTop: "2%",
-                }}
-                source={require("../app/assets/Buttons/RestaurantButton.png")}
-                resizeMode="contain">
-
-            </ImageBackground>
-
-        </TouchableOpacity>
-
-    </View>
+      </View>
+  );
 }
 
 const styles = StyleSheet.create({
-    background: {
-      flex: 1,
-      alignItems: 'center',
-      justifyContent: 'center',
-      backgroundColor: "#E6E6E6",
-    },
-    container: {
-      flex: 1,
-      justifyContent: "center",
-      alignItems: "center"
-    },
-    input: {
-      width: 265,
-      height: 30,
-      backgroundColor: "rgba(255,255,255,1)",
-      borderRadius: 12,
-      marginBottom: "5%",
-      paddingLeft: 10
-    },
-    logo: {
-      width: 200,
-      height: 200,
-      marginTop: "30%",
-      marginBottom: "-50%",
-    },
-  });
+  containerVert: {
+    flex: 1,
+    marginTop: "25%",
+    alignItems: "center",
+  },
+  containerHorz: {
+    flex: 1,
+    flexDirection: 'row',
+    marginTop: "25%",
+    alignItems: "center",
+  },
+  primaryButton: {
+    width: 200,
+    height: 60,
+    marginTop: "5%",
+  },
+  signUpTitle: {
+    marginTop: "20%",
+    marginBottom: "5%"
+  }
+});
 
   export default SignUpUserTypeScreen;
