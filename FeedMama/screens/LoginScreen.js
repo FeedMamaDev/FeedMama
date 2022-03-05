@@ -9,7 +9,7 @@ function LoginScreen(props) {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
 
-  function PrintEP() {
+  function printEP() {
     console.log(email);
     console.log(password);
   }
@@ -53,11 +53,7 @@ function LoginScreen(props) {
           <TouchableOpacity onPress={() => PrintEP()}>
 
             <ImageBackground
-              style={{
-                width: 200,
-                height: 58,
-                marginTop: "5%"
-              }}
+              style={styles.primaryButton}
               source={require("../app/assets/Buttons/LoginButton-White.png")}
               resizeMode="contain">
 
@@ -68,11 +64,7 @@ function LoginScreen(props) {
           <TouchableOpacity>
 
             <ImageBackground
-              style={{
-                width: 200,
-                height: 58,
-                marginTop: "2%",
-              }}
+              style={styles.primaryButton}
               source={require("../app/assets/Buttons/SignUpButton-White.png")}
               resizeMode="contain">
 
@@ -112,6 +104,11 @@ const styles = StyleSheet.create({
     marginTop: "30%",
     marginBottom: "-50%",
   },
+  primaryButton: {
+    width: 200,
+    height: 60,
+    marginTop: "5%",
+  }
 });
 
 export default LoginScreen;

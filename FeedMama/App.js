@@ -7,112 +7,119 @@ import LoginScreen from '../FeedMama/screens/LoginScreen';
 //import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 export default function App() {
-  return <LoginScreen/>
+  const [userType, setEmail] = useState();
 
-    const [email, setEmail] = useState();
-    const [password, setPassword] = useState();
-
-    function PrintEP() {
-      console.log(email);
-      console.log(password);
-    }
-
+  function printUserType() {
+    console.log(userType);
+  }
   return(
-    <ImageBackground
-      source={require("../FeedMama/app/assets/Static/BG-Light.png")}
-      resizeMode="cover"
-      style={styles.background}>
+      <View
+          style={styles.containerVert}>
 
-        <Image
-          source={require("../FeedMama/app/assets/Static/FeedMamaLogo-PrimaryWhite.png")}
-          resizeMode="contain"
-          style={styles.logo}
-        ></Image>
+          <Image
+            source={require("./app/assets/Static/FeedMamaSecLogo.png")}
+            resizeMode="contain"
+          ></Image>
 
-        <View
-          style={styles.container}>
+          <Image
+            source={require("./app/assets/Static/Whoareyou.png")}
+            resizeMode="contain"
+            style={styles.signUpTitle}
+          ></Image>
 
-        <TextInput 
-          style={styles.input} 
-          placeholder="Email"
-          autoCapitalize="none"
-          autoCorrect={false}
-          icon="email"
-          keyboardType='email-address'
-          textContentType='emailAddress'
-          onChangeText={text => setEmail(text)}
-          />
+          <TouchableOpacity onPress={() => printUserType()}>
 
-        <TextInput 
-          style={styles.input} 
-          placeholder={"Password"}
-          autoCapitalize="none"
-          icon="lock"
-          secureTextEntry
-          textContentType='password'
-          onChangeText={text => setPassword(text)}
-          />
+              <ImageBackground
+                  style={styles.primaryButton}
+                  source={require("./app/assets/Buttons/CustomerButton.png")}
+                  resizeMode="contain">
 
-          <TouchableOpacity onPress={() => PrintEP()}>
-
-            <ImageBackground
-              style={{
-                width: 200,
-                height: 58,
-                marginTop: "5%"
-              }}
-              source={require("../FeedMama/app/assets/Buttons/LoginButton-White.png")}
-              resizeMode="contain">
-
-            </ImageBackground>
+              </ImageBackground>
 
           </TouchableOpacity>
 
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => printUserType()}>
 
-            <ImageBackground
-              style={{
-                width: 200,
-                height: 58,
-                marginTop: "2%",
-              }}
-              source={require("../FeedMama/app/assets/Buttons/SignUpButton-White.png")}
-              resizeMode="contain">
+              <ImageBackground
+                  style={styles.primaryButton}
+                  source={require("./app/assets/Buttons/MotherButton.png")}
+                  resizeMode="contain">
 
-            </ImageBackground>
+              </ImageBackground>
 
           </TouchableOpacity>
 
-        </View>
+          <TouchableOpacity onPress={() => printUserType()}>
 
-    </ImageBackground>
+              <ImageBackground
+                  style={styles.primaryButton}
+                  source={require("./app/assets/Buttons/RestaurantButton.png")}
+                  resizeMode="contain">
+
+              </ImageBackground>
+
+          </TouchableOpacity>
+
+          <View
+            style={styles.containerHorz}>
+            <TouchableOpacity
+              style={{
+                marginRight: "15%"
+              }}>
+
+              <ImageBackground
+                style={{
+                  width: 80,
+                  height: 80
+                }}
+                source={require("./app/assets/Buttons/BackButton.png")}
+                resizeMode="contain">
+
+              </ImageBackground>
+
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={{
+                marginLeft: "15%",
+              }} onPress={() => printUserType()}>
+            
+              <ImageBackground
+                  style={{
+                    width: 80,
+                    height: 80
+                  }}
+                  source={require("./app/assets/Buttons/ImaPhysician.png")}
+                  resizeMode="contain">
+
+              </ImageBackground>
+
+            </TouchableOpacity>
+          </View>
+
+      </View>
   );
 }
 
 const styles = StyleSheet.create({
-  background: {
+  containerVert: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: "#E6E6E6",
+    marginTop: "25%",
+    alignItems: "center",
   },
-  container: {
+  containerHorz: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center"
+    flexDirection: 'row',
+    marginTop: "25%",
+    alignItems: "center",
   },
-  input: {
-    width: 265,
-    height: 30,
-    backgroundColor: "rgba(255,255,255,1)",
-    borderRadius: 12,
-    marginBottom: "5%",
-    paddingLeft: 10
-  },
-  logo: {
+  primaryButton: {
     width: 200,
-    height: 200,
-    marginTop: "30%",
-    marginBottom: "-50%",
+    height: 60,
+    marginTop: "5%",
   },
+  signUpTitle: {
+    marginTop: "20%",
+    marginBottom: "5%"
+  }
 });
