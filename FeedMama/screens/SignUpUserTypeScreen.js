@@ -5,6 +5,7 @@ function SignUpUserTypeScreen(props){
   const [userType, setEmail] = useState();
 
   function printUserType() {
+    //Should be figured out with backend on what to do with acct user type
     console.log(userType);
   }
   return(

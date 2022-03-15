@@ -10,6 +10,7 @@ function LoginScreen(props) {
   const [password, setPassword] = useState();
 
   function printEP() {
+    //Should be figured out with backend on what to do with Login info
     console.log(email);
     console.log(password);
   }

@@ -7,10 +7,16 @@ import LoginScreen from '../FeedMama/screens/LoginScreen';
 //import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 export default function App() {
-  const [userType, setEmail] = useState();
+  const [firstName, setFirstName] = useState();
+  const [lastName, setLastName] = useState();
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+  const [confirmPassword, setConfirmPassword] = useState();
+  const [phoneNumber, setPhoneNumber] = useState();
 
   function printUserType() {
-    console.log(userType);
+    //Should be figured out with backend on what to do with acct info
+    console.log('Wooh! Just send the acct info to backend stuff? - JC');
   }
   return(
       <View
@@ -22,41 +28,83 @@ export default function App() {
           ></Image>
 
           <Image
-            source={require("./app/assets/Static/Whoareyou.png")}
+            source={require("./app/assets/Static/Accountinformation.png")}
             resizeMode="contain"
             style={styles.signUpTitle}
           ></Image>
 
-          <TouchableOpacity onPress={() => printUserType()}>
+          <TextInput 
+            style={styles.input} 
+            placeholder="First Name"
+            autoCapitalize="none"
+            autoCorrect={false}
+            //icon="email"
+            keyboardType='first-name'
+            textContentType='firstName'
+            onChangeText={text => setFirstName(text)}
+          />
 
-              <ImageBackground
-                  style={styles.primaryButton}
-                  source={require("./app/assets/Buttons/CustomerButton.png")}
-                  resizeMode="contain">
+          <TextInput 
+            style={styles.input} 
+            placeholder="Last Name"
+            autoCapitalize="none"
+            autoCorrect={false}
+            //icon="email"
+            keyboardType='last-name'
+            textContentType='lastName'
+            onChangeText={text => setLastName(text)}
+          />
 
-              </ImageBackground>
+          <TextInput 
+            style={styles.input} 
+            placeholder="Email"
+            autoCapitalize="none"
+            autoCorrect={false}
+            icon="email"
+            keyboardType='email-address'
+            textContentType='emailAddress'
+            onChangeText={text => setEmail(text)}
+          />
 
-          </TouchableOpacity>
+          <TextInput 
+            style={styles.input} 
+            placeholder={"Password"}
+            autoCapitalize="none"
+            icon="lock"
+            secureTextEntry
+            textContentType='password'
+            onChangeText={text => setPassword(text)}
+          />
 
-          <TouchableOpacity onPress={() => printUserType()}>
+          <TextInput 
+            style={styles.input} 
+            placeholder={"Confirm Password"}
+            autoCapitalize="none"
+            //icon="lock"
+            secureTextEntry
+            textContentType='confirmPassword'
+            onChangeText={text => setConfirmPassword(text)}
+          />
 
-              <ImageBackground
-                  style={styles.primaryButton}
-                  source={require("./app/assets/Buttons/MotherButton.png")}
-                  resizeMode="contain">
+          <TextInput 
+            style={styles.input} 
+            placeholder="Phone Number (e.g., 123-456-7890)"
+            autoCapitalize="none"
+            autoCorrect={false}
+            //icon="email"
+            keyboardType='phone-number'
+            textContentType='phoneNumber'
+            onChangeText={text => setPhoneNumber(text)}
+          />
 
-              </ImageBackground>
+          <TouchableOpacity onPress={() => PrintEP()}>
 
-          </TouchableOpacity>
+            <ImageBackground
+              style={styles.primaryButton}
+              source={require("./app/assets/Buttons/SignUpButton-Salmon.png")}
+              resizeMode="contain">
 
-          <TouchableOpacity onPress={() => printUserType()}>
-
-              <ImageBackground
-                  style={styles.primaryButton}
-                  source={require("./app/assets/Buttons/RestaurantButton.png")}
-                  resizeMode="contain">
-
-              </ImageBackground>
+            </ImageBackground>
 
           </TouchableOpacity>
 
@@ -112,6 +160,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: "25%",
     alignItems: "center",
+  },
+  input: {
+    width: 265,
+    height: 30,
+    backgroundColor: "rgba(245,245,245,.8)",
+    borderRadius: 12,
+    marginBottom: "5%",
+    paddingLeft: 10
   },
   primaryButton: {
     width: 200,
