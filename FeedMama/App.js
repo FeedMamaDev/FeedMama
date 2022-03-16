@@ -14,6 +14,10 @@ function printRestaurant() {
 }
 
 export default function App() {
+  let timeEstimate="30-40 min";
+  let fee="$2.99 Fee";
+  let restHomeSubtitle=timeEstimate.concat(" | ",fee);
+
   return(
       <View style={{
         backgroundColor: "#f8f4f4",
@@ -23,8 +27,7 @@ export default function App() {
         <TouchableOpacity onPress={() => printRestaurant()}>
           <Card
             title="Funky Fresh Spring Rolls"
-            fee="$2.99 Delivery Fee"
-            timeEstimate="30-40min"
+            subtitle={restHomeSubtitle}
             image={require("./app/assets/Photos/FunkyFreshSpringRolls.jpg")}/>
         </TouchableOpacity>
       </View>
