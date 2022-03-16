@@ -6,145 +6,27 @@ import LoginScreen from '../FeedMama/screens/LoginScreen';
 //import { NavigationContainer } from '@react-navigation/native';
 //import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
+import Card from './app/components/Card';
+
+function printRestaurant() {
+  //Should be figured out with backend on what to do with acct info
+  console.log('Wooh! Should switch to restaurant page list view? - JC');
+}
+
 export default function App() {
-  const [firstName, setFirstName] = useState();
-  const [lastName, setLastName] = useState();
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
-  const [confirmPassword, setConfirmPassword] = useState();
-  const [phoneNumber, setPhoneNumber] = useState();
-
-  function printUserType() {
-    //Should be figured out with backend on what to do with acct info
-    console.log('Wooh! Just send the acct info to backend stuff? - JC');
-  }
   return(
-      <View
-          style={styles.containerVert}>
-
-          <Image
-            source={require("./app/assets/Static/FeedMamaSecLogo.png")}
-            resizeMode="contain"
-          ></Image>
-
-          <Image
-            source={require("./app/assets/Static/Accountinformation.png")}
-            resizeMode="contain"
-            style={styles.signUpTitle}
-          ></Image>
-
-          <TextInput 
-            style={styles.input} 
-            placeholder="First Name"
-            autoCapitalize="none"
-            autoCorrect={false}
-            //icon="email"
-            keyboardType='first-name'
-            textContentType='firstName'
-            onChangeText={text => setFirstName(text)}
-          />
-
-          <TextInput 
-            style={styles.input} 
-            placeholder="Last Name"
-            autoCapitalize="none"
-            autoCorrect={false}
-            //icon="email"
-            keyboardType='last-name'
-            textContentType='lastName'
-            onChangeText={text => setLastName(text)}
-          />
-
-          <TextInput 
-            style={styles.input} 
-            placeholder="Email"
-            autoCapitalize="none"
-            autoCorrect={false}
-            icon="email"
-            keyboardType='email-address'
-            textContentType='emailAddress'
-            onChangeText={text => setEmail(text)}
-          />
-
-          <TextInput 
-            style={styles.input} 
-            placeholder={"Password"}
-            autoCapitalize="none"
-            icon="lock"
-            secureTextEntry
-            textContentType='password'
-            onChangeText={text => setPassword(text)}
-          />
-
-          <TextInput 
-            style={styles.input} 
-            placeholder={"Confirm Password"}
-            autoCapitalize="none"
-            //icon="lock"
-            secureTextEntry
-            textContentType='confirmPassword'
-            onChangeText={text => setConfirmPassword(text)}
-          />
-
-          <TextInput 
-            style={styles.input} 
-            placeholder="Phone Number (e.g., 123-456-7890)"
-            autoCapitalize="none"
-            autoCorrect={false}
-            //icon="email"
-            keyboardType='phone-number'
-            textContentType='phoneNumber'
-            onChangeText={text => setPhoneNumber(text)}
-          />
-
-          <TouchableOpacity onPress={() => PrintEP()}>
-
-            <ImageBackground
-              style={styles.primaryButton}
-              source={require("./app/assets/Buttons/SignUpButton-Salmon.png")}
-              resizeMode="contain">
-
-            </ImageBackground>
-
-          </TouchableOpacity>
-
-          <View
-            style={styles.containerHorz}>
-            <TouchableOpacity
-              style={{
-                marginRight: "15%"
-              }}>
-
-              <ImageBackground
-                style={{
-                  width: 80,
-                  height: 80
-                }}
-                source={require("./app/assets/Buttons/BackButton.png")}
-                resizeMode="contain">
-
-              </ImageBackground>
-
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={{
-                marginLeft: "15%",
-              }} onPress={() => printUserType()}>
-            
-              <ImageBackground
-                  style={{
-                    width: 80,
-                    height: 80
-                  }}
-                  source={require("./app/assets/Buttons/ImaPhysician.png")}
-                  resizeMode="contain">
-
-              </ImageBackground>
-
-            </TouchableOpacity>
-          </View>
-
+      <View style={{
+        backgroundColor: "#f8f4f4",
+        padding: 20,
+        paddingTop: 100
+      }}>
+        <TouchableOpacity onPress={() => printRestaurant()}>
+          <Card
+            title="Funky Fresh Spring Rolls"
+            fee="$2.99 Delivery Fee"
+            timeEstimate="30-40min"
+            image={require("./app/assets/Photos/FunkyFreshSpringRolls.jpg")}/>
+        </TouchableOpacity>
       </View>
   );
 }
