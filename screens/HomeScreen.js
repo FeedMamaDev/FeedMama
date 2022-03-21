@@ -1,12 +1,10 @@
 import { useState } from 'react';
-import { ImageBackground, StyleSheet, TouchableOpacity, View, TextInput, Image } from 'react-native';
+import { ImageBackground, StyleSheet, TouchableOpacity, View, TextInput, Image, ScrollView } from 'react-native';
 import Card from '../app/components/Card';
 
 function HomeScreen(props){
 
-  const [imageDelPickup, setImageDelPickup] = useState( 
-    '../app/assets/Static/FeedMamaSecLogo.png'
-  );  
+
     let timeEstimate="30-40 min";
     let fee="$2.99 Fee";
     let restHomeSubtitle=timeEstimate.concat(" | ",fee);
@@ -17,35 +15,61 @@ function HomeScreen(props){
     }
 
     return (
-      <View
+        <View
       resizeMode= 'contain'>
-      <View style={{
-        backgroundColor: "#fff",
-        paddingTop: 50,
-        alignItems: 'center',
-        //flex: 1
-      }}>
-        <Image
-          source={require("../app/assets/Static/FeedMamaSecLogo.png")}
-          resizeMode="contain"
-        ></Image>
+
         <View style={{
-          backgroundColor: "#f8f4f4"
-        }}/>
-      </View>
-      <View style={{
-        backgroundColor: "#f8f4f4",
-        padding: 20,
-        paddingTop: 20,
-        //flex: 3
-      }}>
-        <TouchableOpacity onPress={() => printRestaurant()}>
-          <Card
-            title="Funky Fresh Spring Rolls"
-            subtitle={restHomeSubtitle}
-            image={require("../app/assets/Photos/FunkyFreshSpringRolls.jpg")}/>
-        </TouchableOpacity>
-      </View>
+          backgroundColor: "#fff",
+          paddingTop: 50,
+          alignItems: 'center',
+          //flex: 1
+        }}>
+          <Image
+            source={require("../app/assets/Static/FeedMamaSecLogo.png")}
+            resizeMode="contain">
+          </Image>
+
+          <View
+            style={styles.containerHorz}>
+            <ImageBackground
+                  style={{
+                    width: 80,
+                    height: 80,
+                    marginRight: "15%"
+                  }}
+                  source={require("../app/assets/Static/DeliveryOn.png")}
+                  resizeMode="contain">
+
+              </ImageBackground>
+              <ImageBackground
+                  style={{
+                    width: 80,
+                    height: 80
+                  }}
+                  source={require("../app/assets/Static/PickupOff.png")}
+                  resizeMode="contain">
+
+              </ImageBackground>
+
+          </View>
+
+        </View>
+        
+        <ScrollView>
+          <View style={{
+            backgroundColor: "#f8f4f4",
+            padding: 20,
+            paddingTop: 20,
+            //flex: 3
+          }}>
+            <TouchableOpacity onPress={() => printRestaurant()}>
+              <Card
+                title="Funky Fresh Spring Rolls"
+                subtitle={restHomeSubtitle}
+                image={require("../app/assets/Photos/FunkyFreshSpringRolls.jpg")}/>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
     </View>
     );
 }
@@ -56,10 +80,12 @@ const styles = StyleSheet.create({
     marginTop: "25%",
     alignItems: "center",
     },
+
     containerHorz: {
     flex: 1,
     flexDirection: 'row',
-    marginTop: "25%",
+    marginTop: "10%",
+    marginBottom: "5%",
     alignItems: "center",
     },
     input: {
