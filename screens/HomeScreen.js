@@ -4,6 +4,9 @@ import Card from '../app/components/Card';
 
 function HomeScreen(props){
 
+  const [imageDelPickup, setImageDelPickup] = useState( 
+    '../app/assets/Static/FeedMamaSecLogo.png'
+  );  
 
     let timeEstimate="30-40 min";
     let fee="$2.99 Fee";
@@ -35,10 +38,10 @@ function HomeScreen(props){
                   style={{
                     width: 80,
                     height: 80,
-                    marginRight: "15%"
+                    marginRight: "10%"
                   }}
                   source={require("../app/assets/Static/DeliveryOn.png")}
-                  resizeMode="contain">
+                  resizeMode="center">
 
               </ImageBackground>
               <ImageBackground
@@ -47,15 +50,25 @@ function HomeScreen(props){
                     height: 80
                   }}
                   source={require("../app/assets/Static/PickupOff.png")}
-                  resizeMode="contain">
+                  resizeMode="center">
 
               </ImageBackground>
 
           </View>
 
+          <View style={{
+            width: "100%",
+            height: "5%",
+            backgroundColor: "#FF6C6C"
+          }}>
+
+          </View>
+
         </View>
         
-        <ScrollView>
+        <ScrollView style={{
+          resizeMode:"repeat"
+        }}>
           <View style={{
             backgroundColor: "#f8f4f4",
             padding: 20,
@@ -68,6 +81,67 @@ function HomeScreen(props){
                 subtitle={restHomeSubtitle}
                 image={require("../app/assets/Photos/FunkyFreshSpringRolls.jpg")}/>
             </TouchableOpacity>
+          </View>
+          <View style={{
+            backgroundColor: "#f8f4f4",
+            padding: 20,
+            paddingTop: 20,
+            //flex: 3
+          }}>
+            <TouchableOpacity onPress={() => printRestaurant()}>
+              <Card
+                title="Funky Fresh Spring Rolls"
+                subtitle={restHomeSubtitle}
+                image={require("../app/assets/Photos/FunkyFreshSpringRolls.jpg")}/>
+            </TouchableOpacity>
+          </View>
+          <View style={{
+            backgroundColor: "#f8f4f4",
+            padding: 20,
+            paddingTop: 20,
+            //flex: 3
+          }}>
+            <TouchableOpacity onPress={() => printRestaurant()}>
+              <Card
+                title="Funky Fresh Spring Rolls"
+                subtitle={restHomeSubtitle}
+                image={require("../app/assets/Photos/FunkyFreshSpringRolls.jpg")}/>
+            </TouchableOpacity>
+          </View>
+          <View style={{
+            backgroundColor: "#f8f4f4",
+            padding: 20,
+            paddingTop: 20,
+            //flex: 3
+          }}>
+            <TouchableOpacity onPress={() => printRestaurant()}>
+              <Card
+                title="Funky Fresh Spring Rolls"
+                subtitle={restHomeSubtitle}
+                image={require("../app/assets/Photos/FunkyFreshSpringRolls.jpg")}/>
+            </TouchableOpacity>
+          </View>
+          <View style={{
+            backgroundColor: "#f8f4f4",
+            padding: 20,
+            paddingTop: 20,
+            //flex: 3
+          }}>
+            <TouchableOpacity onPress={() => printRestaurant()}>
+              <Card
+                title="Funky Fresh Spring Rolls"
+                subtitle={restHomeSubtitle}
+                image={require("../app/assets/Photos/FunkyFreshSpringRolls.jpg")}/>
+            </TouchableOpacity>
+          </View>
+          
+          <View style={{
+            backgroundColor: "#f8f4f4",
+            padding: 20,
+            paddingTop: 20,
+            height: 300
+            //flex: 3
+          }}>
           </View>
         </ScrollView>
     </View>
