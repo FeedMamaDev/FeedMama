@@ -4,6 +4,9 @@ import Card from '../app/components/Card';
 
 function HomeScreen(props){
 
+  const [imageDelPickup, setImageDelPickup] = useState( 
+    '../app/assets/Static/FeedMamaSecLogo.png'
+  );  
     let timeEstimate="30-40 min";
     let fee="$2.99 Fee";
     let restHomeSubtitle=timeEstimate.concat(" | ",fee);
@@ -14,9 +17,8 @@ function HomeScreen(props){
     }
 
     return (
-        <View
-      resizeMode= 'contain'
-    >
+      <View
+      resizeMode= 'contain'>
       <View style={{
         backgroundColor: "#fff",
         paddingTop: 50,
