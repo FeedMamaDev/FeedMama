@@ -93,7 +93,7 @@ function SignUpAcctInfoScreen(props){
           onChangeText={text => setPhoneNumber(text)}
         />
 
-        <TouchableOpacity onPress={() => props.navigation.navigate("Home")}>
+        <TouchableOpacity onPress={() => PrintEP()}>
 
           <ImageBackground
             style={styles.primaryButton}
@@ -123,6 +123,22 @@ function SignUpAcctInfoScreen(props){
 
           </TouchableOpacity>
 
+          <TouchableOpacity
+            style={{
+              marginLeft: "15%",
+            }} onPress={() => printUserType()}>
+          
+            <ImageBackground
+                style={{
+                  width: 80,
+                  height: 80
+                }}
+                source={require("../app/assets/Buttons/ImaPhysician.png")}
+                resizeMode="contain">
+
+            </ImageBackground>
+
+          </TouchableOpacity>
         </View>
 
     </View>
