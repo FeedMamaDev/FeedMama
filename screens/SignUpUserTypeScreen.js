@@ -58,7 +58,7 @@ function SignUpUserTypeScreen(props){
 
           <View
             style={styles.containerHorz}>
-            <TouchableOpacity onPress={() => props.navigation.navigate("Login")}
+            <TouchableOpacity onPress={() => props.navigation.navigate("Home")}
               style={{
                 marginRight: "15%"
               }}>
