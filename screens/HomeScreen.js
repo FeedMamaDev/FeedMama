@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { ImageBackground, StyleSheet, TouchableOpacity, View, TextInput, Image } from 'react-native';
-import Card from '../app/components/Card';
+import { ImageBackground, StyleSheet, TouchableOpacity, View, TextInput, Image, Header } from 'react-native';
+import Card from '../FeedMama/app/components/Card';
 
 function HomeScreen(props){
 
