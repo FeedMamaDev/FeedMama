@@ -13,43 +13,43 @@ function SignUpUserTypeScreen(props){
           style={styles.containerVert}>
 
           <Image
-            source={require("./app/assets/Static/FeedMamaSecLogo.png")}
+            source={require("../app/assets/Static/FeedMamaSecLogo.png")}
             resizeMode="contain"
           ></Image>
 
           <Image
-            source={require("./app/assets/Static/Whoareyou.png")}
+            source={require("../app/assets/Static/Whoareyou.png")}
             resizeMode="contain"
             style={styles.signUpTitle}
           ></Image>
 
-          <TouchableOpacity onPress={() => printUserType()}>
+          <TouchableOpacity onPress={() => props.navigation.navigate("AcctInfo", { UserType: "Customer" })}>
 
               <ImageBackground
                   style={styles.primaryButton}
-                  source={require("./app/assets/Buttons/CustomerButton.png")}
+                  source={require("../app/assets/Buttons/CustomerButton.png")}
                   resizeMode="contain">
 
               </ImageBackground>
 
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => printUserType()}>
+          <TouchableOpacity onPress={() => props.navigation.navigate("AcctInfo", { UserType: "Mother" })}>
 
               <ImageBackground
                   style={styles.primaryButton}
-                  source={require("./app/assets/Buttons/MotherButton.png")}
+                  source={require("../app/assets/Buttons/MotherButton.png")}
                   resizeMode="contain">
 
               </ImageBackground>
 
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => printUserType()}>
+          <TouchableOpacity onPress={() => props.navigation.navigate("AcctInfo", { UserType: "Restaurant" })}>
 
               <ImageBackground
                   style={styles.primaryButton}
-                  source={require("./app/assets/Buttons/RestaurantButton.png")}
+                  source={require("../app/assets/Buttons/RestaurantButton.png")}
                   resizeMode="contain">
 
               </ImageBackground>
@@ -58,7 +58,7 @@ function SignUpUserTypeScreen(props){
 
           <View
             style={styles.containerHorz}>
-            <TouchableOpacity
+            <TouchableOpacity onPress={() => props.navigation.navigate("Login")}
               style={{
                 marginRight: "15%"
               }}>
@@ -68,7 +68,7 @@ function SignUpUserTypeScreen(props){
                   width: 80,
                   height: 80
                 }}
-                source={require("./app/assets/Buttons/BackButton.png")}
+                source={require("../app/assets/Buttons/BackButton.png")}
                 resizeMode="contain">
 
               </ImageBackground>
@@ -78,14 +78,14 @@ function SignUpUserTypeScreen(props){
             <TouchableOpacity
               style={{
                 marginLeft: "15%",
-              }} onPress={() => printUserType()}>
+              }} onPress={() => props.navigation.navigate("AcctInfo", { UserType: "Physician" })}>
             
               <ImageBackground
                   style={{
                     width: 80,
                     height: 80
                   }}
-                  source={require("./app/assets/Buttons/ImaPhysician.png")}
+                  source={require("../app/assets/Buttons/ImaPhysician.png")}
                   resizeMode="contain">
 
               </ImageBackground>

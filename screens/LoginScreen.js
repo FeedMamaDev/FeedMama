@@ -1,7 +1,5 @@
 import { useState } from 'react';
 import { ImageBackground, StyleSheet, TouchableOpacity, View, TextInput, Image } from 'react-native';
-//import { NavigationContainer } from '@react-navigation/native';
-//import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 
 function LoginScreen(props) {
@@ -62,7 +60,7 @@ function LoginScreen(props) {
 
           </TouchableOpacity>
 
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => props.navigation.navigate("UserType")}>
 
             <ImageBackground
               style={styles.primaryButton}

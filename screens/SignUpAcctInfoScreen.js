@@ -19,12 +19,12 @@ function SignUpAcctInfoScreen(props){
         style={styles.containerVert}>
 
         <Image
-          source={require("./app/assets/Static/FeedMamaSecLogo.png")}
+          source={require("../app/assets/Static/FeedMamaSecLogo.png")}
           resizeMode="contain"
         ></Image>
 
         <Image
-          source={require("./app/assets/Static/Accountinformation.png")}
+          source={require("../app/assets/Static/Accountinformation.png")}
           resizeMode="contain"
           style={styles.signUpTitle}
         ></Image>
@@ -35,8 +35,8 @@ function SignUpAcctInfoScreen(props){
           autoCapitalize="none"
           autoCorrect={false}
           //icon="email"
-          keyboardType='first-name'
-          textContentType='firstName'
+          keyboardType='default'
+          textContentType='name'
           onChangeText={text => setFirstName(text)}
         />
 
@@ -46,8 +46,8 @@ function SignUpAcctInfoScreen(props){
           autoCapitalize="none"
           autoCorrect={false}
           //icon="email"
-          keyboardType='last-name'
-          textContentType='lastName'
+          keyboardType='default'
+          textContentType='name'
           onChangeText={text => setLastName(text)}
         />
 
@@ -78,18 +78,18 @@ function SignUpAcctInfoScreen(props){
           autoCapitalize="none"
           //icon="lock"
           secureTextEntry
-          textContentType='confirmPassword'
+          textContentType='password'
           onChangeText={text => setConfirmPassword(text)}
         />
 
         <TextInput 
           style={styles.input} 
-          placeholder="Phone Number (e.g., 123-456-7890)"
+          placeholder="Phone Number (e.g., 1234567890)"
           autoCapitalize="none"
           autoCorrect={false}
           //icon="email"
-          keyboardType='phone-number'
-          textContentType='phoneNumber'
+          keyboardType='number-pad'
+          textContentType='telephoneNumber'
           onChangeText={text => setPhoneNumber(text)}
         />
 
@@ -97,7 +97,7 @@ function SignUpAcctInfoScreen(props){
 
           <ImageBackground
             style={styles.primaryButton}
-            source={require("./app/assets/Buttons/SignUpButton-Salmon.png")}
+            source={require("../app/assets/Buttons/SignUpButton-Salmon.png")}
             resizeMode="contain">
 
           </ImageBackground>
@@ -116,7 +116,7 @@ function SignUpAcctInfoScreen(props){
                 width: 80,
                 height: 80
               }}
-              source={require("./app/assets/Buttons/BackButton.png")}
+              source={require("../app/assets/Buttons/BackButton.png")}
               resizeMode="contain">
 
             </ImageBackground>
@@ -133,7 +133,7 @@ function SignUpAcctInfoScreen(props){
                   width: 80,
                   height: 80
                 }}
-                source={require("./app/assets/Buttons/ImaPhysician.png")}
+                source={require("../app/assets/Buttons/ImaPhysician.png")}
                 resizeMode="contain">
 
             </ImageBackground>
@@ -144,6 +144,11 @@ function SignUpAcctInfoScreen(props){
     </View>
   );
 }
+
+SignUpAcctInfoScreen.navigationOptions = (navData) => {
+
+  console.log(navData.navigation.getParam("UserType"))
+};
 
 const styles = StyleSheet.create({
   containerVert: {
