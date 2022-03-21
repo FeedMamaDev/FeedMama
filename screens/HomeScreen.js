@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ImageBackground, StyleSheet, TouchableOpacity, View, TextInput, Image, Header } from 'react-native';
+import { ImageBackground, StyleSheet, TouchableOpacity, View, TextInput, Image } from 'react-native';
 import Card from '../app/components/Card';
 
 function HomeScreen(props){
