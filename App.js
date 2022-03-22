@@ -9,11 +9,21 @@ import LoginScreen from './screens/LoginScreen';
 import SignUpUserTypeScreen from './screens/SignUpUserTypeScreen';
 import SignUpAcctInfoScreen from './screens/SignUpAcctInfoScreen';
 
-import Card from './app/components/Card';
+import React from 'react'
+import { NavigationContainer } from '@react-navigation/native';
+import Tabs from './app/components/tabs.js'
+
+export default function App() {
+  return (
+    <NavigationContainer>
+      <Navigator/>
+    </NavigationContainer>
+  );
+}
 
 const AppNavigator = createStackNavigator({
   Login: LoginScreen,
-  Home: HomeScreen,
+  Tabs: Tabs,
   UserType: SignUpUserTypeScreen,
   AcctInfo: SignUpAcctInfoScreen,
 },
@@ -24,10 +34,10 @@ const AppNavigator = createStackNavigator({
 
 const Navigator = createAppContainer(AppNavigator);
 
-export default function App() {
+/*export default function App() {
   return (
     <Navigator>
       <LoginScreen/>
     </Navigator>
   );
-}
+}*/

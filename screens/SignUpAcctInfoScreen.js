@@ -93,7 +93,7 @@ function SignUpAcctInfoScreen(props){
           onChangeText={text => setPhoneNumber(text)}
         />
 
-        <TouchableOpacity onPress={() => props.navigation.navigate("Home")}>
+        <TouchableOpacity onPress={() => props.navigation.navigate("Tabs")}>
 
           <ImageBackground
             style={styles.primaryButton}

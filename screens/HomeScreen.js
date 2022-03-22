@@ -158,7 +158,7 @@ const styles = StyleSheet.create({
     containerHorz: {
     flex: 1,
     flexDirection: 'row',
-    marginTop: "10%",
+    marginTop: "5%",
     marginBottom: "5%",
     alignItems: "center",
     },
