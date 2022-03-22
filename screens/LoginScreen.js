@@ -84,6 +84,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: "#E6E6E6",
   },
+  containerHorz: {
+    flex: 1,
+    flexDirection: 'row',
+    marginTop: "25%",
+    alignItems: "center",
+  },
   container: {
     flex: 1,
     justifyContent: "center",
