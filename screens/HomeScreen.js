@@ -7,6 +7,7 @@ function HomeScreen(props){
   const [imageDelPickup, setImageDelPickup] = useState( 
     '../app/assets/Static/FeedMamaSecLogo.png'
   );  
+  
     let timeEstimate="30-40 min";
     let fee="$2.99 Fee";
     let restHomeSubtitle=timeEstimate.concat(" | ",fee);
