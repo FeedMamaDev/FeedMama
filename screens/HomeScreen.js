@@ -75,7 +75,7 @@ function HomeScreen(props){
             paddingTop: 20,
             //flex: 3
           }}>
-            <TouchableOpacity onPress={() => printRestaurant()}>
+            <TouchableOpacity onPress={() => props.navigation.navigate("Restaurant")}>
               <Card
                 title="Funky Fresh Spring Rolls"
                 subtitle={restHomeSubtitle}

@@ -1,10 +1,9 @@
 import React from 'react';
 import {View, StyleSheet, Image, Text} from 'react-native';
 
-function Card({title, subtitle, image}) {
+function MenuItem({title, subtitle}) {
     return (
-        <View style={styles.card}>
-            <Image style={styles.image} source={image}></Image>
+        <View>
             <View style={styles.detailsContainer}>
                 <Text style={styles.title}>{title}</Text>
                 <Text style={styles.subTitle}>{subtitle}</Text>
@@ -13,19 +12,9 @@ function Card({title, subtitle, image}) {
     );
 }
 
-const styles = StyleSheet.create({
-    card:{
-        borderRadius: 15,
-        backgroundColor: "#ff6c6c",
-        marginBottom: "-5%",
-        overflow: 'hidden'
-    },
+const styles=StyleSheet.create({
     detailsContainer:{
         padding: 10,
-    },
-    image:{
-        width:"100%",
-        height:150
     },
     title:{
         fontSize:18,
@@ -40,5 +29,6 @@ const styles = StyleSheet.create({
         color: "#fff",
         marginLeft:5
     }
-})
-export default Card;
+});
+
+export default MenuItem;

@@ -8,6 +8,7 @@ import HomeScreen from './screens/HomeScreen';
 import LoginScreen from './screens/LoginScreen';
 import SignUpUserTypeScreen from './screens/SignUpUserTypeScreen';
 import SignUpAcctInfoScreen from './screens/SignUpAcctInfoScreen';
+import RestaurantScreen from './screens/RestaurantScreen';
 
 import React from 'react'
 import { NavigationContainer } from '@react-navigation/native';
@@ -26,6 +27,7 @@ const AppNavigator = createStackNavigator({
   Tabs: Tabs,
   UserType: SignUpUserTypeScreen,
   AcctInfo: SignUpAcctInfoScreen,
+  Restaurant: RestaurantScreen,
 },
 {
   headerMode: 'none'
