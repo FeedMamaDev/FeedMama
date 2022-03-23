@@ -49,7 +49,7 @@ function LoginScreen(props) {
           onChangeText={text => setPassword(text)}
           />
 
-          <TouchableOpacity onPress={() => PrintEP()}>
+          <TouchableOpacity onPress={() => props.navigation.navigate("Tabs")}>
 
             <ImageBackground
               style={styles.primaryButton}

@@ -20,13 +20,13 @@ const styles=StyleSheet.create({
         fontSize:18,
         fontFamily: Platform.OS === "iOS" ? "Proxima Nova" : "Helvetica",
         fontWeight:"bold",
-        color: "#fff",
+        color: "#000",
         marginLeft: 5
     },
     subTitle:{
         fontSize:14,
         fontFamily: Platform.OS === "iOS" ? "Proxima Nova" : "Helvetica",
-        color: "#fff",
+        color: "#000",
         marginLeft:5
     }
 });

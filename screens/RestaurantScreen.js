@@ -16,17 +16,17 @@ function RestaurantScreen(props){
       return (
           <View
         resizeMode= 'contain'>
-  
+          
           <View style={{
             alignItems: 'center',
           }}>
             <Image
             style={{
               width: '100%',
-              height: '15%'
+              height: '15%',
+              paddingTop:10
             }}
-              source={require("../app/assets/Photos/FunkyFreshSpringRolls.jpg")}
-              resizeMode="contain">
+              source={require("../app/assets/Photos/FunkyFreshSpringRolls.jpg")}>
             </Image>
           </View>
           
