@@ -1,12 +1,18 @@
 import React, {useState} from 'react'
-import { View, Text} from 'react-native';
+import { View, Text, SearchBar} from 'react-native';
 
 const SearchScreen = ({navigation}) => {
     return (
-        <View>
-            <Text>
-                Search
-            </Text>
+        <View style={{
+            marginTop: "15%",
+            alignItems: 'center',
+            flex: 1
+          }}>
+              <View style={{
+                width: "100%",
+                height: "5%",
+                backgroundColor: "#FF6C6C"}}>
+              </View>
         </View>
     )
 }
