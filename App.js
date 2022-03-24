@@ -4,11 +4,16 @@ import { ImageBackground, StyleSheet, TouchableOpacity, View, TextInput, Image }
 import { createStackNavigator } from "react-navigation-stack";
 import { createAppContainer } from "react-navigation";
 
-import HomeScreen from './screens/HomeScreen';
 import LoginScreen from './screens/LoginScreen';
 import SignUpUserTypeScreen from './screens/SignUpUserTypeScreen';
 import SignUpAcctInfoScreen from './screens/SignUpAcctInfoScreen';
 import RestaurantScreen from './screens/RestaurantScreen';
+
+import HomeScreen from './screens/HomeScreen';
+import AccountScreen from './screens/AccountScreen';
+import SearchScreen from './screens/SearchScreen';
+import OrderScreen from './screens/OrderScreen';
+import DonateScreen from './screens/DonateScreen';
 
 import React from 'react'
 import { NavigationContainer } from '@react-navigation/native';
