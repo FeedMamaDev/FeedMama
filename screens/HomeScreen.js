@@ -66,7 +66,7 @@ function HomeScreen(props){
 
         </View>
         
-       ScrollView style={{
+       <ScrollView style={{
           resizeMode:"repeat"
         }}>
           <View style={{
@@ -143,7 +143,7 @@ function HomeScreen(props){
             //flex: 3
           }}>
           </View>
-        </ScrollView> <
+        </ScrollView> 
     </View>
     );
 }
