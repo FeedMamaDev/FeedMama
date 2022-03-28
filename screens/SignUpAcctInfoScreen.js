@@ -123,6 +123,15 @@ function SignUpAcctInfoScreen(props){
 
           </TouchableOpacity>
 
+          <View
+              style={{
+                marginLeft: "15%",
+                width: 80,
+                height: 80,
+                resizeMode: "contain"
+              }} onPress={() => props.navigation.navigate("AcctInfo", { UserType: "Physician" })}>
+            </View>
+
         </View>
 
     </View>
