@@ -19,32 +19,16 @@ import React from 'react'
 import { NavigationContainer } from '@react-navigation/native';
 import Tabs from './app/components/tabs.js'
 
+const Stack = createNativeStackNavigator();
+
 export default function App() {
   return (
     <NavigationContainer>
-      <Navigator/>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="Login" component={HomeScreen} />
+        <Stack.Screen name="SignUpUserType" component={SignUpUserTypeScreen} />
+        <Stack.Screen name="SignUpAcctInfo" component={SignUpAcctInfoScreen} />
+      </Stack.Navigator>
     </NavigationContainer>
   );
-}
-
-const AppNavigator = createStackNavigator({
-  Login: LoginScreen,
-  Tabs: Tabs,
-  UserType: SignUpUserTypeScreen,
-  AcctInfo: SignUpAcctInfoScreen,
-  Restaurant: RestaurantScreen,
-},
-{
-  headerMode: 'none'
-}
-);
-
-const Navigator = createAppContainer(AppNavigator);
-
-/*export default function App() {
-  return (
-    <Navigator>
-      <LoginScreen/>
-    </Navigator>
-  );
-}*/
+};
