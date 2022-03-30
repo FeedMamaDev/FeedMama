@@ -106,7 +106,7 @@ function SignUpAcctInfoScreen(props){
 
         <View
           style={styles.containerHorz}>
-          <TouchableOpacity
+          <TouchableOpacity onPress={() => props.navigation.goBack()}
             style={{
               marginRight: "15%"
             }}>
