@@ -8,49 +8,52 @@ function RestaurantScreen(props){
       '../app/assets/Photos/FunkyFreshSpringRolls.jpg'
     );  
   
-      function printItem() {
-       //Should be figured out with backend on what to do with acct info
-       console.log('Wooh! Selected a menu item - JC');
-      }
+    function printItem() {
+      //Should be figured out with backend on what to do with acct info
+      console.log('Wooh! Selected a menu item - JC');
+    }
   
-      return (
-          <View
+    return (
+      <View
         resizeMode= 'contain'>
           
-          <View style={{
+        <View style={{
             alignItems: 'center',
           }}>
-            <Image
+          <Image
             style={{
               width: '100%',
-              height: '15%',
-              paddingTop:10
+              height: 100,
+              paddingTop:100
             }}
-              source={require("../app/assets/Photos/FunkyFreshSpringRolls.jpg")}>
-            </Image>
-          </View>
+              source={'../app/assets/Photos/FunkyFreshSpringRolls.jpg'}>
+          </Image>
+        </View>
           
-          <ScrollView style={{
-            resizeMode:"repeat"
+        <ScrollView style={{
+          resizeMode:"repeat"
+        }}>
+          <View style={{
+            backgroundColor: "#f8f4f4",
+            padding: 10,
           }}>
-            <View style={{
-              backgroundColor: "#f8f4f4",
-              paddingTop: 20,
-            }}>
-              <TouchableOpacity onPress={() => printRestaurant()}>
-                <MenuItem
-                  title="Egg Roll"
-                  subtitle='$3.00'/>
-              </TouchableOpacity>
-            </View>
-            <View style={{
-              backgroundColor: "#f8f4f4",
-              padding: 20,
-              paddingTop: 20,
-              height: 300
-            }}>
-            </View>
-          </ScrollView>
+            <TouchableOpacity onPress={() => printItem()}>
+              <MenuItem
+                title="Egg Roll"
+                subtitle='$3.00'/>
+            </TouchableOpacity>
+          </View>
+          <View style={{
+            backgroundColor: "#f8f4f4",
+            padding: 10,
+          }}>
+            <TouchableOpacity onPress={() => printItem()}>
+              <MenuItem
+                title="Egg Roll"
+                subtitle='$3.00'/>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
       </View>
       );
   }

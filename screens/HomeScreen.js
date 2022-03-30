@@ -4,7 +4,7 @@ import Card from '../app/components/Card';
 
 function HomeScreen(props){
 
-  const [imageDelPickup, setImageDelPickup] = useState( 
+  const [imageRestCard, setImageRestCard] = useState( 
     '../app/assets/Static/FeedMamaSecLogo.png'
   );  
   
@@ -75,7 +75,7 @@ function HomeScreen(props){
             paddingTop: 20,
             //flex: 3
           }}>
-            <TouchableOpacity onPress={() => props.navigation.navigate("Restaurant")}>
+            <TouchableOpacity onPress={() => props.navigation.navigate("RestaurantFlow")}>
               <Card
                 title="Funky Fresh Spring Rolls"
                 subtitle={restHomeSubtitle}
@@ -88,7 +88,7 @@ function HomeScreen(props){
             paddingTop: 20,
             //flex: 3
           }}>
-            <TouchableOpacity onPress={() => printRestaurant()}>
+            <TouchableOpacity onPress={() => props.navigation.navigate("RestaurantFlow")}>
               <Card
                 title="Funky Fresh Spring Rolls"
                 subtitle={restHomeSubtitle}
@@ -101,7 +101,7 @@ function HomeScreen(props){
             paddingTop: 20,
             //flex: 3
           }}>
-            <TouchableOpacity onPress={() => printRestaurant()}>
+            <TouchableOpacity onPress={() => props.navigation.navigate("RestaurantFlow")}>
               <Card
                 title="Funky Fresh Spring Rolls"
                 subtitle={restHomeSubtitle}
@@ -114,7 +114,7 @@ function HomeScreen(props){
             paddingTop: 20,
             //flex: 3
           }}>
-            <TouchableOpacity onPress={() => printRestaurant()}>
+            <TouchableOpacity onPress={() => props.navigation.navigate("RestaurantFlow")}>
               <Card
                 title="Funky Fresh Spring Rolls"
                 subtitle={restHomeSubtitle}
@@ -127,7 +127,7 @@ function HomeScreen(props){
             paddingTop: 20,
             //flex: 3
           }}>
-            <TouchableOpacity onPress={() => printRestaurant()}>
+            <TouchableOpacity onPress={() => props.navigation.navigate("RestaurantFlow")}>
               <Card
                 title="Funky Fresh Spring Rolls"
                 subtitle={restHomeSubtitle}
