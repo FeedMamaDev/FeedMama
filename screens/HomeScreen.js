@@ -25,7 +25,6 @@ function HomeScreen(props){
           backgroundColor: "#fff",
           paddingTop: 50,
           alignItems: 'center',
-          //flex: 1
         }}>
           <Image
             source={require("../app/assets/Static/FeedMamaSecLogo.png")}
@@ -75,7 +74,7 @@ function HomeScreen(props){
             paddingTop: 20,
             //flex: 3
           }}>
-            <TouchableOpacity onPress={() => props.navigation.navigate("RestaurantFlow")}>
+            <TouchableOpacity onPress={() => props.navigation.push("RestaurantFlow")}>
               <Card
                 title="Funky Fresh Spring Rolls"
                 subtitle={restHomeSubtitle}
@@ -88,7 +87,7 @@ function HomeScreen(props){
             paddingTop: 20,
             //flex: 3
           }}>
-            <TouchableOpacity onPress={() => props.navigation.navigate("RestaurantFlow")}>
+            <TouchableOpacity onPress={() => props.navigation.push("RestaurantFlow")}>
               <Card
                 title="Funky Fresh Spring Rolls"
                 subtitle={restHomeSubtitle}
@@ -101,7 +100,7 @@ function HomeScreen(props){
             paddingTop: 20,
             //flex: 3
           }}>
-            <TouchableOpacity onPress={() => props.navigation.navigate("RestaurantFlow")}>
+            <TouchableOpacity onPress={() => props.navigation.push("RestaurantFlow")}>
               <Card
                 title="Funky Fresh Spring Rolls"
                 subtitle={restHomeSubtitle}
@@ -114,7 +113,7 @@ function HomeScreen(props){
             paddingTop: 20,
             //flex: 3
           }}>
-            <TouchableOpacity onPress={() => props.navigation.navigate("RestaurantFlow")}>
+            <TouchableOpacity onPress={() => props.navigation.push("RestaurantFlow")}>
               <Card
                 title="Funky Fresh Spring Rolls"
                 subtitle={restHomeSubtitle}
@@ -127,7 +126,7 @@ function HomeScreen(props){
             paddingTop: 20,
             //flex: 3
           }}>
-            <TouchableOpacity onPress={() => props.navigation.navigate("RestaurantFlow")}>
+            <TouchableOpacity onPress={() => props.navigation.push("RestaurantFlow")}>
               <Card
                 title="Funky Fresh Spring Rolls"
                 subtitle={restHomeSubtitle}

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ImageBackground, StyleSheet, TouchableOpacity, View, TextInput, Image, ScrollView } from 'react-native';
+import { ImageBackground, StyleSheet, TouchableOpacity, View, Text, Image, ScrollView } from 'react-native';
 import MenuItem from '../app/components/MenuItem';
 
 function RestaurantScreen(props){
@@ -7,6 +7,8 @@ function RestaurantScreen(props){
     const [restImage, setRestImage] = useState( 
       '../app/assets/Photos/FunkyFreshSpringRolls.jpg'
     );  
+
+    const [titleText, setTitleText] = useState("Funky Fresh Spring Rolls");
   
     function printItem() {
       //Should be figured out with backend on what to do with acct info
@@ -14,28 +16,23 @@ function RestaurantScreen(props){
     }
   
     return (
-      <View
-        resizeMode= 'contain'>
-          
-        <View style={{
-            alignItems: 'center',
-          }}>
-          <Image
-            style={{
-              width: '100%',
-              height: 100,
-              paddingTop:100
-            }}
-              source={'../app/assets/Photos/FunkyFreshSpringRolls.jpg'}>
-          </Image>
-        </View>
-          
-        <ScrollView style={{
+          <ScrollView style={{
           resizeMode:"repeat"
         }}>
+          <ImageBackground
+            source={require("../app/assets/Photos/FunkyFreshSpringRolls.jpg")}
+            style={{
+              width: '100%',
+              height: '100%',
+            }}>
+              <Text style={styles.restaurantTitle}>
+                {titleText}
+              </Text>
+          </ImageBackground>
           <View style={{
             backgroundColor: "#f8f4f4",
             padding: 10,
+            width:'100%'
           }}>
             <TouchableOpacity onPress={() => printItem()}>
               <MenuItem
@@ -54,7 +51,6 @@ function RestaurantScreen(props){
             </TouchableOpacity>
           </View>
         </ScrollView>
-      </View>
       );
   }
   
@@ -87,6 +83,13 @@ function RestaurantScreen(props){
       signUpTitle: {
       marginTop: "20%",
       marginBottom: "5%"
+      },
+      restaurantTitle:{
+        justifyContent:"center",
+        fontSize:18,
+        fontFamily: Platform.OS === "iOS" ? "Proxima Nova" : "Helvetica",
+        fontWeight:"bold",
+        color: "#fff",
       }
   });
   
