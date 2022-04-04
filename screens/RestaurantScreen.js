@@ -1,57 +1,99 @@
 import { useState } from 'react';
-import { ImageBackground, StyleSheet, TouchableOpacity, View, Text, Image, ScrollView } from 'react-native';
+import { ImageBackground, StyleSheet, TouchableOpacity, View, Text, Image, ScrollView} from 'react-native';
+import { Divider } from 'react-native-elements';
+import RestaurantAbout from '../app/components/RestaurantAbout';
 import MenuItem from '../app/components/MenuItem';
+import BigButton from '../app/components/BigButton';
 
 function RestaurantScreen(props){
-
-    const [restImage, setRestImage] = useState( 
-      '../app/assets/Photos/FunkyFreshSpringRolls.jpg'
-    );  
-
-    const [titleText, setTitleText] = useState("Funky Fresh Spring Rolls");
   
+    const timeEstimate="30-40 min";
+    const fee="$2.99 Fee";
+
+    const restaurantImage="../app/assets/Photos/FunkyFreshSpringRolls.jpg";
+    const restaurantTitle="Funky Fresh Spring Rolls";
+    const restaurantSubtitle=timeEstimate.concat(" | ",fee);
+
     function printItem() {
       //Should be figured out with backend on what to do with acct info
       console.log('Wooh! Selected a menu item - JC');
     }
   
     return (
-          <ScrollView style={{
+      <View>
+        <RestaurantAbout
+          image={require("../app/assets/Photos/FunkyFreshSpringRolls.jpg")}
+          title={restaurantTitle}
+          subtitle={restaurantSubtitle}
+        />
+        <Divider width={1.8} style={{marginVertical:20}}/>
+        <ScrollView style={{
           resizeMode:"repeat"
         }}>
-          <ImageBackground
-            source={require("../app/assets/Photos/FunkyFreshSpringRolls.jpg")}
-            style={{
-              width: '100%',
-              height: '100%',
-            }}>
-              <Text style={styles.restaurantTitle}>
-                {titleText}
-              </Text>
-          </ImageBackground>
           <View style={{
             backgroundColor: "#f8f4f4",
             padding: 10,
             width:'100%'
           }}>
-            <TouchableOpacity onPress={() => printItem()}>
               <MenuItem
+                restaurantName={restaurantTitle}
                 title="Egg Roll"
                 subtitle='$3.00'/>
-            </TouchableOpacity>
           </View>
           <View style={{
             backgroundColor: "#f8f4f4",
             padding: 10,
           }}>
-            <TouchableOpacity onPress={() => printItem()}>
               <MenuItem
+                restaurantName={restaurantTitle}
                 title="Egg Roll"
                 subtitle='$3.00'/>
-            </TouchableOpacity>
+          </View>
+          <View style={{
+            backgroundColor: "#f8f4f4",
+            padding: 10,
+            width:'100%'
+          }}>
+              <MenuItem
+                restaurantName={restaurantTitle}
+                title="Egg Roll"
+                subtitle='$3.00'/>
+          </View>
+          <View style={{
+            backgroundColor: "#f8f4f4",
+            padding: 10,
+            width:'100%'
+          }}>
+              <MenuItem
+                restaurantName={restaurantTitle}
+                title="Egg Roll"
+                subtitle='$3.00'/>
+          </View>
+          <View style={{
+            backgroundColor: "#f8f4f4",
+            padding: 10,
+          }}>
+              <MenuItem
+                restaurantName={restaurantTitle}
+                title="Egg Roll"
+                subtitle='$3.00'/>
+          </View>
+          <View style={{
+            backgroundColor: "#f8f4f4",
+            padding: 10,
+            width:'100%'
+          }}>
+              <MenuItem
+                restaurantName={restaurantTitle}
+                title="Egg Roll"
+                subtitle='$3.00'/>
           </View>
         </ScrollView>
-      );
+        <TouchableOpacity onPress={() => props.navigation.push("Cart")}>
+          <BigButton text="View Cart"/>
+        </TouchableOpacity>
+      </View>
+    );
   }
   
   const styles = StyleSheet.create({
@@ -85,7 +127,8 @@ function RestaurantScreen(props){
       marginBottom: "5%"
       },
       restaurantTitle:{
-        justifyContent:"center",
+        alignItems:"center",
+        marginTop: '18%',
         fontSize:18,
         fontFamily: Platform.OS === "iOS" ? "Proxima Nova" : "Helvetica",
         fontWeight:"bold",

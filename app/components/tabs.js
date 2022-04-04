@@ -2,6 +2,7 @@ import React from 'react';
 import { ImageBackground, StyleSheet, TouchableOpacity, View, TextInput, Image, ScrollView, Button, LogoTitle } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { Divider } from 'react-native-elements';
 import RestaurantScreen from '../../screens/RestaurantScreen';
 import CartScreen from '../../screens/CartScreen';
 import CheckoutScreen from '../../screens/CheckoutScreen';

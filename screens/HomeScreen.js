@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { ImageBackground, StyleSheet, TouchableOpacity, View, TextInput, Image, ScrollView } from 'react-native';
+import { Divider } from 'react-native-elements';
 import Card from '../app/components/Card';
 
 function HomeScreen(props){
@@ -8,9 +9,9 @@ function HomeScreen(props){
     '../app/assets/Static/FeedMamaSecLogo.png'
   );  
   
-    let timeEstimate="30-40 min";
-    let fee="$2.99 Fee";
-    let restHomeSubtitle=timeEstimate.concat(" | ",fee);
+    const timeEstimate="30-40 min";
+    const fee="$2.99 Fee";
+    const restHomeSubtitle=timeEstimate.concat(" | ",fee);
 
     function printRestaurant() {
      //Should be figured out with backend on what to do with acct info
@@ -55,14 +56,11 @@ function HomeScreen(props){
 
           </View>
 
-          <View style={{
+          <Divider style={{
             width: "100%",
             height: "5%",
             backgroundColor: "#FF6C6C"
-          }}>
-
-          </View>
-
+          }}/>
         </View>
         
        <ScrollView style={{
