@@ -9,7 +9,7 @@ const productionUrl = 'https://example.com'
 
 const baseUrl = isLocal ? ngrokUrl : productionUrl
 
-function SignUpAcctInfoScreen(props){
+function SignUpAcctInfoScreen({route, navigation}){
   const [firstName, setFirstName] = useState();
   const [lastName, setLastName] = useState();
   const [email, setEmail] = useState();
@@ -32,10 +32,11 @@ function SignUpAcctInfoScreen(props){
       lastname: lastName,
       email: email,
       password: password,
-      phone: phoneNumber
+      phone: phoneNumber,
+      role: route.params.UserType
     }).then(() => {
       Alert.alert('User Created', 'User created successfully!.', [
-        { text: 'OK', onPress: () => { props.navigation.navigate("Login")} },
+        { text: 'OK', onPress: () => { navigation.navigate("Login")} },
       ]);
     }).catch((err) => {
       Alert.alert('Error', err.response.data.message, [
@@ -140,7 +141,7 @@ function SignUpAcctInfoScreen(props){
 
         <View
           style={styles.containerHorz}>
-          <TouchableOpacity onPress={() => props.navigation.goBack()}
+          <TouchableOpacity onPress={() => navigation.goBack()}
             style={{
               marginRight: "15%"
             }}>
@@ -163,7 +164,7 @@ function SignUpAcctInfoScreen(props){
                 width: 80,
                 height: 80,
                 resizeMode: "contain"
-              }} onPress={() => props.navigation.navigate("AcctInfo", { UserType: "Physician" })}>
+              }} onPress={() => navigation.navigate("AcctInfo", { UserType: "Physician" })}>
             </View>
 
         </View>
