@@ -1,16 +1,33 @@
 import { useState } from 'react';
-import { ImageBackground, StyleSheet, TouchableOpacity, View, TextInput, Image } from 'react-native';
+import { ImageBackground, StyleSheet, TouchableOpacity, View, TextInput, Image, Alert } from 'react-native';
+import axios from 'axios';
+import Constants from 'expo-constants';
+import * as SecureStore from 'expo-secure-store';
+const { ngrokUrl } = Constants.manifest.extra;
+const isLocal = ngrokUrl && __DEV__
 
+const productionUrl = 'https://example.com'
+
+const baseUrl = isLocal ? ngrokUrl : productionUrl
 
 function LoginScreen(props) {
 
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
 
-  function printEP() {
-    //Should be figured out with backend on what to do with Login info
-    console.log(email);
-    console.log(password);
+  function login() {
+    axios.post(`${baseUrl}/auth/login`, {
+      email: email,
+      password: password
+    }).then((resp) => {
+      SecureStore.setItemAsync("FEEDMAMA_TOKEN", resp.data.token).then(() => {
+        props.navigation.navigate("Tabs");
+      });
+    }).catch((err) => {
+      Alert.alert('Error', err.response.data.message, [
+        { text: 'OK' }
+      ]);
+    });
   }
 
   return(
@@ -36,6 +53,7 @@ function LoginScreen(props) {
           icon="email"
           keyboardType='email-address'
           textContentType='emailAddress'
+          value={email}
           onChangeText={text => setEmail(text)}
           />
 
@@ -46,10 +64,11 @@ function LoginScreen(props) {
           icon="lock"
           secureTextEntry
           textContentType='password'
+          value={password}
           onChangeText={text => setPassword(text)}
           />
 
-          <TouchableOpacity onPress={() => props.navigation.navigate("Tabs")}>
+          <TouchableOpacity onPress={() => login()}>
 
             <ImageBackground
               style={styles.primaryButton}

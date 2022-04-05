@@ -1,7 +1,15 @@
 import { useState } from 'react';
-import { ImageBackground, StyleSheet, TouchableOpacity, View, TextInput, Image } from 'react-native';
+import axios from 'axios';
+import { ImageBackground, StyleSheet, TouchableOpacity, View, TextInput, Image, Alert } from 'react-native';
+import Constants from 'expo-constants';
+const { ngrokUrl } = Constants.manifest.extra;
+const isLocal = ngrokUrl && __DEV__
 
-function SignUpAcctInfoScreen(props){
+const productionUrl = 'https://example.com'
+
+const baseUrl = isLocal ? ngrokUrl : productionUrl
+
+function SignUpAcctInfoScreen({route, navigation}){
   const [firstName, setFirstName] = useState();
   const [lastName, setLastName] = useState();
   const [email, setEmail] = useState();
@@ -9,9 +17,32 @@ function SignUpAcctInfoScreen(props){
   const [confirmPassword, setConfirmPassword] = useState();
   const [phoneNumber, setPhoneNumber] = useState();
 
-  function printUserType() {
-    //Should be figured out with backend on what to do with acct info
-    console.log('Wooh! Just send the acct info to backend stuff? - JC');
+  function signUp() {
+    // TODO: More validation here for frontend!
+
+    if(password !== confirmPassword) {
+      Alert.alert('Password', 'Your passwords do not match.', [
+        { text: 'OK', onPress: () => { setPassword(""); setConfirmPassword(""); } },
+      ]);
+      return
+    }
+
+    axios.post(`${baseUrl}/auth/create`, {
+      firstname: firstName,
+      lastname: lastName,
+      email: email,
+      password: password,
+      phone: phoneNumber,
+      role: route.params.UserType
+    }).then(() => {
+      Alert.alert('User Created', 'User created successfully!.', [
+        { text: 'OK', onPress: () => { navigation.navigate("Login")} },
+      ]);
+    }).catch((err) => {
+      Alert.alert('Error', err.response.data.message, [
+        { text: 'OK' }
+      ]);
+    });
   }
 
   return(
@@ -59,6 +90,7 @@ function SignUpAcctInfoScreen(props){
           icon="email"
           keyboardType='email-address'
           textContentType='emailAddress'
+          value={email}
           onChangeText={text => setEmail(text)}
         />
 
@@ -69,6 +101,7 @@ function SignUpAcctInfoScreen(props){
           icon="lock"
           secureTextEntry
           textContentType='password'
+          value={password}
           onChangeText={text => setPassword(text)}
         />
 
@@ -79,6 +112,7 @@ function SignUpAcctInfoScreen(props){
           //icon="lock"
           secureTextEntry
           textContentType='password'
+          value={confirmPassword}
           onChangeText={text => setConfirmPassword(text)}
         />
 
@@ -90,10 +124,11 @@ function SignUpAcctInfoScreen(props){
           //icon="email"
           keyboardType='number-pad'
           textContentType='telephoneNumber'
+          value={phoneNumber}
           onChangeText={text => setPhoneNumber(text)}
         />
 
-        <TouchableOpacity onPress={() => props.navigation.navigate("Tabs")}>
+        <TouchableOpacity onPress={() => signUp()}>
 
           <ImageBackground
             style={styles.primaryButton}
@@ -106,7 +141,7 @@ function SignUpAcctInfoScreen(props){
 
         <View
           style={styles.containerHorz}>
-          <TouchableOpacity onPress={() => props.navigation.goBack()}
+          <TouchableOpacity onPress={() => navigation.goBack()}
             style={{
               marginRight: "15%"
             }}>
@@ -129,7 +164,7 @@ function SignUpAcctInfoScreen(props){
                 width: 80,
                 height: 80,
                 resizeMode: "contain"
-              }} onPress={() => props.navigation.navigate("AcctInfo", { UserType: "Physician" })}>
+              }} onPress={() => navigation.navigate("AcctInfo", { UserType: "Physician" })}>
             </View>
 
         </View>
@@ -139,8 +174,7 @@ function SignUpAcctInfoScreen(props){
 }
 
 SignUpAcctInfoScreen.navigationOptions = (navData) => {
-
-  console.log(navData.navigation.getParam("UserType"))
+  console.log(navData.navigation.getParam("UserType"));
 };
 
 const styles = StyleSheet.create({
@@ -174,4 +208,4 @@ const styles = StyleSheet.create({
   }
 });
 
-  export default SignUpAcctInfoScreen;
+export default SignUpAcctInfoScreen;
