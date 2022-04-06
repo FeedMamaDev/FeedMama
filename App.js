@@ -8,6 +8,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import LoginScreen from './screens/LoginScreen';
 import SignUpUserTypeScreen from './screens/SignUpUserTypeScreen';
 import SignUpAcctInfoScreen from './screens/SignUpAcctInfoScreen';
+import MotherEnrollment from './screens/MotherEnrollment';
 
 import React from 'react';
 import Tabs from './app/components/tabs.js';
@@ -22,6 +23,7 @@ export default function App() {
         <Stack.Screen name="UserType" component={SignUpUserTypeScreen} />
         <Stack.Screen name="AcctInfo" component={SignUpAcctInfoScreen} />
         <Stack.Screen name="Tabs" component={Tabs} screenOptions={{ headerShown: false}}/>
+        <Stack.Screen name="MotherEnrollment" component={MotherEnrollment} screenOptions={{ headerShown: true}}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
