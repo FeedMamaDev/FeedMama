@@ -5,9 +5,16 @@ import RestaurantAbout from '../app/components/RestaurantAbout';
 import BigButton from '../app/components/BigButton';
 import { render } from 'react-dom';
 
+
+const timeEstimate="30-40 min";
+const fee="$2.99 Fee";
+
+const restaurantImage="../app/assets/Photos/FunkyFreshSpringRolls.jpg";
+const restaurantTitle="Funky Fresh Spring Rolls";
+const restaurantSubtitle=timeEstimate.concat(" | ",fee);
 const menuItemDetails=[
   {title: 'Spring Roll1', subtitle: '$3.00', quantity: 0, id: 0},
-  {title: 'Spring Roll2', subtitle: '$3.00', quantity: 5, id: 1},
+  {title: 'Spring Roll2', subtitle: '$3.00', quantity: 0, id: 1},
   {title: 'Spring Roll3', subtitle: '$3.00', quantity: 0, id: 2},
   {title: 'Spring Roll4', subtitle: '$3.00', quantity: 0, id: 3},
   {title: 'Spring Roll5', subtitle: '$3.00', quantity: 0, id: 4},
@@ -42,12 +49,9 @@ function MenuItem({title,  subtitle, quantity, id}){
           setValue(value-1)
       }
   }
-
-  if(value>0){
-    quantity=value
-    updateQuantity({title, id, quantity})
-    console.log(quantity)
-  }
+  
+  quantity=value
+  updateQuantity({title, id, quantity})
 
   return(
       <View>
@@ -72,12 +76,6 @@ function MenuItem({title,  subtitle, quantity, id}){
 }
 
 function RestaurantScreen(props){
-    const timeEstimate="30-40 min";
-    const fee="$2.99 Fee";
-
-    const restaurantImage="../app/assets/Photos/FunkyFreshSpringRolls.jpg";
-    const restaurantTitle="Funky Fresh Spring Rolls";
-    const restaurantSubtitle=timeEstimate.concat(" | ",fee);
 
     function printItem() { 
       //Should be figured out with backend on what to do with acct info
@@ -91,7 +89,11 @@ function RestaurantScreen(props){
           title={restaurantTitle}
           subtitle={restaurantSubtitle}
         />
-        <Divider width={1.8} style={{marginVertical:20}}/>
+        <Divider style={{
+            width: "100%",
+            height: 6,
+            backgroundColor: "#FF6C6C"
+          }}/>
         <ScrollView style={{
           resizeMode:"repeat"
         }}>
