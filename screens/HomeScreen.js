@@ -74,7 +74,7 @@ function HomeScreen(props){
           }}>
             <TouchableOpacity onPress={() => props.navigation.push("RestaurantFlow")}>
               <Card
-                title="Funky Fresh Spring Rolls"
+                title="Funky Fresh Spring Rolls1"
                 subtitle={restHomeSubtitle}
                 image={require("../app/assets/Photos/FunkyFreshSpringRolls.jpg")}/>
             </TouchableOpacity>
@@ -87,7 +87,7 @@ function HomeScreen(props){
           }}>
             <TouchableOpacity onPress={() => props.navigation.push("RestaurantFlow")}>
               <Card
-                title="Funky Fresh Spring Rolls"
+                title="Funky Fresh Spring Rolls2"
                 subtitle={restHomeSubtitle}
                 image={require("../app/assets/Photos/FunkyFreshSpringRolls.jpg")}/>
             </TouchableOpacity>
@@ -100,7 +100,7 @@ function HomeScreen(props){
           }}>
             <TouchableOpacity onPress={() => props.navigation.push("RestaurantFlow")}>
               <Card
-                title="Funky Fresh Spring Rolls"
+                title="Funky Fresh Spring Rolls3"
                 subtitle={restHomeSubtitle}
                 image={require("../app/assets/Photos/FunkyFreshSpringRolls.jpg")}/>
             </TouchableOpacity>
@@ -113,7 +113,7 @@ function HomeScreen(props){
           }}>
             <TouchableOpacity onPress={() => props.navigation.push("RestaurantFlow")}>
               <Card
-                title="Funky Fresh Spring Rolls"
+                title="Funky Fresh Spring Rolls4"
                 subtitle={restHomeSubtitle}
                 image={require("../app/assets/Photos/FunkyFreshSpringRolls.jpg")}/>
             </TouchableOpacity>
@@ -122,21 +122,7 @@ function HomeScreen(props){
             backgroundColor: "#f8f4f4",
             padding: 20,
             paddingTop: 20,
-            //flex: 3
-          }}>
-            <TouchableOpacity onPress={() => props.navigation.push("RestaurantFlow")}>
-              <Card
-                title="Funky Fresh Spring Rolls"
-                subtitle={restHomeSubtitle}
-                image={require("../app/assets/Photos/FunkyFreshSpringRolls.jpg")}/>
-            </TouchableOpacity>
-          </View>
-          
-          <View style={{
-            backgroundColor: "#f8f4f4",
-            padding: 20,
-            paddingTop: 20,
-            height: 300
+            height: 150
             //flex: 3
           }}>
           </View>

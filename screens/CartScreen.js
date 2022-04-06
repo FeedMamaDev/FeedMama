@@ -2,13 +2,12 @@ import { useState } from 'react';
 import { ImageBackground, StyleSheet, TouchableOpacity, View, Text, Image, ScrollView} from 'react-native';
 import { Divider } from 'react-native-elements';
 import RestaurantAbout from '../app/components/RestaurantAbout';
-import MenuItem from '../app/components/MenuItem';
 import BigButton from '../app/components/BigButton';
 import CartItem from '../app/components/CartItem';
 
-function CartScreen({route}) {
+function CartScreen(props) {
 
-    const menuItemDetails=route.params.menuItemDetails.menuItemDetails
+    const menuItemDetails=props.route.params.menuItemDetails.menuItemDetails
     console.log(menuItemDetails)
 
     const cartItems=new Array();
@@ -22,7 +21,7 @@ function CartScreen({route}) {
     console.log(cartItems)
 
     const cart=[
-        menuItemDetails.map(({ title, subtitle, quantity, id }) => (
+        cartItems.map(({ title, subtitle, quantity, id }) => (
           <CartItem foodItem={title} quantity={quantity} key={id}/>
         ))
       ]
