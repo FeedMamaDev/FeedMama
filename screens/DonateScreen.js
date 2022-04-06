@@ -4,20 +4,24 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 
 
 
-function updateDonation(input, current) {
-    if(input === "0" & current === "0"){ //Initial value
-        return "0";
-    }
-    else if(input === "delete"){
-        return "delete";
-    }
-    else{
-        return current.concat(input);
-    }
-}
+
 
 const DonateScreen = ({navigation}) => {
-    let Donation = updateDonation("0","0")
+
+    function updateDonation(input, current) {
+        console.log(input);
+        if(input === "0" & current === "0"){ //Initial value
+            return "0";
+        }
+        else if(input === "delete"){
+            return "delete";
+        }
+        else{
+            return current + input;
+        }
+    }
+
+    var Donation = updateDonation("0","0")
     return (
         <View style={{backgroundColor: "#fff", paddingTop: 50, alignItems: 'center'}}>
             <Image source={require("../app/assets/Static/FeedMamaSecLogo.png")} resizeMode="contain"/>
@@ -25,7 +29,7 @@ const DonateScreen = ({navigation}) => {
             <View style={{backgroundColor: "#FF6C6C", height: "80%", width: "100%"}}> 
                 <Text style={{color: "white", fontSize:80, marginTop: 10}}>${Donation}</Text>
                 <View style={styles.containerHorz}>
-                    <TouchableOpacity style={{marginRight: "7.5%"}} onPress={() => updateDonation("1", {Donation})}>
+                    <TouchableOpacity style={{marginRight: "7.5%"}} onPress={() => Donation = updateDonation("1", {Donation})}>
                         <Text style={styles.dimmer}>1</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={{marginLeft: "7.5%", marginRight: "7.5%"}}>
