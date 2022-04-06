@@ -7,24 +7,19 @@ import CartScreen from '../../screens/CartScreen';
 import addFunction from './CartItem'; 
 import CartItem from './CartItem';
 
-function MenuItem({restaurantTitle, title, subtitle}){
+function MenuItem({title, subtitle, quantity}){
     const [value, setValue] = useState(0);
 
     const incrementValue = () => {
-        setValue(value + 1)
-        console.log(title+" quantity is "+(value))
+        setValue(quantity + 1)
+        console.log(title+" quantity is "+(quantity))
     }
 
     const decrementValue = () => {
-        if (value>0){
-            setValue(value - 1)
+        if (quantity>0){
+            setValue(quantity - 1)
         }
-        console.log(title+" quantity is "+(value))
-    }
-
-    let props={
-        foodItem: title,
-        quantity: value
+        console.log(title+" quantity is "+(quantity))
     }
 
     return (
@@ -41,7 +36,7 @@ function MenuItem({restaurantTitle, title, subtitle}){
                    alignItems: "center"
                 }}>
                     <Button onPress={decrementValue} title="-"/>
-                    <Text>{value}</Text>
+                    <Text>{quantity}</Text>
                     <Button onPress={incrementValue} title="+"/>
                 </View>
             </View>

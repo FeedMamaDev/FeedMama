@@ -1,12 +1,77 @@
 import { useState } from 'react';
-import { ImageBackground, StyleSheet, TouchableOpacity, View, Text, Image, ScrollView} from 'react-native';
+import { ImageBackground, StyleSheet, TouchableOpacity, View, Text, Image, ScrollView, Button} from 'react-native';
 import { Divider } from 'react-native-elements';
 import RestaurantAbout from '../app/components/RestaurantAbout';
-import MenuItem from '../app/components/MenuItem';
 import BigButton from '../app/components/BigButton';
+import { render } from 'react-dom';
+
+const menuItemDetails=[
+  {title: 'Spring Roll1', subtitle: '$3.00', quantity: 0, id: 0},
+  {title: 'Spring Roll2', subtitle: '$3.00', quantity: 5, id: 1},
+  {title: 'Spring Roll3', subtitle: '$3.00', quantity: 0, id: 2},
+  {title: 'Spring Roll4', subtitle: '$3.00', quantity: 0, id: 3},
+  {title: 'Spring Roll5', subtitle: '$3.00', quantity: 0, id: 4},
+]
+const menu=[
+  menuItemDetails.map(({ title, subtitle, quantity, id }) => (
+    <MenuItem title={title} subtitle={subtitle} quantity={quantity} id={id} key={id}/>
+  ))
+]
+
+function updateQuantity({title, subtitle, quantity, id}){
+  for(const i in menuItemDetails){
+    if(menuItemDetails[i].id==id){
+      menuItemDetails[i].quantity=quantity
+      break
+    }
+  }
+  console.log("menuItemDetails")
+  console.log(menuItemDetails)
+  console.log(" ")
+}
+
+function MenuItem({title,  subtitle, quantity, id}){
+  const [value, setValue]=useState(quantity);
+
+  const incrementValue = () => {
+      setValue(value+1)
+  }
+
+  const decrementValue = () => {
+      if (value>0){
+          setValue(value-1)
+      }
+  }
+
+  if(value>0){
+    quantity=value
+    updateQuantity({title, id, quantity})
+    console.log(quantity)
+  }
+
+  return(
+      <View>
+            <Divider width={.75}/>
+            <View style={styles.containerHorz}>
+                <View style={styles.detailsContainer}>
+                    <Text style={styles.title}>{title}</Text>
+                    <Text style={styles.subTitle}>{subtitle}</Text>
+                </View>
+                <View style={{
+                   marginLeft:"60%",
+                   flexDirection: 'row', 
+                   alignItems: "center"
+                }}>
+                    <Button onPress={decrementValue} title="-"/>
+                    <Text>{value}</Text>
+                    <Button onPress={incrementValue} title="+"/>
+                </View>
+            </View>
+        </View>
+  )
+}
 
 function RestaurantScreen(props){
-  
     const timeEstimate="30-40 min";
     const fee="$2.99 Fee";
 
@@ -14,7 +79,7 @@ function RestaurantScreen(props){
     const restaurantTitle="Funky Fresh Spring Rolls";
     const restaurantSubtitle=timeEstimate.concat(" | ",fee);
 
-    function printItem() {
+    function printItem() { 
       //Should be figured out with backend on what to do with acct info
       console.log('Wooh! Selected a menu item - JC');
     }
@@ -35,61 +100,10 @@ function RestaurantScreen(props){
             padding: 10,
             width:'100%'
           }}>
-              <MenuItem
-                restaurantName={restaurantTitle}
-                title="Egg Roll"
-                subtitle='$3.00'/>
-          </View>
-          <View style={{
-            backgroundColor: "#f8f4f4",
-            padding: 10,
-          }}>
-              <MenuItem
-                restaurantName={restaurantTitle}
-                title="Egg Roll"
-                subtitle='$3.00'/>
-          </View>
-          <View style={{
-            backgroundColor: "#f8f4f4",
-            padding: 10,
-            width:'100%'
-          }}>
-              <MenuItem
-                restaurantName={restaurantTitle}
-                title="Egg Roll"
-                subtitle='$3.00'/>
-          </View>
-          <View style={{
-            backgroundColor: "#f8f4f4",
-            padding: 10,
-            width:'100%'
-          }}>
-              <MenuItem
-                restaurantName={restaurantTitle}
-                title="Egg Roll"
-                subtitle='$3.00'/>
-          </View>
-          <View style={{
-            backgroundColor: "#f8f4f4",
-            padding: 10,
-          }}>
-              <MenuItem
-                restaurantName={restaurantTitle}
-                title="Egg Roll"
-                subtitle='$3.00'/>
-          </View>
-          <View style={{
-            backgroundColor: "#f8f4f4",
-            padding: 10,
-            width:'100%'
-          }}>
-              <MenuItem
-                restaurantName={restaurantTitle}
-                title="Egg Roll"
-                subtitle='$3.00'/>
+              {menu}
           </View>
         </ScrollView>
-        <TouchableOpacity onPress={() => props.navigation.push("Cart")}>
+        <TouchableOpacity onPress={() => props.navigation.push("Cart", {menuItemDetails: {menuItemDetails}})}>
           <BigButton text="View Cart"/>
         </TouchableOpacity>
       </View>

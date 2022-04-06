@@ -6,7 +6,27 @@ import MenuItem from '../app/components/MenuItem';
 import BigButton from '../app/components/BigButton';
 import CartItem from '../app/components/CartItem';
 
-function CartScreen(props) {
+function CartScreen({route}) {
+
+    const menuItemDetails=route.params.menuItemDetails.menuItemDetails
+    console.log(menuItemDetails)
+
+    const cartItems=new Array();
+
+    for(const i in menuItemDetails){
+        if(menuItemDetails[i].quantity>0){
+            cartItems.push(menuItemDetails[i])
+        }
+    }
+
+    console.log(cartItems)
+
+    const cart=[
+        menuItemDetails.map(({ title, subtitle, quantity, id }) => (
+          <CartItem foodItem={title} quantity={quantity} key={id}/>
+        ))
+      ]
+      
     const timeEstimate="30-40 min";
     const fee="$2.99 Fee";
     
@@ -21,10 +41,18 @@ function CartScreen(props) {
                 title={restaurantTitle}
                 subtitle={restaurantSubtitle}
             />
-            <CartItem
-                foodItem="Egg Rolls"
-                quantity="3"
-            />
+            <Divider width={1.8} style={{marginVertical:20}}/>
+            <ScrollView style={{
+            resizeMode:"repeat"
+            }}>
+                <View style={{
+                    backgroundColor: "#f8f4f4",
+                    padding: 10,
+                    width:'100%'
+                }}>
+                    {cart}
+                </View>
+            </ScrollView>
         </View>
     );
 }

@@ -36,11 +36,13 @@ function LoginScreen(props) {
       resizeMode="cover"
       style={styles.background}>
 
+        <TouchableOpacity onPress={() => props.navigation.navigate("Tabs")}>
         <Image
           source={require("../app/assets/Static/FeedMamaLogo-PrimaryWhite.png")}
           resizeMode="contain"
           style={styles.logo}
         ></Image>
+        </TouchableOpacity>
 
         <View
           style={styles.container}>
