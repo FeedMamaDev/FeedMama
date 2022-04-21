@@ -21,6 +21,10 @@ function MotherEnrollment(props){
               <Text style={{fontSize: 30, fontWeight: "bold", color: "#FF6C6C"}}>{"< Back"}</Text>
           </TouchableOpacity>
 
+          <View style={{alignContent: "center", alignItems: "center", paddingTop: 50}}>
+              <Image source={require("../app/assets/Static/FeedMamaSecLogo.png")} resizeMode="contain"/>
+          </View>
+
           <View style={styles.centered}>
               <Text style={{fontSize: 16, fontWeight: "bold", marginBottom: 50}}>Please enter your physicians information:</Text>
           </View>

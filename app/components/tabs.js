@@ -6,6 +6,8 @@ import { Divider } from 'react-native-elements';
 import RestaurantScreen from '../../screens/RestaurantScreen';
 import CartScreen from '../../screens/CartScreen';
 import CheckoutScreen from '../../screens/CheckoutScreen';
+import NewAddressScreen from '../../screens/NewAddressScreen';
+import NewCardScreen from '../../screens/NewCardScreen';
 
 import HomeScreen from '../../screens/HomeScreen';
 import AccountScreen from '../../screens/AccountScreen';
@@ -29,6 +31,8 @@ function RestaurantFlow(){
             component={RestaurantScreen} />
         <RestaurantStack.Screen name="Cart" component={CartScreen}/>
         <RestaurantStack.Screen name="Checkout" component={CheckoutScreen}/>
+        <RestaurantStack.Screen name="NewAddress" component={NewAddressScreen}/>
+        <RestaurantStack.Screen name="NewCard" component={NewCardScreen}/>
       </RestaurantStack.Navigator>
   );
 }

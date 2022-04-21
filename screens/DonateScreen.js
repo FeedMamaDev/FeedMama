@@ -1,95 +1,143 @@
-import React, {useState} from 'react'
-import { View, Text, Image, StyleSheet} from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import React from 'react';
+import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import { Divider } from 'react-native-elements';
 
+import CalcKeys from "../app/components/CalcKeys.js";
 
-
-
-
-const DonateScreen = ({navigation}) => {
-
-    function updateDonation(input, current) {
-        console.log(input);
-        if(input === "0" & current === "0"){ //Initial value
-            return "0";
-        }
-        else if(input === "delete"){
-            return "delete";
-        }
-        else{
-            return current + input;
-        }
+export default class DonateScreen extends React.Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      display:"",
+      numerator:"",
+      denominator:"", 
+      operator:"",
+      switchFractionSection:false
     }
+  }
+  
+  addNumber(x){
+    //show the number clicked on the display. IF this is the first number saved it is save as the denominator If this is the second number enter, it is saved as the numerator.  
+    this.setState((state, props) => ({ display: state.display + x }))    
+    if(this.state.switchFractionSection ==true){
+      this.setState((state, props) =>({denominator:state.denominator + x}))
+    }else{
+      this.setState((state, props) => ({numerator:state.numerator + x}))
+    }
+  }
 
-    var Donation = updateDonation("0","0")
+  clear(){
+    this.setState((state, props) => ({ display:""}));  
+  }
+
+  render() {
     return (
-        <View style={{backgroundColor: "#fff", paddingTop: 50, alignItems: 'center'}}>
-            <Image source={require("../app/assets/Static/FeedMamaSecLogo.png")} resizeMode="contain"/>
-            <Text style= {{fontSize: 40, marginTop: "5%", marginBottom: "2%"}}>Donate</Text>
-            <View style={{backgroundColor: "#FF6C6C", height: "80%", width: "100%"}}> 
-                <Text style={{color: "white", fontSize:80, marginTop: 10}}>${Donation}</Text>
-                <View style={styles.containerHorz}>
-                    <TouchableOpacity style={{marginRight: "7.5%"}} onPress={() => Donation = updateDonation("1", {Donation})}>
-                        <Text style={styles.dimmer}>1</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={{marginLeft: "7.5%", marginRight: "7.5%"}}>
-                        <Text style={styles.dimmer}>2</Text>
-                    </TouchableOpacity> 
-                    <TouchableOpacity style={{marginLeft: "7.5%"}}>
-                        <Text style={styles.dimmer}>3</Text>
-                    </TouchableOpacity>     
+        <View>
+            <View style={{alignContent: "center", alignItems: "center", paddingTop: 50}}>
+                <Image source={require("../app/assets/Static/FeedMamaSecLogo.png")} resizeMode="contain"/>
+            </View>
+
+            <Divider style={{width: "100%", height: 6, backgroundColor: "#FF6C6C", marginTop: "5%"}}/>
+                <View style={styles.centered}>
+                    <Text style={{fontSize: 36, marginTop: "5%", fontWeight: "bold", marginBottom: 10}}>Donate</Text>
                 </View>
-                <View style={styles.containerHorz}>
-                    <TouchableOpacity style={{marginRight: "7.5%"}}>
-                        <Text style={styles.dimmer}>4</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={{marginLeft: "7.5%", marginRight: "7.5%"}}>
-                        <Text style={styles.dimmer}>5</Text>
-                    </TouchableOpacity> 
-                    <TouchableOpacity style={{marginLeft: "7.5%"}}>
-                        <Text style={styles.dimmer}>6</Text>
-                    </TouchableOpacity>     
+            <Divider style={{width: "100%", height: 6, backgroundColor: "#FF6C6C", marginTop: "5%"}}/>
+
+            <View style={styles.containerCalc}>
+                <View style={styles.display}>
+                    <Text style={styles.title}>{this.state.display}</Text>
                 </View>
-                <View style={styles.containerHorz}>
-                    <TouchableOpacity style={{marginRight: "7.5%"}}>
-                        <Text style={styles.dimmer}>7</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={{marginLeft: "7.5%", marginRight: "7.5%"}}>
-                        <Text style={styles.dimmer}>8</Text>
-                    </TouchableOpacity> 
-                    <TouchableOpacity style={{marginLeft: "7.5%"}}>
-                        <Text style={styles.dimmer}>9</Text>
-                    </TouchableOpacity>     
+                <View style={styles.calcKeyRow}>
+                    <CalcKeys displayKey="1" onClick={()=> this.addNumber("1")} />
+                    <CalcKeys displayKey="2" onClick={()=> this.addNumber("2")} />
+                    <CalcKeys displayKey="3" onClick={()=> this.addNumber("3")} />
                 </View>
-                <View style={styles.containerHorz}>
-                    <TouchableOpacity style={{marginRight: "7.5%"}}>
-                        <Text style={styles.dimmer}>.</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={{marginLeft: "7.5%", marginRight: "7.5%"}}>
-                        <Text style={styles.dimmer}>0</Text>
-                    </TouchableOpacity> 
-                    <TouchableOpacity style={{marginLeft: "7.5%"}}>
-                    <Image source={require("../app/assets/Buttons/DeleteButton.png")} resizeMode="contain"/>
-                    </TouchableOpacity>     
+                <View style={styles.calcKeyRow}>
+                    <CalcKeys displayKey="4" onClick={()=> this.addNumber("4")} />
+                    <CalcKeys displayKey="5" onClick={()=> this.addNumber("5")} />
+                    <CalcKeys displayKey="6" onClick={()=> this.addNumber("6")} />
+                </View>
+                <View style={styles.calcKeyRow}>
+                    <CalcKeys displayKey="7" onClick={()=> this.addNumber("7")} />
+                    <CalcKeys displayKey="8" onClick={()=> this.addNumber("8")} />
+                    <CalcKeys displayKey="9" onClick={()=> this.addNumber("9")} />
+                </View>
+                <View style={styles.calcKeyRow}>
+                    <CalcKeys displayKey="." onClick={()=> this.addNumber(".")} />
+                    <CalcKeys displayKey="0" onClick={()=> this.addNumber("0")} />
+                    <CalcKeys onClick={()=> this.clear()} displayKey="Clear" />
                 </View>
             </View>
+
+            <TouchableOpacity style={styles.centered}>
+                <Text>[Credit Card]</Text> 
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.centered}>
+                <Image source={require("../app/assets/Buttons/DonateButton.png")} resizeMode="contain"/> 
+            </TouchableOpacity>
         </View>
-    )
+    );
+  }
 }
 
-export default DonateScreen
-
 const styles = StyleSheet.create({
-    containerHorz: {
-        flex: 1,
-        flexDirection: 'row',
-        marginLeft: "15%",
-        marginRight: "15%",
-        alignItems: "center",
+  containerCalc: {
+    backgroundColor:"#FF6C6C",
+    height:"60%",
+    alignItems: 'center',
+    justifyContent:"space-around",
+  },
+    
+  display:{
+    display:"flex",
+    justifyContent:"center",
+    alignContent:"center",
+    marginHorizontal:"25%"
+  },
+    
+  calcKeyRow:{
+    display:"flex",
+    flexDirection:"row",
+    justifyContent:"space-around",
+    alignItems:"center",
+    width:"100%",
+  },
+
+  containerVert: {
+    flex: 1,
+    marginTop: "25%",
+    alignItems: "center",
     },
-    dimmer: {
-        opacity: 75,
-        color: "white",
-        fontSize: 50,
-    }
+    containerHorz: {
+    flex: 1,
+    flexDirection: 'row',
+    marginTop: "10%",
+    marginBottom: "5%",
+    alignItems: "center",
+    },
+    input: {
+    width: 265,
+    height: 30,
+    backgroundColor: "rgba(245,245,245,.8)",
+    borderRadius: 12,
+    marginBottom: "5%",
+    paddingLeft: 10
+    },
+    primaryButton: {
+    width: 200,
+    height: 60,
+    marginTop: "5%",
+    justifyContent: "center",
+    alignItems: "center"
+    },
+    signUpTitle: {
+    marginTop: "20%",
+    marginBottom: "5%"
+    },
+    centered: {
+        marginTop: 5,
+      justifyContent: "center",
+      alignItems: "center"
+    },
 });
