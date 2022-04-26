@@ -8,6 +8,7 @@ generator client {
 datasource db {
   provider = "sqlserver"
   url      = env("DATABASE_URL")
+  shadowDatabaseUrl = env("DATABASE_URL")
 }
 
 model Users {
@@ -21,4 +22,12 @@ model Users {
   City String
   Role Int
   ZIP String
+}
+
+model Items {
+  ItemId String @db.UniqueIdentifier @id
+  Name String
+  Description String
+  Price Decimal
+  RestaurantId String @db.UniqueIdentifier
 }

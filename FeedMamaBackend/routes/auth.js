@@ -44,7 +44,7 @@ router.post("/login", jsonParser, async function (req, res, next) {
 
 
     res.status(200).json({
-      token: token
+      test: token
     });
     return
 
@@ -63,23 +63,7 @@ router.post("/create", jsonParser, async function (req, res, next) {
       return
     }
 
-    var role = -1;
-    switch (req.body.role) {
-      case "Mother":
-        role = 1
-        break;
-      case "Customer":
-        role = 2
-      case "Restaurant":
-        role = 3
-      case "Physician":
-        role = 4
-      default:
-        res.status(400).json({
-          message: "Invalid role!"
-        })
-        return
-    }
+    var role = 1;
 
     const userExists = await prisma.users.findFirst({where: { Email: req.body.email }});
 

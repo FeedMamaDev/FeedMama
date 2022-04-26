@@ -2,13 +2,15 @@ import { useState } from 'react';
 import { ImageBackground, StyleSheet, TouchableOpacity, View, Text, Image, ScrollView } from 'react-native';
 import MenuItem from '../app/components/MenuItem';
 
-function RestaurantScreen(props){
+function RestaurantScreen({route, navigation}){
+
+    const { RestaurantID } = route.params;
 
     const [restImage, setRestImage] = useState( 
       '../app/assets/Photos/FunkyFreshSpringRolls.jpg'
     );  
 
-    const [titleText, setTitleText] = useState("Funky Fresh Spring Rolls");
+    const [titleText, setTitleText] = useState("Funky Fresh Spring Rolls :)");
   
     function printItem() {
       //Should be figured out with backend on what to do with acct info

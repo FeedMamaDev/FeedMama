@@ -1,16 +1,31 @@
-import { useState } from 'react';
-import { ImageBackground, StyleSheet, TouchableOpacity, View, TextInput, Image, ScrollView } from 'react-native';
+import { useState, useEffect } from 'react';
+import { ImageBackground, StyleSheet, TouchableOpacity, View, TextInput, Image, ScrollView, Alert } from 'react-native';
 import Card from '../app/components/Card';
+import Constants from 'expo-constants';
+import axios from 'axios';
+const { ngrokUrl } = Constants.manifest.extra;
+const isLocal = ngrokUrl && __DEV__
 
-function HomeScreen(props){
+const productionUrl = 'https://example.com'
 
-  const [imageRestCard, setImageRestCard] = useState( 
-    '../app/assets/Static/FeedMamaSecLogo.png'
-  );  
+const baseUrl = isLocal ? ngrokUrl : productionUrl
+
+function HomeScreen({route, navigation}){
+
+    const [data, setData] = useState([]);
+
+    useEffect(() => {
+      axios.get(`${baseUrl}/restaurants/`).then((resp) => {
+        setData(resp.data.items);
+        console.log(data)
+      }).catch((err) => {
+        console.log(err);
+        Alert.alert('Error', err.response.data.message, [
+          { text: 'OK' }
+        ]);
+      });
+    }, []);
   
-    let timeEstimate="30-40 min";
-    let fee="$2.99 Fee";
-    let restHomeSubtitle=timeEstimate.concat(" | ",fee);
 
     function printRestaurant() {
      //Should be figured out with backend on what to do with acct info
@@ -68,71 +83,23 @@ function HomeScreen(props){
        <ScrollView style={{
           resizeMode:"repeat"
         }}>
-          <View style={{
-            backgroundColor: "#f8f4f4",
-            padding: 20,
-            paddingTop: 20,
-            //flex: 3
-          }}>
-            <TouchableOpacity onPress={() => props.navigation.push("RestaurantFlow")}>
-              <Card
-                title="Funky Fresh Spring Rolls"
-                subtitle={restHomeSubtitle}
-                image={require("../app/assets/Photos/FunkyFreshSpringRolls.jpg")}/>
-            </TouchableOpacity>
-          </View>
-          <View style={{
-            backgroundColor: "#f8f4f4",
-            padding: 20,
-            paddingTop: 20,
-            //flex: 3
-          }}>
-            <TouchableOpacity onPress={() => props.navigation.push("RestaurantFlow")}>
-              <Card
-                title="Funky Fresh Spring Rolls"
-                subtitle={restHomeSubtitle}
-                image={require("../app/assets/Photos/FunkyFreshSpringRolls.jpg")}/>
-            </TouchableOpacity>
-          </View>
-          <View style={{
-            backgroundColor: "#f8f4f4",
-            padding: 20,
-            paddingTop: 20,
-            //flex: 3
-          }}>
-            <TouchableOpacity onPress={() => props.navigation.push("RestaurantFlow")}>
-              <Card
-                title="Funky Fresh Spring Rolls"
-                subtitle={restHomeSubtitle}
-                image={require("../app/assets/Photos/FunkyFreshSpringRolls.jpg")}/>
-            </TouchableOpacity>
-          </View>
-          <View style={{
-            backgroundColor: "#f8f4f4",
-            padding: 20,
-            paddingTop: 20,
-            //flex: 3
-          }}>
-            <TouchableOpacity onPress={() => props.navigation.push("RestaurantFlow")}>
-              <Card
-                title="Funky Fresh Spring Rolls"
-                subtitle={restHomeSubtitle}
-                image={require("../app/assets/Photos/FunkyFreshSpringRolls.jpg")}/>
-            </TouchableOpacity>
-          </View>
-          <View style={{
-            backgroundColor: "#f8f4f4",
-            padding: 20,
-            paddingTop: 20,
-            //flex: 3
-          }}>
-            <TouchableOpacity onPress={() => props.navigation.push("RestaurantFlow")}>
-              <Card
-                title="Funky Fresh Spring Rolls"
-                subtitle={restHomeSubtitle}
-                image={require("../app/assets/Photos/FunkyFreshSpringRolls.jpg")}/>
-            </TouchableOpacity>
-          </View>
+          {data.map((rest, index) => {
+              return (
+                <View style={{
+                  backgroundColor: "#f8f4f4",
+                  padding: 20,
+                  paddingTop: 20,
+                  //flex: 3
+                }}>
+                  <TouchableOpacity onPress={() => navigation.navigate("RestaurantFlow", { RestaurantID: rest.id })}>
+                    <Card
+                      title={rest.name}
+                      subtitle={rest.description}
+                      image={{uri: rest.img}}/>
+                  </TouchableOpacity>
+                </View>
+              )
+          })}
           
           <View style={{
             backgroundColor: "#f8f4f4",

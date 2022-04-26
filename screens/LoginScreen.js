@@ -20,7 +20,7 @@ function LoginScreen(props) {
       email: email,
       password: password
     }).then((resp) => {
-      SecureStore.setItemAsync("FEEDMAMA_TOKEN", resp.data.token).then(() => {
+      SecureStore.setItemAsync("FEEDMAMA_TOKEN", resp.data.test).then(() => {
         props.navigation.navigate("Tabs");
       });
     }).catch((err) => {

@@ -1,31 +1,20 @@
 import React, { Component } from "react";
-import { StyleSheet, Text, View, FlatList, Image } from "react-native";
+import { StyleSheet, Text, View, FlatList, Image, Alert } from "react-native";
 import { ListItem, SearchBar } from "react-native-elements";
 import filter from "lodash.filter";
-  
-const DATA = [
-    {
-        id:"1",
-        title:"Funky Fresh 1"
-      },
-      {
-        id:"2",
-        title:"Funky Fresh 2"
-      },
-      {
-        id:"3",
-        title:"Funky Fresh 3"
-      },
-      {
-        id:"4",
-        title:"Funky Fresh 4"
-      },
-];
-  
-const Item = ({ title }) => {
+import Constants from 'expo-constants';
+import axios from 'axios';
+const { ngrokUrl } = Constants.manifest.extra;
+const isLocal = ngrokUrl && __DEV__
+
+const productionUrl = 'https://example.com'
+
+const baseUrl = isLocal ? ngrokUrl : productionUrl
+
+const Item = ({ title, img }) => {
     return( 
         <View style={styles.card}>
-        <Image style={styles.image} source={require("../app/assets/Photos/FunkyFreshSpringRolls.jpg")}></Image>
+        <Image style={styles.image} source={{uri: img}}></Image>
         <View style={styles.detailsContainer}>
             <Text style={styles.title}>{title}</Text>
         </View>
@@ -33,29 +22,43 @@ const Item = ({ title }) => {
       );
 };
   
-const renderItem = ({ item }) => <Item title={item.title} />;
+const renderItem = ({ item }) => <Item title={item.name} img={item.img} />;
 
 class SearchScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
       loading: false,
-      data: DATA,
+      data: [],
       error: null,
       searchValue: "",
+      originalData: []
     };
-    this.arrayholder = DATA;
+    
+    //this.searchFunction = this.searchFunction.bind(this);
   }
   
   searchFunction = (text) => {
-    const updatedData = this.arrayholder.filter((item) => {
-      const item_data = `${item.title.toUpperCase()})`;
+    const updatedData = this.state.originalData.filter((item) => {
+      const item_data = `${item.name.toUpperCase()})`;
       const text_data = text.toUpperCase();
       return item_data.indexOf(text_data) > -1;
     });
+    console.log(updatedData);
     this.setState({ data: updatedData, searchValue: text });
   };
-  
+
+  componentDidMount() {
+    axios.get(`${baseUrl}/restaurants/items`).then((resp) => {
+      this.setState({ data: resp.data.items, originalData: resp.data.items });
+    }).catch((err) => {
+      console.log(err);
+      Alert.alert('Error', err.response.data.message, [
+        { text: 'OK' }
+      ]);
+    });
+  }
+
   render() {
     return (
       <View style={styles.container}>
