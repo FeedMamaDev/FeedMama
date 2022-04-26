@@ -11,6 +11,7 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@doordash/sdk": "^0.3.10",
     "@react-navigation/bottom-tabs": "^6.2.0",
     "@react-navigation/native": "^6.0.8",
     "@react-navigation/native-stack": "^6.5.0",
@@ -20,6 +21,7 @@
     "expo-constants": "~13.0.1",
     "expo-secure-store": "~11.1.0",
     "expo-status-bar": "~1.2.0",
+    "jsonwebtoken": "^8.5.1",
     "lodash.filter": "^4.6.0",
     "react": "17.0.1",
     "react-dom": "17.0.1",
@@ -27,6 +29,7 @@
     "react-native-elements": "^3.4.2",
     "react-native-email": "^1.1.0",
     "react-native-gesture-handler": "~2.1.0",
+    "react-native-reanimated": "~2.3.1",
     "react-native-safe-area-context": "3.3.2",
     "react-native-screens": "~3.10.1",
     "react-native-stack": "^1.0.0-alpha11",

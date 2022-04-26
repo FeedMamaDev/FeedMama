@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {StyleSheet, Text, View, TouchableOpacity, Image, ImageBackground} from 'react-native';
+import { Divider } from 'react-native-elements';
 import { ScrollView } from 'react-native-gesture-handler';
 
 function AccountScreen(props){
@@ -10,20 +11,22 @@ function AccountScreen(props){
                 <Image source={require("../app/assets/Static/FeedMamaSecLogo.png")} resizeMode="contain"/>
             </View>
 
-            <View style={{width: "100%", height: 15, backgroundColor: "#FF6C6C", marginTop: "5%"}}/>
+            <Divider style={{width: "100%", height: 6, backgroundColor: "#FF6C6C", marginTop: "5%"}}/>
+            <View style={styles.centered}>
+                <Text style={{fontSize: 36, marginTop: "5%", fontWeight: "bold", marginBottom: "5%"}}>Account</Text>
+            </View>
+
+            <View style={styles.centered}>
+                    <Text>Baby on the way? Join our program</Text>
+                    <Text>that feeds mothers at no cost!</Text>
+                    <TouchableOpacity onPress={() => props.navigation.navigate("MotherEnrollment")}>
+                        <Image style={{height: 70, width: 150}} source={require("../app/assets/Buttons/JoinButton.png")} resizeMode="contain"/>
+                    </TouchableOpacity>
+            </View>
+
+            <Divider style={{width: "100%", height: 6, backgroundColor: "#FF6C6C", marginTop: "5%"}}/>
 
             <ScrollView style={{resizeMode:"repeat", height: "100%"}}>
-                <View style={styles.centered}>
-                    <Text style={{fontSize: 36, marginTop: "5%", fontWeight: "bold", marginBottom: "5%"}}>Account</Text>
-                </View>
-
-                <View style={styles.centered}>
-                        <Text>Baby on the way? Join our program</Text>
-                        <Text>that feeds mothers at no cost!</Text>
-                        <TouchableOpacity onPress={() => props.navigation.navigate("MotherEnrollment")}>
-                            <Image style={{height: 70, width: 150}} source={require("../app/assets/Buttons/JoinButton.png")} resizeMode="contain"/>
-                        </TouchableOpacity>
-                </View>
 
                 <View style={styles.viewBar}>
                     <Text style={{marginLeft: 10, color: "white"}}>Profile</Text>

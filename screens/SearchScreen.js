@@ -73,7 +73,7 @@ class SearchScreen extends Component {
         <FlatList 
           data={this.state.data}
           renderItem={renderItem}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => item.title}
           numColumns={2}
           columnWrapperStyle={styles.row}
           style={{

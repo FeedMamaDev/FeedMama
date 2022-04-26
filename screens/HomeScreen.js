@@ -70,14 +70,11 @@ function HomeScreen({route, navigation}){
 
           </View>
 
-          <View style={{
+          <Divider style={{
             width: "100%",
             height: "5%",
             backgroundColor: "#FF6C6C"
-          }}>
-
-          </View>
-
+          }}/>
         </View>
         
        <ScrollView style={{
@@ -105,7 +102,7 @@ function HomeScreen({route, navigation}){
             backgroundColor: "#f8f4f4",
             padding: 20,
             paddingTop: 20,
-            height: 300
+            height: 150
             //flex: 3
           }}>
           </View>
