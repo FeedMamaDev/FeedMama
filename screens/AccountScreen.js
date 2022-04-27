@@ -24,7 +24,6 @@ function AccountScreen(props){
                     </TouchableOpacity>
             </View>
 
-            <Divider style={{width: "100%", height: 6, backgroundColor: "#FF6C6C", marginTop: "5%"}}/>
 
             <ScrollView style={{resizeMode:"repeat", height: "100%"}}>
 
@@ -32,7 +31,7 @@ function AccountScreen(props){
                     <Text style={{marginLeft: 10, color: "white"}}>Profile</Text>
                 </View>
 
-                <TouchableOpacity style={{width: "100%"}}>
+                <TouchableOpacity style={{width: "100%"}} onPress={() => props.navigation.navigate("GeneralSettings")}>
                     <View style={{marginLeft: 20, marginTop: 10, marginBottom: 10, flexDirection:'row', justifyContent : 'space-between'}}>
                         <Text>General Settings</Text>
                         <Text style={{marginRight: 10}}>{">"}</Text>
@@ -40,7 +39,7 @@ function AccountScreen(props){
                     <View style={{backgroundColor: "black", height: 1}}></View>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={{width: "100%"}}>
+                <TouchableOpacity style={{width: "100%"}} onPress={() => props.navigation.navigate("UpdatePassword")}>
                     <View style={{marginLeft: 20, marginTop: 10, marginBottom: 10, flexDirection:'row', justifyContent : 'space-between'}}>
                         <Text>Update Password</Text>
                         <Text style={{marginRight: 10}}>{">"}</Text>
@@ -48,7 +47,7 @@ function AccountScreen(props){
                     <View style={{backgroundColor: "black", height: 1}}></View>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={{width: "100%"}}>
+                <TouchableOpacity style={{width: "100%"}} onPress={() => props.navigation.navigate("WalletPage")}>
                     <View style={{marginLeft: 20, marginTop: 10, marginBottom: 10, flexDirection:'row', justifyContent : 'space-between'}}>
                         <Text>Wallet</Text>
                         <Text style={{marginRight: 10}}>{">"}</Text>
@@ -56,7 +55,7 @@ function AccountScreen(props){
                     <View style={{backgroundColor: "black", height: 1}}></View>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={{width: "100%"}}>
+                <TouchableOpacity style={{width: "100%"}} onPress={() => props.navigation.navigate("ChangeAddress")}>
                     <View style={{marginLeft: 20, marginTop: 10, marginBottom: 10, flexDirection:'row', justifyContent : 'space-between'}}>
                         <Text>Change Address</Text>
                         <Text style={{marginRight: 10}}>{">"}</Text>
@@ -64,9 +63,9 @@ function AccountScreen(props){
                     <View style={{backgroundColor: "black", height: 1}}></View>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={{width: "100%"}}>
+                <TouchableOpacity style={{width: "100%"}} onPress={() => props.navigation.navigate("NotificationSettings")}>
                     <View style={{marginLeft: 20, marginTop: 10, marginBottom: 10, flexDirection:'row', justifyContent : 'space-between'}}>
-                        <Text>Preferences</Text>
+                        <Text>Notifications</Text>
                         <Text style={{marginRight: 10}}>{">"}</Text>
                     </View>
                 </TouchableOpacity>
@@ -75,7 +74,7 @@ function AccountScreen(props){
                     <Text style={{marginLeft: 10, color: "white"}}>Verification</Text>
                 </View>
 
-                <TouchableOpacity style={{width: "100%"}}>
+                <TouchableOpacity style={{width: "100%"}} onPress={() => props.navigation.navigate("VerificationStatus")}>
                     <View style={{marginLeft: 20, marginTop: 10, marginBottom: 10, flexDirection:'row', justifyContent : 'space-between'}}>
                         <Text>Check Mother Verification Status</Text>
                         <Text style={{marginRight: 10}}>{">"}</Text>
@@ -86,7 +85,7 @@ function AccountScreen(props){
                     <Text style={{marginLeft: 10, color: "white"}}>Support</Text>
                 </View>
 
-                <TouchableOpacity style={{width: "100%"}}>
+                <TouchableOpacity style={{width: "100%"}} onPress={() => props.navigation.navigate("Privacy")}>
                     <View style={{marginLeft: 20, marginTop: 10, marginBottom: 10, flexDirection:'row', justifyContent : 'space-between'}}>
                         <Text>Privacy Policy</Text>
                         <Text style={{marginRight: 10}}>{">"}</Text>
@@ -94,9 +93,17 @@ function AccountScreen(props){
                     <View style={{backgroundColor: "black", height: 1}}></View>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={{width: "100%"}}>
+                <TouchableOpacity style={{width: "100%"}} onPress={() => props.navigation.navigate("ContactUsScreen")}>
                     <View style={{marginLeft: 20, marginTop: 10, marginBottom: 10, flexDirection:'row', justifyContent : 'space-between'}}>
                         <Text>Contact Us</Text>
+                        <Text style={{marginRight: 10}}>{">"}</Text>
+                    </View>
+                    <View style={{backgroundColor: "black", height: 1}}></View>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={{width: "100%"}} onPress={() => props.navigation.navigate("LogOutScreen")}>
+                    <View style={{marginLeft: 20, marginTop: 10, marginBottom: 10, flexDirection:'row', justifyContent : 'space-between'}}>
+                        <Text>Log Out</Text>
                         <Text style={{marginRight: 10}}>{">"}</Text>
                     </View>
                     <View style={{backgroundColor: "black", height: 1}}></View>
