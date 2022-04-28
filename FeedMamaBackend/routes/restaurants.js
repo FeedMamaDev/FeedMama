@@ -65,7 +65,7 @@ router.get("/", jsonParser, async function (req, res, next) {
     }
 })
 
-router.get("/:restId", jsonParser, async function (req, res, next) {
+router.get("/:restId/info", jsonParser, async function (req, res, next) {
     try {
         const rest = await prisma.resturants.findFirst({
             where: {

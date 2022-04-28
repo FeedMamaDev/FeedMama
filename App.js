@@ -12,6 +12,7 @@ import MotherEnrollment from './screens/MotherEnrollment';
 
 import React from 'react';
 import Tabs from './app/components/tabs.js';
+import LandingScreen from './screens/LandingScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -19,6 +20,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="LandingScreen" component={LandingScreen} />
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="UserType" component={SignUpUserTypeScreen} />
         <Stack.Screen name="AcctInfo" component={SignUpAcctInfoScreen} />

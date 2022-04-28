@@ -7,10 +7,17 @@ var bodyParser = require('body-parser')
 const crypto = require('crypto');
 const uuid = require('uuid').v4;
 const jwt = require("jsonwebtoken");
+const verifyToken = require("../middleware/authenticate");
 
  
 // create application/json parser
 var jsonParser = bodyParser.json()
+
+router.get("/check", verifyToken, async function (req, res, next) {
+  res.status(200).json({
+    message: "Success!"
+  });
+})
 
 router.post("/login", jsonParser, async function (req, res, next) {
   try {

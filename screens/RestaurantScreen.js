@@ -24,7 +24,7 @@ function RestaurantScreen({route, navigation}){
   useEffect(() => {
     SecureStore.getItemAsync("FEEDMAMA_TOKEN").then(x => {
 
-      axios.get(`${baseUrl}/restaurants/${id}/`, {
+      axios.get(`${baseUrl}/restaurants/${id}/info`, {
         headers: {
           'Authorization': `JWT ${x}` 
         }
