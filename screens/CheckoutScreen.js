@@ -103,7 +103,7 @@ function CheckoutScreen(props) {
                     onChangeText={text => setDropoff_Intructions(text)}
                 />
                 <TouchableOpacity onPress={() => signUp()}>
-                    <Image
+                    <ImageBackground
                         style={styles.centered}
                         source={require("../app/assets/Buttons/PlaceOrderButton.png")}
                         resizeMode="contain"/>
