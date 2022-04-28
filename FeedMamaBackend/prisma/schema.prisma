@@ -1,33 +1,38 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlserver"
-  url      = env("DATABASE_URL")
+  provider          = "sqlserver"
+  url               = env("DATABASE_URL")
   shadowDatabaseUrl = env("DATABASE_URL")
 }
 
 model Users {
-  UserId String @db.UniqueIdentifier @id
-  Email String
-  LastName String
-  FirstName String
-  Phone String
-  Password String
-  Address String
-  City String
-  Role Int
-  ZIP String
+  UserId               String       @id @db.UniqueIdentifier
+  Email                String
+  LastName             String
+  FirstName            String
+  Phone                String
+  Password             String
+  Address              String
+  City                 String
+  Role                 Int
+  ZIP                  String
+  Verified             Int?
+  VerificationAttempts Int?
+  Resturants           Resturants[]
 }
 
-model Items {
-  ItemId String @db.UniqueIdentifier @id
-  Name String
-  Description String
-  Price Decimal
-  RestaurantId String @db.UniqueIdentifier
+model Resturants {
+  RestaurantID      String   @id(map: "PK__Resturan__87454CB53CDF881F") @db.UniqueIdentifier
+  OwnerUserID       String   @db.UniqueIdentifier
+  Name              String   @db.VarChar(255)
+  Description       String?  @db.VarChar(255)
+  Address           String   @db.VarChar(255)
+  AddressLineTwo    String?  @db.VarChar(255)
+  City              String   @db.VarChar(255)
+  ZIP               String   @db.VarChar(255)
+  ProvidesFreeMeals Boolean?
+  Users             Users    @relation(fields: [OwnerUserID], references: [UserId], onUpdate: NoAction, map: "FK__Resturant__Owner__1AD3FDA4")
 }

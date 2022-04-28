@@ -109,7 +109,9 @@ router.post("/create", jsonParser, async function (req, res, next) {
       Address: "",
       City: "",
       Role: role,
-      ZIP: ""
+      ZIP: "",
+      Verified: 0,
+      VerificationAttempts: 0
     }});
     
     res.status(200).json({
