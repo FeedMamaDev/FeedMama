@@ -35,9 +35,7 @@ const Tab = createBottomTabNavigator();
 function RestaurantFlow(){
   return(
       <RestaurantStack.Navigator>
-        <RestaurantStack.Screen 
-            name="Restaurant" 
-            component={RestaurantScreen} />
+        <RestaurantStack.Screen name="Restaurant" component={RestaurantScreen} />
         <RestaurantStack.Screen name="Cart" component={CartScreen}/>
         <RestaurantStack.Screen name="Checkout" component={CheckoutScreen}/>
       </RestaurantStack.Navigator>

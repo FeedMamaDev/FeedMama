@@ -5,7 +5,9 @@ import RestaurantAbout from '../app/components/RestaurantAbout';
 import BigButton from '../app/components/BigButton';
 import { render } from 'react-dom';
 
-function RestaurantScreen(props){
+function RestaurantScreen({route, navigation}){
+
+  const { id } = route.params;
 
   const styles = StyleSheet.create({
     containerVert: {
@@ -51,7 +53,7 @@ function RestaurantScreen(props){
   const fee="$2.99 Fee";
 
   const restaurantImage="../app/assets/Photos/FunkyFreshSpringRolls.jpg";
-  const restaurantTitle="Funky Fresh Spring Rolls";
+  const restaurantTitle="Funky Fresdh Spring Rolls";
   const restaurantSubtitle=timeEstimate.concat(" | ",fee);
   const menuItemDetails=[
     {title: 'Spring Roll1', subtitle: '$3.00', quantity: 0, id: 0},
@@ -73,9 +75,6 @@ function RestaurantScreen(props){
         break
       }
     }
-    console.log("menuItemDetails")
-    console.log(menuItemDetails)
-    console.log(" ")
   }
 
   function MenuItem({title,  subtitle, quantity, id}){
@@ -86,14 +85,11 @@ function RestaurantScreen(props){
     }
     const decrementValue = () => {
       setValue(value-1)
-  }
-
-      const [titleText, setTitleText] = useState("Funky Fresh Spring Rolls :)");
+    }
     
     quantity=value
     updateQuantity({title, id, quantity})
 
-    console.log(props);
     return(
         <View>
               <Divider width={.75}/>
@@ -145,5 +141,10 @@ function RestaurantScreen(props){
     </View>
   );
 }
+
+RestaurantScreen.navigationOptions = (navData) => {
+  console.log(navData.navigation.getParam("UserType"));
+};
+
   
 export default RestaurantScreen;

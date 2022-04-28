@@ -12,7 +12,7 @@ const productionUrl = 'https://example.com'
 
 const baseUrl = isLocal ? ngrokUrl : productionUrl
 
-function HomeScreen({route, navigation}){
+function HomeScreen(props){
 
     const [data, setData] = useState([]);
 
@@ -87,8 +87,8 @@ function HomeScreen({route, navigation}){
                   padding: 20,
                   paddingTop: 20,
                   //flex: 3
-                }} key={{index}} >
-                  <TouchableOpacity onPress={() => navigation.navigate("RestaurantFlow", { RestaurantID: "Test" })}>
+                }} key={index} >
+                  <TouchableOpacity onPress={() => props.navigation.navigate('RestaurantFlow', {screen: 'Restaurant', params: { id: rest.id } })} key={index}>
                     <Card
                       title={rest.name}
                       subtitle={rest.description}
