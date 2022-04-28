@@ -4,6 +4,7 @@ import { ListItem, SearchBar } from "react-native-elements";
 import filter from "lodash.filter";
 import Constants from 'expo-constants';
 import axios from 'axios';
+import * as SecureStore from 'expo-secure-store';
 const { ngrokUrl } = Constants.manifest.extra;
 const isLocal = ngrokUrl && __DEV__
 
@@ -49,14 +50,20 @@ class SearchScreen extends Component {
   };
 
   componentDidMount() {
-    axios.get(`${baseUrl}/restaurants/items`).then((resp) => {
-      this.setState({ data: resp.data.items, originalData: resp.data.items });
-    }).catch((err) => {
-      console.log(err);
-      Alert.alert('Error', err.response.data.message, [
-        { text: 'OK' }
-      ]);
-    });
+    SecureStore.getItemAsync("FEEDMAMA_TOKEN").then(x => {
+      axios.get(`${baseUrl}/restaurants/items`, {
+        headers: {
+          'Authorization': `JWT ${x}` 
+        }
+      }).then((resp) => {
+        this.setState({ data: resp.data.items, originalData: resp.data.items });
+      }).catch((err) => {
+        console.log(err);
+        Alert.alert('Error', err.response.data.message, [
+          { text: 'OK' }
+        ]);
+      });
+    })
   }
 
   render() {

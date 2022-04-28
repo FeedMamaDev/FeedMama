@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { ImageBackground, StyleSheet, TouchableOpacity, View, TextInput, Image, ScrollView, Alert } from 'react-native';
 import Card from '../app/components/Card';
 import Constants from 'expo-constants';
+import * as SecureStore from 'expo-secure-store';
 import axios from 'axios';
 const { ngrokUrl } = Constants.manifest.extra;
 const isLocal = ngrokUrl && __DEV__
@@ -15,15 +16,21 @@ function HomeScreen({route, navigation}){
     const [data, setData] = useState([]);
 
     useEffect(() => {
-      axios.get(`${baseUrl}/restaurants/`).then((resp) => {
-        setData(resp.data.items);
-        console.log(data)
-      }).catch((err) => {
-        console.log(err);
-        Alert.alert('Error', err.response.data.message, [
-          { text: 'OK' }
-        ]);
-      });
+      SecureStore.getItemAsync("FEEDMAMA_TOKEN").then(x => {
+        axios.get(`${baseUrl}/restaurants/`, {
+          headers: {
+            'Authorization': `JWT ${x}` 
+          }
+        }).then((resp) => {
+          setData(resp.data.items);
+          console.log(data)
+        }).catch((err) => {
+          console.log(err);
+          Alert.alert('Error', err.response.data.message, [
+            { text: 'OK' }
+          ]);
+        });
+      })
     }, []);
   
 
@@ -69,26 +76,21 @@ function HomeScreen({route, navigation}){
               </ImageBackground>
 
           </View>
-
-          <Divider style={{
-            width: "100%",
-            height: "5%",
-            backgroundColor: "#FF6C6C"
-          }}/>
         </View>
         
        <ScrollView style={{
           resizeMode:"repeat"
         }}>
           {data.map((rest, index) => {
+              console.log(rest.id);
               return (
                 <View style={{
                   backgroundColor: "#f8f4f4",
                   padding: 20,
                   paddingTop: 20,
                   //flex: 3
-                }}>
-                  <TouchableOpacity onPress={() => navigation.navigate("RestaurantFlow", { RestaurantID: rest.id })}>
+                }} key={{index}} >
+                  <TouchableOpacity onPress={() => navigation.navigate("RestaurantFlow", { RestaurantID: "Test" })}>
                     <Card
                       title={rest.name}
                       subtitle={rest.description}

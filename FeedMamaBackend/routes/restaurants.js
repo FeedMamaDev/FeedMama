@@ -1,5 +1,6 @@
 const express = require("express");
 const {config} = require("../config");
+const verifyToken = require("../middleware/authenticate");
 const router = express.Router();
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
@@ -10,6 +11,8 @@ const jwt = require("jsonwebtoken");
  
 // create application/json parser
 var jsonParser = bodyParser.json()
+
+router.use(verifyToken);
 
 router.get("/items", jsonParser, async function (req, res, next) {
     try {

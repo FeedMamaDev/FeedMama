@@ -39,7 +39,7 @@ router.post("/login", jsonParser, async function (req, res, next) {
     }
 
     var token = jwt.sign({
-      id: user.id
+      id: user.UserId
     }, process.env.API_SECRET);
 
 
