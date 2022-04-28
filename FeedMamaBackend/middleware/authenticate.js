@@ -8,7 +8,6 @@ async function verifyToken(req, res, next) {
       if (err){
           req.user = undefined;
       } else {
-        console.log(decode.id);
         req.user = await prisma.users.findFirst({where: { UserId: decode.id }});
       }
 

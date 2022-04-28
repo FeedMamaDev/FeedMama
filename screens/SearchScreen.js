@@ -45,7 +45,6 @@ class SearchScreen extends Component {
       const text_data = text.toUpperCase();
       return item_data.indexOf(text_data) > -1;
     });
-    console.log(updatedData);
     this.setState({ data: updatedData, searchValue: text });
   };
 
@@ -58,7 +57,6 @@ class SearchScreen extends Component {
       }).then((resp) => {
         this.setState({ data: resp.data.items, originalData: resp.data.items });
       }).catch((err) => {
-        console.log(err);
         Alert.alert('Error', err.response.data.message, [
           { text: 'OK' }
         ]);

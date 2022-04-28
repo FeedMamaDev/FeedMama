@@ -24,9 +24,7 @@ function HomeScreen({route, navigation}){
           }
         }).then((resp) => {
           setData(resp.data.items);
-          console.log(data)
         }).catch((err) => {
-          console.log(err);
           Alert.alert('Error', err.response.data.message, [
             { text: 'OK' }
           ]);
@@ -83,7 +81,6 @@ function HomeScreen({route, navigation}){
           resizeMode:"repeat"
         }}>
           {data.map((rest, index) => {
-              console.log(rest.id);
               return (
                 <View style={{
                   backgroundColor: "#f8f4f4",
