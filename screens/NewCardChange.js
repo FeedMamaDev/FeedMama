@@ -16,7 +16,7 @@ function NewAddressScreen(props) {
         cvv: {cvv}
     }
 
-    function addAddress({fullCard}){
+    function addCard({fullCard}){
         //Add address to the list of stored cards
     }
 
