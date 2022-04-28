@@ -5,11 +5,7 @@ import RestaurantAbout from '../app/components/RestaurantAbout';
 import BigButton from '../app/components/BigButton';
 import { render } from 'react-dom';
 
-<<<<<<< HEAD
 function RestaurantScreen(props){
-=======
-function RestaurantScreen({route, navigation}) {
->>>>>>> 6c2c179952a9bb26c9f2d16e33226a61b590e150
 
   const styles = StyleSheet.create({
     containerVert: {
