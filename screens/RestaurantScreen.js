@@ -1,13 +1,57 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ImageBackground, StyleSheet, TouchableOpacity, View, Text, Image, ScrollView, Button} from 'react-native';
 import { Divider } from 'react-native-elements';
 import RestaurantAbout from '../app/components/RestaurantAbout';
 import BigButton from '../app/components/BigButton';
 import { render } from 'react-dom';
+import Constants from 'expo-constants';
+import * as SecureStore from 'expo-secure-store';
+import axios from 'axios';
+const { ngrokUrl } = Constants.manifest.extra;
+const isLocal = ngrokUrl && __DEV__
+
+const productionUrl = 'https://example.com'
+
+const baseUrl = isLocal ? ngrokUrl : productionUrl
 
 function RestaurantScreen({route, navigation}){
 
   const { id } = route.params;
+  const [meals, setMeals] = useState([{"description": "", "id": "", "max_quantity": 0, "name": "", "price": "0", "quantity": 0, "vegan": false, "vegetarian": false }]);
+
+  const [restaurant, setRestaurant] = useState({ name: "", description: "" });
+
+  useEffect(() => {
+    SecureStore.getItemAsync("FEEDMAMA_TOKEN").then(x => {
+
+      axios.get(`${baseUrl}/restaurants/${id}/`, {
+        headers: {
+          'Authorization': `JWT ${x}` 
+        }
+      }).then((resp) => {
+        setRestaurant(resp.data)
+      }).catch((err) => {
+        Alert.alert('Error', err.response.data.message, [
+          { text: 'OK' }
+        ]);
+      });
+
+      axios.get(`${baseUrl}/restaurants/${id}/items`, {
+        headers: {
+          'Authorization': `JWT ${x}` 
+        }
+      }).then((resp) => {
+        let items = resp.data
+
+        items.forEach(x => x.quantity = 0);
+        setMeals(items);
+      }).catch((err) => {
+        Alert.alert('Error', err.response.data.message, [
+          { text: 'OK' }
+        ]);
+      });
+    })
+  }, []);
 
   const styles = StyleSheet.create({
     containerVert: {
@@ -49,42 +93,27 @@ function RestaurantScreen({route, navigation}){
     }
   });
 
-  const timeEstimate="30-40 min";
-  const fee="$2.99 Fee";
-
-  const restaurantImage="../app/assets/Photos/FunkyFreshSpringRolls.jpg";
-  const restaurantTitle="Funky Fresdh Spring Rolls";
-  const restaurantSubtitle=timeEstimate.concat(" | ",fee);
-  const menuItemDetails=[
-    {title: 'Spring Roll1', subtitle: '$3.00', quantity: 0, id: 0},
-    {title: 'Spring Roll2', subtitle: '$3.00', quantity: 0, id: 1},
-    {title: 'Spring Roll3', subtitle: '$3.00', quantity: 0, id: 2},
-    {title: 'Spring Roll4', subtitle: '$3.00', quantity: 0, id: 3},
-    {title: 'Spring Roll5', subtitle: '$3.00', quantity: 0, id: 4},
-  ]
-  const menu=[
-    menuItemDetails.map(({ title, subtitle, quantity, id }) => (
-      <MenuItem title={title} subtitle={subtitle} quantity={quantity} id={id} key={id}/>
-    ))
-  ]
-
   function updateQuantity({title, subtitle, quantity, id}){
-    for(const i in menuItemDetails){
-      if(menuItemDetails[i].id==id){
-        menuItemDetails[i].quantity=quantity
+    for(const i in meals){
+      if(meals[i].id==id){
+        meals[i].quantity=quantity
         break
       }
     }
   }
 
-  function MenuItem({title,  subtitle, quantity, id}){
+  function MenuItem({title,  subtitle, max_quantity, quantity, id}){
     const [value, setValue]=useState(quantity);
 
     const incrementValue = () => {
-        setValue(value+1)
+        if(max_quantity > quantity) {
+          setValue(value+1)
+        } 
     }
     const decrementValue = () => {
-      setValue(value-1)
+      if(value > 0) {
+        setValue(value-1)
+      }
     }
     
     quantity=value
@@ -115,9 +144,9 @@ function RestaurantScreen({route, navigation}){
   return (
     <View>
       <RestaurantAbout
-        image={require("../app/assets/Photos/FunkyFreshSpringRolls.jpg")}
-        title={restaurantTitle}
-        subtitle={restaurantSubtitle}
+        image={restaurant.img}
+        title={restaurant.name}
+        subtitle={restaurant.description}
       />
       <Divider style={{
           width: "100%",
@@ -132,19 +161,16 @@ function RestaurantScreen({route, navigation}){
           padding: 10,
           width:'100%'
         }}>
-            {menu}
+        {meals.map(({ name, description, max_quantity, quantity, id, price }) => (
+          <MenuItem title={name} subtitle={"$" + price} max_quantity={max_quantity} quantity={quantity} id={id} key={id}/>
+        ))}
         </View>
       </ScrollView>
-      <TouchableOpacity onPress={() => props.navigation.push("Cart", {menuItemDetails: {menuItemDetails}})}>
+      <TouchableOpacity onPress={() => props.navigation.push("Cart", {menuItemDetails: {meals}})}>
         <BigButton text="View Cart"/>
       </TouchableOpacity>
     </View>
   );
 }
-
-RestaurantScreen.navigationOptions = (navData) => {
-  console.log(navData.navigation.getParam("UserType"));
-};
-
   
 export default RestaurantScreen;

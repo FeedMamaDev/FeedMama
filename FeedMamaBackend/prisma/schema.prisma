@@ -25,14 +25,29 @@ model Users {
 }
 
 model Resturants {
-  RestaurantID      String   @id(map: "PK__Resturan__87454CB53CDF881F") @db.UniqueIdentifier
+  RestaurantID      String   @id(map: "PK__Resturan__87454CB5BDBE43E9") @db.UniqueIdentifier
   OwnerUserID       String   @db.UniqueIdentifier
   Name              String   @db.VarChar(255)
   Description       String?  @db.VarChar(255)
+  ImageUrl          String   @db.VarChar(1024)
   Address           String   @db.VarChar(255)
   AddressLineTwo    String?  @db.VarChar(255)
   City              String   @db.VarChar(255)
+  State             String   @db.VarChar(255)
   ZIP               String   @db.VarChar(255)
   ProvidesFreeMeals Boolean?
-  Users             Users    @relation(fields: [OwnerUserID], references: [UserId], onUpdate: NoAction, map: "FK__Resturant__Owner__1AD3FDA4")
+  Users             Users    @relation(fields: [OwnerUserID], references: [UserId], onUpdate: NoAction, map: "FK__Resturant__Owner__1DB06A4F")
+  Meals             Meals[]
+}
+
+model Meals {
+  MealID       String     @id(map: "PK__Meals__ACF6A65DE9675996") @db.UniqueIdentifier
+  RestaurantID String     @db.UniqueIdentifier
+  Name         String     @db.VarChar(255)
+  Description  String?    @db.VarChar(255)
+  Price        Decimal    @db.Decimal(18, 0)
+  Quantity     Int
+  IsVegan      Boolean
+  IsVegetarian Boolean
+  Resturants   Resturants @relation(fields: [RestaurantID], references: [RestaurantID], onUpdate: NoAction, map: "FK__Meals__Restauran__208CD6FA")
 }

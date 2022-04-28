@@ -4,7 +4,7 @@ import {View, Text, Image, ImageBackground, StyleSheet} from 'react-native';
 function RestaurantAbout({image, title, subtitle}) {
     return (
         <View>
-            <ImageBackground source={image} style={styles.restaurantImage}>
+            <ImageBackground source={{uri: image}} style={styles.restaurantImage}>
                 <View style={{marginTop: 75, alignItems: "center"}}>
                     <Text style={styles.restaurantTitle}>{title}</Text>
                     <Text style={styles.restaurantSubtitle}>{subtitle}</Text>
