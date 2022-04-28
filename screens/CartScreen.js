@@ -7,14 +7,14 @@ import CartItem from '../app/components/CartItem';
 
 function CartScreen(props) {
 
-    const menuItemDetails=props.route.params.menuItemDetails.menuItemDetails
-    console.log(menuItemDetails)
+    const meals=props.route.params.menuItemDetails.meals
+    console.log(meals)
 
     const cartItems=new Array();
 
-    for(const i in menuItemDetails){
-        if(menuItemDetails[i].quantity>0){
-            cartItems.push(menuItemDetails[i])
+    for(const i in meals){
+        if(meals[i].quantity>0){
+            cartItems.push(meals[i])
         }
     }
 
