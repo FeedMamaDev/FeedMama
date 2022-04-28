@@ -65,7 +65,7 @@ function RestaurantScreen({route, navigation}){
     marginTop: "10%",
     marginBottom: "5%",
     flexWrap: 'wrap',
-    alignItems: 'flex-start'
+    width: "100%"
     },
     input: {
     width: 265,
@@ -124,13 +124,18 @@ function RestaurantScreen({route, navigation}){
         <View>
               <Divider width={.75}/>
               <View style={styles.containerHorz}>
-                  <View style={styles.detailsContainer}>
+                  <View style={{
+                    width:'50%',
+                    alignContent:"flex-start"
+                  }}>
                       <Text style={styles.title}>{title}</Text>
                       <Text style={styles.subTitle}>{subtitle}</Text>
                   </View>
                   <View style={{
                     flexDirection:"row",
-                    width:'50%'
+                    width:'50%',
+                    alignContent:"flex-end",
+                    alignItems: "center"
                   }}>
                       <Button onPress={decrementValue} title="-"/>
                       <Text>{value}</Text>
@@ -166,8 +171,23 @@ function RestaurantScreen({route, navigation}){
         ))}
         </View>
       </ScrollView>
-      <TouchableOpacity onPress={() => props.navigation.push("Cart", {menuItemDetails: {meals}})}>
-        <BigButton text="View Cart"/>
+      <TouchableOpacity onPress={() => props.navigation.push("Cart", {menuItemDetails: {meals}})} style={{
+        position: 'absolute',
+        width: 50,
+        height: 50,
+        alignItems: 'center',
+        justifyContent: 'center',
+        right: 30,
+        bottom: 30,}}>
+        <ImageBackground
+            style={{
+              resizeMode: 'contain',
+              width: 50,
+              height: 50,
+            }}
+            source={require("../app/assets/Buttons/CartButton.png")}
+            resizeMode="contain">
+        </ImageBackground>
       </TouchableOpacity>
     </View>
   );
