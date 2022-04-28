@@ -33,13 +33,13 @@ const styles=StyleSheet.create({
         marginLeft: 5,
     },
     title:{
-        fontSize:18,
+        fontSize:14,
         fontFamily: Platform.OS === "iOS" ? "Proxima Nova" : "Helvetica",
         fontWeight:"bold",
         color: "#000",
     },
     subTitle:{
-        fontSize:14,
+        fontSize:12,
         fontFamily: Platform.OS === "iOS" ? "Proxima Nova" : "Helvetica",
         color: "#000",
     }

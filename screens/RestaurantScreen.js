@@ -64,7 +64,8 @@ function RestaurantScreen({route, navigation}){
     flexDirection: 'row',
     marginTop: "10%",
     marginBottom: "5%",
-    alignItems: "center",
+    flexWrap: 'wrap',
+    alignItems: 'flex-start'
     },
     input: {
     width: 265,
@@ -128,9 +129,8 @@ function RestaurantScreen({route, navigation}){
                       <Text style={styles.subTitle}>{subtitle}</Text>
                   </View>
                   <View style={{
-                    marginLeft:"60%",
-                    flexDirection: 'row', 
-                    alignItems: "center"
+                    flexDirection:"row",
+                    width:'50%'
                   }}>
                       <Button onPress={decrementValue} title="-"/>
                       <Text>{value}</Text>
