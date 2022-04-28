@@ -3,7 +3,26 @@ import {StyleSheet, Text, View, TouchableOpacity, Image, ImageBackground} from '
 import { Divider } from 'react-native-elements';
 import { ScrollView } from 'react-native-gesture-handler';
 
+/* import axios from 'axios';
+import Constants from 'expo-constants';
+import * as SecureStore from 'expo-secure-store';
+
+const { ngrokUrl } = Constants.manifest.extra;
+const isLocal = ngrokUrl && __DEV__
+const productionUrl = 'https://example.com'
+const baseUrl = isLocal ? ngrokUrl : productionUrl
+
+async function getValueFor(key) {
+    let result = await SecureStore.getItemAsync(key);
+    if (result) {
+      return result
+    } else {
+      return ""
+    }
+} */
+
 function LogOutScreen(props){
+
     return(
         <View>
             <View style={{alignContent: "center", alignItems: "center", paddingTop: 50}}>
