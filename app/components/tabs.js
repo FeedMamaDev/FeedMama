@@ -6,6 +6,16 @@ import { Divider } from 'react-native-elements';
 import RestaurantScreen from '../../screens/RestaurantScreen';
 import CartScreen from '../../screens/CartScreen';
 import CheckoutScreen from '../../screens/CheckoutScreen';
+import PrivacyPolicyScreen from '../../screens/PrivacyPolicyScreen';
+import GeneralSettings from '../../screens/GeneralSettings';
+import UpdatePassword from '../../screens/UpdatePassword';
+import WalletPage from '../../screens/WalletPage';
+import ChangeAddress from '../../screens/ChangeAddress';
+import NotificationSettings from '../../screens/NotificationSettings';
+import VerificationStatus from '../../screens/VerificationStatus';
+import ContactUsScreen from '../../screens/ContactUsScreen';
+import LogOutScreen from '../../screens/LogOutScreen';
+
 
 import HomeScreen from '../../screens/HomeScreen';
 import AccountScreen from '../../screens/AccountScreen';
@@ -18,6 +28,7 @@ const RestaurantStack = createNativeStackNavigator();
 const HomeStack = createNativeStackNavigator();
 const SearchStack = createNativeStackNavigator();
 const OrderStack = createNativeStackNavigator();
+const AccountStack = createNativeStackNavigator();
 
 const Tab = createBottomTabNavigator();
 
@@ -58,6 +69,23 @@ function HomeFlow(){
         <HomeStack.Screen name="RestaurantFlow" component={RestaurantFlow}/>
       </HomeStack.Navigator>
   );
+}
+
+function AccountFlow(){
+    return(
+        <AccountStack.Navigator screenOptions={{headerShown: false}}>
+            <AccountStack.Screen name = 'Account' component={AccountScreen}/>
+            <AccountStack.Screen name = 'GeneralSettings' component={GeneralSettings}/>
+            <AccountStack.Screen name = 'UpdatePassword' component={UpdatePassword}/>
+            <AccountStack.Screen name = 'WalletPage' component={WalletPage}/>
+            <AccountStack.Screen name = 'ChangeAddress' component={ChangeAddress}/>
+            <AccountStack.Screen name = 'NotificationSettings' component={NotificationSettings}/>
+            <AccountStack.Screen name = 'VerificationStatus' component={VerificationStatus}/>
+            <AccountStack.Screen name = 'Privacy' component={PrivacyPolicyScreen}/>
+            <AccountStack.Screen name = 'ContactUsScreen' component={ContactUsScreen}/>
+            <AccountStack.Screen name = 'LogOutScreen' component={LogOutScreen}/>
+        </AccountStack.Navigator>
+    );
 }
 
 const Tabs = () => {
@@ -111,7 +139,7 @@ const Tabs = () => {
             }}/>
 
 
-            <Tab.Screen name="Account" component={AccountScreen} options={{
+            <Tab.Screen name="AccountFlow" component={AccountFlow} options={{
                 tabBarIcon: ({focused}) => (
                     <View>
                         <Image source={require('../assets/Buttons/OrdersIcon.png')}

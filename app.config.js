@@ -5,9 +5,7 @@ const fs = require('fs')
 // in production
 
 let ngrokUrl = null
-if (process.env.EXPO_NGROK === '1') {
-  ngrokUrl = fs.readFileSync('./NGROK_URL', { encoding: 'utf8'})
-}
+ngrokUrl = fs.readFileSync('./NGROK_URL', { encoding: 'utf8'})
 
 export default ({ config }) => {
   return {

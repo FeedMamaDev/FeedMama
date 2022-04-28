@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { ImageBackground, StyleSheet, TouchableOpacity, View, TextInput, Image, ScrollView, Alert } from 'react-native';
+import { Divider } from 'react-native-elements';
 import Card from '../app/components/Card';
 import Constants from 'expo-constants';
 import * as SecureStore from 'expo-secure-store';

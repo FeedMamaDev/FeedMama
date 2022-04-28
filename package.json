@@ -4,7 +4,7 @@
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
-    "local": "node ngrokhandler.js && EXPO_NGROK=1 expo start",
+    "local": "node ngrokhandler.js && expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
