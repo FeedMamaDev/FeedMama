@@ -171,7 +171,7 @@ function RestaurantScreen({route, navigation}){
         ))}
         </View>
       </ScrollView>
-      <TouchableOpacity onPress={() => props.navigation.push("Cart", {menuItemDetails: {meals}})} style={{
+      <TouchableOpacity onPress={() => navigation.push("Cart", {menuItemDetails: {meals}})} style={{
         position: 'absolute',
         width: 50,
         height: 50,
