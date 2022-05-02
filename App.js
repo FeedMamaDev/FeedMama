@@ -6,6 +6,7 @@ import LoginScreen from '../FeedMama/screens/LoginScreen';
 //import { NavigationContainer } from '@react-navigation/native';
 //import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
+<<<<<<< Updated upstream
 import Card from './app/components/Card';
 
 function printRestaurant() {
@@ -50,6 +51,34 @@ export default function App() {
         </TouchableOpacity>
       </View>
     </View>
+=======
+import LoginScreen from './screens/LoginScreen';
+import SignUpUserTypeScreen from './screens/SignUpUserTypeScreen';
+import SignUpAcctInfoScreen from './screens/SignUpAcctInfoScreen';
+
+import React from 'react';
+import Tabs from './app/components/tabs.js';
+import LandingScreen from './screens/LandingScreen';
+import GeneralSettings from './screens/GeneralSettings';
+import WalletPage from './screens/WalletPage';
+import AddCard from './screens/AddCard';
+
+const Stack = createNativeStackNavigator();
+
+export default function App() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        {/* <Stack.Screen name="LandingScreen" component={LandingScreen} /> */}
+        <Stack.Screen name="WalletPage" component={WalletPage} screenOptions={{ headerShown: true}}/>
+        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="UserType" component={SignUpUserTypeScreen} />
+        <Stack.Screen name="AcctInfo" component={SignUpAcctInfoScreen} />
+        <Stack.Screen name="AddCard" component={AddCard} />
+        <Stack.Screen name="Tabs" component={Tabs} screenOptions={{ headerShown: false}}/>
+      </Stack.Navigator>
+    </NavigationContainer>
+>>>>>>> Stashed changes
   );
 }
 
