@@ -13,14 +13,14 @@ const restaurantTitle="Funky Fresh Spring Rolls";
 const restaurantSubtitle=timeEstimate.concat(" | ",fee);
 
 function CheckoutScreen(props) {
-    const [dropoff_address, setDropoff_address]=useState();
-    const [card, setCard]=useState();
+    const dropoff_address='2029 W Wisconsin Ave, Apt B, Milwaukee, WI 53233'
+    const card='1234 4567 8901 2345'
     
-    const [subTotal, setSubTotal]='$'+'15.00'
-    const [tip, setTip] = useState();
+    const subTotal='$'+'15.00'
+    const tip = '$1.00'
     const total = '$' + {subTotal} + {tip}
 
-    const [dropoff_instructions, setDropoff_Intructions]= useState();
+    const dropoff_instructions = 'Leave at the front door and buzz Apt B. Thanks!'
 
     const cartItems=props.route.params.cartItems.cartItems
     console.log('-')

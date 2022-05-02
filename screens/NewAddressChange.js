@@ -2,6 +2,7 @@ import React from 'react';
 import { useState } from 'react';
 import { ImageBackground, StyleSheet, TouchableOpacity, View, TextInput, Image, ScrollView , Text, FlatList} from 'react-native';
 import { Button, Divider } from 'react-native-elements';
+import DropDownPicker from 'react-native-dropdown-picker';
 
 function NewAddressScreen(props) {
     const [name, setName]= useState();
@@ -10,6 +11,14 @@ function NewAddressScreen(props) {
     const [city, setCity]= useState();
     const [state, setState]= useState();
     const [zipcode, setZipcode]= useState();
+
+    const [open, setOpen] = useState(false);
+    const [value, setValue] = useState(null);
+    const [address, setAddress] = useState([
+        {name:"John Doe", address: "2029 W Wisconsin Ave Apt B, Milwaukee, WI 53233", id: "0", key:"0"},
+        {name: "Austin Fron", address: "1515 W Wisconsin Ave, Milwaukee, WI 53233", id: "1", key:"1"},
+        {name:"April Summer", address: "911 N 17th Street Apt 301, Milwaukee, WI 53233", id: "2", key:"2"},
+    ]);
 
     const fullAddr={
         name: {name},
@@ -27,8 +36,17 @@ function NewAddressScreen(props) {
             </TouchableOpacity>
 
             <View style={styles.centered}>
-                <Text style={{fontSize: 16, fontWeight: "bold", marginBottom: 50}}>Please enter a new address:</Text>
+                <Text style={{fontSize: 16, fontWeight: "bold", marginBottom: 50}}>Please select or enter a new address:</Text>
             </View>
+
+            <DropDownPicker
+                open={open}
+                value={value}
+                items={address}
+                setOpen={setOpen}
+                setValue={setValue}
+                setItems={setAddress}
+            />
 
             <View style={{marginLeft: "10%", marginRight: "10%"}}>
 

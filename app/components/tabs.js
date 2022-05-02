@@ -8,6 +8,7 @@ import CartScreen from '../../screens/CartScreen';
 import CheckoutScreen from '../../screens/CheckoutScreen';
 import NewAddressChange from '../../screens/NewAddressChange';
 import NewCardChange from '../../screens/NewCardChange';
+import PrevOrderScreen from '../../screens/PrevOrderScreen';
 
 import HomeScreen from '../../screens/HomeScreen';
 import AccountScreen from '../../screens/AccountScreen';
@@ -19,7 +20,7 @@ const RestaurantStack = createNativeStackNavigator();
 
 const HomeStack = createNativeStackNavigator();
 const SearchStack = createNativeStackNavigator();
-const OrderStack = createNativeStackNavigator();
+const OrderHistoryStack = createNativeStackNavigator();
 
 const Tab = createBottomTabNavigator();
 
@@ -39,10 +40,10 @@ function RestaurantFlow(){
 
 function OrderFlow(){
   return(
-      <OrderStack.Navigator screenOptions={{ headerShown: false }}>
-        <OrderStack.Screen name="Order" component={OrderScreen}/>
-        <OrderStack.Screen name="RestaurantFlow" component={RestaurantFlow}/>
-      </OrderStack.Navigator>
+      <OrderHistoryStack.Navigator screenOptions={{ headerShown: false }}>
+        <OrderHistoryStack.Screen name="Order" component={OrderScreen}/>
+        <OrderHistoryStack.Screen name="PrevOrder" component={PrevOrderScreen}/>
+      </OrderHistoryStack.Navigator>
   ); 
 }
 

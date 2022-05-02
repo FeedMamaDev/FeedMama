@@ -54,25 +54,21 @@ function HomeScreen(props){
 
           <View
             style={styles.containerHorz}>
-            <ImageBackground
+            <Image
                   style={{
                     width: 80,
                     height: 80,
                     marginRight: "10%"
                   }}
                   source={require("../app/assets/Static/DeliveryOn.png")}
-                  resizeMode="center">
-
-              </ImageBackground>
-              <ImageBackground
+                  resizeMode="center"/>
+              <Image
                   style={{
                     width: 80,
                     height: 80
                   }}
                   source={require("../app/assets/Static/PickupOff.png")}
-                  resizeMode="center">
-
-              </ImageBackground>
+                  resizeMode="center"/>
 
           </View>
         </View>
