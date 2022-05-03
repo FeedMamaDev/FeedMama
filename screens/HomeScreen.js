@@ -23,6 +23,7 @@ function HomeScreen(props){
             'Authorization': `JWT ${x}` 
           }
         }).then((resp) => {
+          console.log(resp.data)
           setData(resp.data);
         }).catch((err) => {
           Alert.alert('Error', err.response.data.message, [
