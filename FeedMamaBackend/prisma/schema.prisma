@@ -21,6 +21,7 @@ model Users {
   ZIP                  String
   Verified             Int?
   VerificationAttempts Int?
+  Payment              Payment[]
   Resturants           Resturants[]
 }
 
@@ -50,4 +51,15 @@ model Meals {
   IsVegan      Boolean
   IsVegetarian Boolean
   Resturants   Resturants @relation(fields: [RestaurantID], references: [RestaurantID], onUpdate: NoAction, map: "FK__Meals__Restauran__208CD6FA")
+}
+
+model Payment {
+  PaymentId  String   @id(map: "PK__Payment__9B556A38271F6635") @db.UniqueIdentifier
+  UserId     String?  @db.UniqueIdentifier
+  Number     String?  @db.VarChar(255)
+  Expiration String?  @db.VarChar(255)
+  CVC        String?  @db.VarChar(255)
+  ZIP        String?  @db.VarChar(255)
+  Primary    Boolean?
+  Users      Users?   @relation(fields: [UserId], references: [UserId], onDelete: NoAction, onUpdate: NoAction, map: "Payment_Users")
 }

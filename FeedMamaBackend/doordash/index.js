@@ -8,25 +8,18 @@ const client = new DoorDashClient.DoorDashClient({
   "signing_secret": "Y28Q2pbCKUJfuDgH3Qkh8Fb2hptj3nDP91vSAJ0yEAw"
 });
 
-const response = client
-  .createDelivery({
-    external_delivery_id: uuidv4(),
-    pickup_address: "1000 4th Ave, Seattle, WA, 98104",
-    pickup_phone_number: "+1(650)5555555",
-    pickup_business_name: "Wells Fargo SF Downtown",
-    pickup_instructions: "Enter gate code 1234 on the callbox.",
-    dropoff_address: "1201 3rd Ave, Seattle, WA, 98101",
-    dropoff_phone_number: "+1(650)5555555",
-    dropoff_business_name: "Wells Fargo SF Downtown",
-    dropoff_instructions: "Enter gate code 1234 on the callbox.",
-    order_value: 1999
-  })
-  .then(() => {
-    // do something
-  })
-  .catch((err) => {
-    // handle error
-  });
+const body = JSON.stringify({
+    "external_delivery_id": uuidv4(), // keep track of the generated id here or in the response
+    "pickup_address": "400 N Water St, WI 53202",
+    "pickup_business_name": "MKE Public Market",
+    "pickup_phone_number": "+16505555555",
+    "pickup_instructions": "",
+    "dropoff_address": "2314 W Wells St Milwaukee, WI 53233",
+    "dropoff_business_name": "Home",
+    "dropoff_phone_number": "+16505555555",
+    "dropoff_instructions": "Enter gate code 3300 on the callbox.",
+    "order_value": 3500
+});
 
 function getToken() {
 
@@ -48,7 +41,7 @@ function getToken() {
 
 }
 
-axios.get('https://openapi.doordash.com/drive/v2/deliveries/' + "7c06ab62-540a-4ae4-ad47-af598e4b5700", { headers: { 'Authorization': 'Bearer ' + getToken(), 'Content-Type': 'application/json' } })
+axios.post('https://openapi.doordash.com/drive/v2/deliveries', body,  { headers: { 'Authorization': 'Bearer ' + getToken(), 'Content-Type': 'application/json' } })
     .then(function (response) {
         console.log(response.data);
     })
