@@ -12,15 +12,17 @@ const restaurantImage="../app/assets/Photos/FunkyFreshSpringRolls.jpg";
 const restaurantTitle="Funky Fresh Spring Rolls";
 const restaurantSubtitle=timeEstimate.concat(" | ",fee);
 
-function CheckoutScreen(props) {
-    const dropoff_address='2029 W Wisconsin Ave, Apt B, Milwaukee, WI 53233'
-    const card='1234 4567 8901 2345'
+function PrevOrderScreen(props) {
+    const pickup_address='funkeyfresh styles, milwaukee, wi 53233'
+    const pickup_window='40-50min'
+    const [dropoff_address, setDropoff_address]=useState();
+    const [card, setCard]=useState();
     
-    const subTotal='$'+'15.00'
-    const tip = '$1.00'
+    const [subTotal, setSubTotal]='$'+'15.00'
+    const [tip, setTip] = useState();
     const total = '$' + {subTotal} + {tip}
 
-    const dropoff_instructions = 'Leave at the front door and buzz Apt B. Thanks!'
+    const [dropoff_instructions, setDropoff_Intructions]= useState();
 
     const cartItems=props.route.params.cartItems.cartItems
     console.log('-')
@@ -41,19 +43,19 @@ function CheckoutScreen(props) {
                     subtitle={restaurantSubtitle}
                 />
                 <Divider width={1.8} style={{marginVertical:20}}/>
-                <Text style={styles.checkoutTitle}>pickup_address</Text>
+                <Text style={styles.checkoutTitle}>{pickup_address}</Text>
                 <Divider width={.5} style={{marginVertical:10}}/>
-                <Text style={styles.checkoutTitle}>dropoff_address</Text>
+                <Text style={styles.checkoutTitle}>{dropoff_address}</Text>
                 <TouchableOpacity onPress={() => props.navigation.push("NewAddress")}>
                     <Text style={styles.checkoutSubtitle}>+ New Drop Off Address</Text>
                 </TouchableOpacity>
                 <Divider width={.5} style={{marginVertical:10}}/>
-                <Text style={styles.checkoutTitle}>card</Text>
+                <Text style={styles.checkoutTitle}>{card}</Text>
                 <TouchableOpacity onPress={() => props.navigation.push("NewCard")}>
                     <Text style={styles.checkoutSubtitle}>+ New Payment Method</Text>
                 </TouchableOpacity>
                 <Divider width={.5} style={{marginVertical:10}}/>
-                <Text style={styles.checkoutTitle}>pickup_window</Text>
+                <Text style={styles.checkoutTitle}>{pickup_window}</Text>
                 <Divider width={.5} style={{marginVertical:10}}/>
                 <View style={{
                     padding: 10,
@@ -85,11 +87,6 @@ function CheckoutScreen(props) {
                     value={dropoff_instructions}
                     onChangeText={text => setDropoff_Intructions(text)}
                 />
-                <TouchableOpacity style={styles.centered} onPress={() => signUp()}>
-                    <Image
-                        source={require("../app/assets/Buttons/PlaceOrderButton.png")}
-                        resizeMode="contain"/>
-                </TouchableOpacity>
             </ScrollView>
         </View>
     );
@@ -151,4 +148,4 @@ const styles = StyleSheet.create({
       alignItems: "center"
     },
 });
-export default CheckoutScreen;
+export default PrevOrderScreen;

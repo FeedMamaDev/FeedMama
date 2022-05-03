@@ -8,6 +8,7 @@ import CartScreen from '../../screens/CartScreen';
 import CheckoutScreen from '../../screens/CheckoutScreen';
 import NewAddressChange from '../../screens/NewAddressChange';
 import NewCardChange from '../../screens/NewCardChange';
+import OrderProgressScreen from '../../screens/OrderProgressScreen';
 import PrevOrderScreen from '../../screens/PrevOrderScreen';
 
 import HomeScreen from '../../screens/HomeScreen';
@@ -34,6 +35,7 @@ function RestaurantFlow(){
         <RestaurantStack.Screen name="Checkout" component={CheckoutScreen}/>
         <RestaurantStack.Screen name="NewAddress" component={NewAddressChange}/>
         <RestaurantStack.Screen name="NewCard" component={NewCardChange}/>
+        <RestaurantStack.Screen name="OrderProgress" component={OrderProgressScreen}/>
       </RestaurantStack.Navigator>
   );
 }

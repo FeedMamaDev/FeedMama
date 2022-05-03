@@ -37,7 +37,7 @@ const OrderScreen = ({navigation}) => {
                     paddingTop: 20,
                     //flex: 3
                   }}>
-                    <TouchableOpacity onPress={() => props.navigation.push("PrevOrder")}>
+                    <TouchableOpacity onPress={() => navigation.push("PrevOrder")}>
                       <Card
                         title="Funky Fresh Spring Rolls"
                         subtitle={restHomeSubtitle}
