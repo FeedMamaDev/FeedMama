@@ -1,14 +1,42 @@
-import { useState } from 'react';
-import { ImageBackground, StyleSheet, TouchableOpacity, View, Text, Image, ScrollView} from 'react-native';
+import { useState, useEffect } from 'react';
+import { ImageBackground, StyleSheet, TouchableOpacity, View, Text, Image, ScrollView, Alert} from 'react-native';
 import { Divider } from 'react-native-elements';
 import RestaurantAbout from '../app/components/RestaurantAbout';
 import BigButton from '../app/components/BigButton';
+import Constants from 'expo-constants';
 import CartItem from '../app/components/CartItem';
+import * as SecureStore from 'expo-secure-store';
+import axios from 'axios';
+const { ngrokUrl } = Constants.manifest.extra;
+const isLocal = ngrokUrl && __DEV__
+
+const productionUrl = 'https://example.com'
+
+const baseUrl = isLocal ? ngrokUrl : productionUrl
 
 function CartScreen(props) {
 
     const meals=props.route.params.menuItemDetails.meals
-    console.log(meals)
+    const id = props.route.params.id
+
+    const [restaurant, setRestaurant] = useState({ name: "", description: "" });
+
+    useEffect(() => {
+        SecureStore.getItemAsync("FEEDMAMA_TOKEN").then(x => {
+            axios.get(`${baseUrl}/restaurants/${id}/info`, {
+                headers: {
+                'Authorization': `JWT ${x}` 
+                }
+            }).then((resp) => {
+                setRestaurant(resp.data)
+            }).catch((err) => {
+                Alert.alert('Error', err.response.data.message, [
+                { text: 'OK' }
+                ]);
+            });
+        })
+    }, []);
+
 
     const cartItems=new Array();
 
@@ -18,27 +46,18 @@ function CartScreen(props) {
         }
     }
 
-    console.log(cartItems)
-
     const cart=[
-        cartItems.map(({ title, subtitle, quantity, id }) => (
-          <CartItem foodItem={title} quantity={quantity} key={id}/>
+        cartItems.map(({ name, price, quantity, id }) => (
+          <CartItem foodItem={name} price={price} quantity={quantity} key={id}/>
         ))
       ]
-      
-    const timeEstimate="30-40 min";
-    const fee="$2.99 Fee";
-    
-    const restaurantImage="../app/assets/Photos/FunkyFreshSpringRolls.jpg";
-    const restaurantTitle="Funky Fresh Spring Rolls";
-    const restaurantSubtitle=timeEstimate.concat(" | ",fee);
 
     return (
         <View>
             <RestaurantAbout
-                image={require("../app/assets/Photos/FunkyFreshSpringRolls.jpg")}
-                title={restaurantTitle}
-                subtitle={restaurantSubtitle}
+                image={{uri: restaurant.img}}
+                title={restaurant.name}
+                subtitle={restaurant.description}
             />
             <Divider width={1.8} style={{marginVertical:20}}/>
             <ScrollView style={{
@@ -51,7 +70,7 @@ function CartScreen(props) {
                 }}>
                     {cart}
                 </View>
-                <TouchableOpacity style={styles.centered} onPress={() => props.navigation.push("Checkout", {cartItems: {cartItems}})}>
+                <TouchableOpacity style={styles.centered} onPress={() => props.navigation.push("Checkout", {id: id, cartItems: {cartItems}})}>
                     <Image
                     source={require("../app/assets/Buttons/CheckoutButton.png")}
                     />

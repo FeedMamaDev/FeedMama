@@ -31,12 +31,6 @@ function HomeScreen(props){
         });
       })
     }, []);
-  
-
-    function printRestaurant() {
-     //Should be figured out with backend on what to do with acct info
-     console.log('Wooh! Should switch to restaurant page list view? - JC');
-    }
 
     return (
         <View

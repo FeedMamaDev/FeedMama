@@ -21,6 +21,7 @@ model Users {
   ZIP                  String
   Verified             Int?
   VerificationAttempts Int?
+  Orders               Orders[]
   Payment              Payment[]
   Resturants           Resturants[]
 }
@@ -39,18 +40,20 @@ model Resturants {
   ProvidesFreeMeals Boolean?
   Users             Users    @relation(fields: [OwnerUserID], references: [UserId], onUpdate: NoAction, map: "FK__Resturant__Owner__1DB06A4F")
   Meals             Meals[]
+  Orders            Orders[]
 }
 
 model Meals {
-  MealID       String     @id(map: "PK__Meals__ACF6A65DE9675996") @db.UniqueIdentifier
-  RestaurantID String     @db.UniqueIdentifier
-  Name         String     @db.VarChar(255)
-  Description  String?    @db.VarChar(255)
-  Price        Decimal    @db.Decimal(18, 0)
+  MealID       String       @id(map: "PK__Meals__ACF6A65DE9675996") @db.UniqueIdentifier
+  RestaurantID String       @db.UniqueIdentifier
+  Name         String       @db.VarChar(255)
+  Description  String?      @db.VarChar(255)
+  Price        Decimal      @db.Decimal(18, 0)
   Quantity     Int
   IsVegan      Boolean
   IsVegetarian Boolean
-  Resturants   Resturants @relation(fields: [RestaurantID], references: [RestaurantID], onUpdate: NoAction, map: "FK__Meals__Restauran__208CD6FA")
+  Resturants   Resturants   @relation(fields: [RestaurantID], references: [RestaurantID], onUpdate: NoAction, map: "FK__Meals__Restauran__208CD6FA")
+  OrderMeals   OrderMeals[]
 }
 
 model Payment {
@@ -62,4 +65,32 @@ model Payment {
   ZIP        String?  @db.VarChar(255)
   Primary    Boolean?
   Users      Users?   @relation(fields: [UserId], references: [UserId], onDelete: NoAction, onUpdate: NoAction, map: "Payment_Users")
+  Orders     Orders[]
+}
+
+model Orders {
+  OrderID          String       @id(map: "PK__Orders__C3905BAF094B8CA9") @db.UniqueIdentifier
+  RestaurantID     String       @db.UniqueIdentifier
+  UserID           String       @db.UniqueIdentifier
+  PaymentID        String?      @db.UniqueIdentifier
+  Total            Decimal      @db.Decimal(18, 0)
+  Tip              Decimal      @db.Decimal(18, 0)
+  DateTime         DateTime
+  Address          String       @db.VarChar(255)
+  TrackingURL      String?      @db.VarChar(255)
+  SupportReference String?      @db.VarChar(255)
+  Payment          Payment?     @relation(fields: [PaymentID], references: [PaymentId], onDelete: NoAction, onUpdate: NoAction, map: "FK__Orders__PaymentI__32AB8735")
+  Resturants       Resturants   @relation(fields: [RestaurantID], references: [RestaurantID], onUpdate: NoAction, map: "FK__Orders__Restaura__30C33EC3")
+  Users            Users        @relation(fields: [UserID], references: [UserId], onUpdate: NoAction, map: "FK__Orders__UserID__31B762FC")
+  OrderMeals       OrderMeals[]
+}
+
+model OrderMeals {
+  OrderMealID String  @id(map: "PK__OrderMea__450F23A2BF4F2682") @db.UniqueIdentifier
+  OrderID     String  @db.UniqueIdentifier
+  MealID      String  @db.UniqueIdentifier
+  Quantity    Int
+  Total       Decimal @db.Decimal(18, 0)
+  Meals       Meals   @relation(fields: [MealID], references: [MealID], onUpdate: NoAction, map: "FK__OrderMeal__MealI__367C1819")
+  Orders      Orders  @relation(fields: [OrderID], references: [OrderID], onUpdate: NoAction, map: "FK__OrderMeal__Order__3587F3E0")
 }

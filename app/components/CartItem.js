@@ -3,14 +3,15 @@ import {useState} from 'react';
 import {View, StyleSheet, Image, Text, Button} from 'react-native';
 import { Divider } from 'react-native-elements';
 
-function CartItem({foodItem, quantity}){
+function CartItem({foodItem, quantity, price}){
     return (
         <View>
             <Divider width={.75}/>
             <View style={styles.containerHorz}>
                 <View style={styles.detailsContainer}>
                     <Text style={styles.title}>{foodItem}</Text>
-                    <Text style={styles.subTitle}>{quantity}</Text>
+                    <Text style={styles.subTitle}>{"$" + price}</Text>
+                    <Text style={styles.subTitle}>{"Quantity: " + quantity}</Text>
                 </View>
             </View>
         </View>
