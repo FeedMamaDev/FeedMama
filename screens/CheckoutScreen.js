@@ -4,6 +4,7 @@ import { ImageBackground, StyleSheet, TouchableOpacity, View, TextInput, Image, 
 import { Button, Divider } from 'react-native-elements';
 import CartItem from '../app/components/CartItem';
 import RestaurantAbout from '../app/components/RestaurantAbout';
+import CurrencyInput from 'react-native-currency-input';
 
 const timeEstimate="30-40 min";
 const fee="$2.99 Fee";
@@ -19,7 +20,7 @@ function CheckoutScreen(props) {
     const [card, setCard]=useState();
     
     const [subTotal, setSubTotal]='$'+'15.00'
-    const [tip, setTip] = useState();
+    const [tip, setTip] = useState(0.00);
     const total = '$' + {subTotal} + {tip}
 
     const [dropoff_instructions, setDropoff_Intructions]= useState();
@@ -46,13 +47,13 @@ function CheckoutScreen(props) {
                 <Text style={styles.checkoutSubtitle}>{pickup_address}</Text>
                 <Divider width={.5} style={{marginVertical:10}}/>
                 <Text style={styles.checkoutTitle}>{dropoff_address}</Text>
-                <TouchableOpacity onPress={() => props.navigation.push("NewAddress")}>
-                    <Text style={styles.checkoutSubtitle}>+ New Drop Off Address</Text>
+                <TouchableOpacity onPress={() => props.navigation.push("ChangeAddress")}>
+                    <Text style={styles.checkoutSubtitle}>+ Change Drop Off Address</Text>
                 </TouchableOpacity>
                 <Divider width={.5} style={{marginVertical:10}}/>
                 <Text style={styles.checkoutTitle}>{card}</Text>
                 <TouchableOpacity onPress={() => props.navigation.push("NewCard")}>
-                    <Text style={styles.checkoutSubtitle}>+ New Payment Method</Text>
+                    <Text style={styles.checkoutSubtitle}>+ Change Payment Method</Text>
                 </TouchableOpacity>
                 <Divider width={.5} style={{marginVertical:10}}/>
                 <Text style={styles.checkoutTitle}>{pickup_window}</Text>
@@ -67,12 +68,16 @@ function CheckoutScreen(props) {
                 <View><Text style={styles.checkoutSubtitle}>Subtotal = {subTotal}</Text></View>
                 <View style={styles.containerHorz}>
                     <Text style={styles.checkoutSubtitle}>Tip = </Text>
-                    <TextInput
-                    placeholder='$0.00'
-                    maxLength={5}
-                    keyboardType='number-pad'
-                    value={tip}
-                    onChangeText={text => setTip(text)}
+                    <CurrencyInput
+                        value={tip}
+                        onChangeValue={setTip}
+                        prefix="$"
+                        delimiter=","
+                        separator="."
+                        precision={2}
+                        onChangeText={(formattedValue) => {
+                        console.log(formattedValue);
+                    }}
                     />
                 </View>
                 <View><Text style={styles.checkoutTitle}>Total = {total}</Text></View>

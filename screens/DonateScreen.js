@@ -1,84 +1,61 @@
 import React from 'react';
+import { useState } from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import { Divider } from 'react-native-elements';
 
-import CalcKeys from "../app/components/CalcKeys.js";
+import CurrencyInput from 'react-native-currency-input';
 
-export default class DonateScreen extends React.Component {
-  constructor(props){
-    super(props);
-    this.state = {
-      display:"",
-      numerator:"",
-      denominator:"", 
-      operator:"",
-      switchFractionSection:false
-    }
-  }
-  
-  addNumber(x){
-    //show the number clicked on the display. IF this is the first number saved it is save as the denominator If this is the second number enter, it is saved as the numerator.  
-    this.setState((state, props) => ({ display: state.display + x }))    
-    if(this.state.switchFractionSection ==true){
-      this.setState((state, props) =>({denominator:state.denominator + x}))
-    }else{
-      this.setState((state, props) => ({numerator:state.numerator + x}))
-    }
-  }
+export default function DonateScreen(props){
+  const [donation, setDonation] = useState(0.00);
 
-  clear(){
-    this.setState((state, props) => ({ display:""}));  
-  }
+  return (
+      <View>
+          <View style={{alignContent: "center", alignItems: "center", paddingTop: 50}}>
+              <Image source={require("../app/assets/Static/FeedMamaSecLogo.png")} resizeMode="contain"/>
+          </View>
 
-  render() {
-    return (
-        <View>
-            <View style={{alignContent: "center", alignItems: "center", paddingTop: 50}}>
-                <Image source={require("../app/assets/Static/FeedMamaSecLogo.png")} resizeMode="contain"/>
-            </View>
+          <Divider style={{width: "100%", height: 6, backgroundColor: "#FF6C6C", marginTop: "5%"}}/>
+              <View style={styles.centered}>
+                  <Text style={{fontSize: 36, marginTop: "5%", fontWeight: "bold", marginBottom: 10}}>Donate</Text>
+              </View>
+          <Divider style={{width: "100%", height: 6, backgroundColor: "#FF6C6C", marginTop: "5%"}}/>
 
-            <Divider style={{width: "100%", height: 6, backgroundColor: "#FF6C6C", marginTop: "5%"}}/>
-                <View style={styles.centered}>
-                    <Text style={{fontSize: 36, marginTop: "5%", fontWeight: "bold", marginBottom: 10}}>Donate</Text>
-                </View>
-            <Divider style={{width: "100%", height: 6, backgroundColor: "#FF6C6C", marginTop: "5%"}}/>
+          <View style={{
+            backgroundColor:"#FF6C6C",
+            height: "60%",
+            alignItems:"center",
+          }}>
+            <View style={{marginTop:"15%"}}/>
+            <Text style={styles.title}>Donate to Mothers in need!</Text>
+            <Text style={styles.title}>Enter amount below:</Text>
+            <View style={{marginTop:"10%"}}/>
+            <CurrencyInput
+              value={donation}
+              onChangeValue={setDonation}
+              prefix="$"
+              delimiter=","
+              separator="."
+              precision={2}
+              style={{
+                margin:'2%',
+                fontSize:48,
+                fontFamily: Platform.OS === "iOS" ? "Proxima Nova" : "Helvetica",
+                fontWeight:"bold",
+                color: "white", 
+              }}
+              onChangeText={(formattedValue) => {
+              console.log(formattedValue);
+            }}
+            />
+            <View style={{marginTop:"10%"}}/>
+            <Text style={styles.subtitle}>Donations will aid in the No-Cost Meals Program</Text>
+          </View>
 
-            <View style={styles.containerCalc}>
-                <View style={styles.display}>
-                    <Text style={styles.title}>{this.state.display}</Text>
-                </View>
-                <View style={styles.calcKeyRow}>
-                    <CalcKeys displayKey="1" onClick={()=> this.addNumber("1")} />
-                    <CalcKeys displayKey="2" onClick={()=> this.addNumber("2")} />
-                    <CalcKeys displayKey="3" onClick={()=> this.addNumber("3")} />
-                </View>
-                <View style={styles.calcKeyRow}>
-                    <CalcKeys displayKey="4" onClick={()=> this.addNumber("4")} />
-                    <CalcKeys displayKey="5" onClick={()=> this.addNumber("5")} />
-                    <CalcKeys displayKey="6" onClick={()=> this.addNumber("6")} />
-                </View>
-                <View style={styles.calcKeyRow}>
-                    <CalcKeys displayKey="7" onClick={()=> this.addNumber("7")} />
-                    <CalcKeys displayKey="8" onClick={()=> this.addNumber("8")} />
-                    <CalcKeys displayKey="9" onClick={()=> this.addNumber("9")} />
-                </View>
-                <View style={styles.calcKeyRow}>
-                    <CalcKeys displayKey="." onClick={()=> this.addNumber(".")} />
-                    <CalcKeys displayKey="0" onClick={()=> this.addNumber("0")} />
-                    <CalcKeys onClick={()=> this.clear()} displayKey="Clear" />
-                </View>
-            </View>
-
-            <TouchableOpacity style={styles.centered}>
-                <Text>[Credit Card]</Text> 
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.centered}>
-                <Image source={require("../app/assets/Buttons/DonateButton.png")} resizeMode="contain"/> 
-            </TouchableOpacity>
-        </View>
-    );
-  }
+          <TouchableOpacity style={styles.centered}>
+              <Image source={require("../app/assets/Buttons/DonateButton.png")} resizeMode="contain"/> 
+          </TouchableOpacity>
+      </View>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -131,12 +108,21 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center"
     },
-    signUpTitle: {
-    marginTop: "20%",
-    marginBottom: "5%"
+    title:{
+      margin:'2%',
+      fontSize:20,
+      fontFamily: Platform.OS === "iOS" ? "Proxima Nova" : "Helvetica",
+      fontWeight:"bold",
+      color: "white",
+    },
+    subtitle:{
+        margin:'2%',
+        fontSize:12,
+        fontFamily: Platform.OS === "iOS" ? "Proxima Nova" : "Helvetica",
+        color: "white",
     },
     centered: {
-        marginTop: 5,
+        marginTop: "3%",
       justifyContent: "center",
       alignItems: "center"
     },

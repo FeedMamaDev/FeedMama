@@ -2,7 +2,6 @@ import React from 'react';
 import { useState } from 'react';
 import { ImageBackground, StyleSheet, TouchableOpacity, View, TextInput, Image, ScrollView , Text, FlatList} from 'react-native';
 import { Button, Divider } from 'react-native-elements';
-import DropDownPicker from 'react-native-dropdown-picker';
 
 function NewAddressScreen(props) {
     const [name, setName]= useState();
@@ -12,41 +11,21 @@ function NewAddressScreen(props) {
     const [state, setState]= useState();
     const [zipcode, setZipcode]= useState();
 
-    const [open, setOpen] = useState(false);
-    const [value, setValue] = useState(null);
-    const [address, setAddress] = useState([
-        {name:"John Doe", address: "2029 W Wisconsin Ave Apt B, Milwaukee, WI 53233", id: "0", key:"0"},
-        {name: "Austin Fron", address: "1515 W Wisconsin Ave, Milwaukee, WI 53233", id: "1", key:"1"},
-        {name:"April Summer", address: "911 N 17th Street Apt 301, Milwaukee, WI 53233", id: "2", key:"2"},
-    ]);
-
-    const fullAddr={
-        name: {name},
-        address: st1+" "+st2+", "+city+", "+state+" "+zipcode
-    }
-
-    function addAddress({fullAddr}){
+    function addAddress(name, st1, st2, city, state, zipcode){
+        const newAddr=[{name}, {st1}, {st2}, {city}, {state}, {zipcode}]
+        console.log(newAddr)
         //Add address to the list of stored addresses
     }
 
     return (
         <View>
-            <TouchableOpacity style={{marginTop: "25%", marginLeft: 20, marginBottom: 50}} onPress={() => props.navigation.goBack()}>
+            <TouchableOpacity style={{marginTop: "15%", marginLeft: 20, marginBottom: "15%"}} onPress={() => props.navigation.goBack()}>
                 <Text style={{fontSize: 30, fontWeight: "bold", color: "#FF6C6C"}}>{"< Back"}</Text>
             </TouchableOpacity>
 
             <View style={styles.centered}>
-                <Text style={{fontSize: 16, fontWeight: "bold", marginBottom: 50}}>Please select or enter a new address:</Text>
+                <Text style={{fontSize: 16, fontWeight: "bold", marginBottom: "10%"}}>Please enter a new address:</Text>
             </View>
-
-            <DropDownPicker
-                open={open}
-                value={value}
-                items={address}
-                setOpen={setOpen}
-                setValue={setValue}
-                setItems={setAddress}
-            />
 
             <View style={{marginLeft: "10%", marginRight: "10%"}}>
 
@@ -93,6 +72,7 @@ function NewAddressScreen(props) {
                     autoCapitalize="none"
                     autoCorrect={false}
                     keyboardType='default'
+                    maxLength={2}
                     value={state}
                     onChangeText={text => setState(text)}
                 />
@@ -102,12 +82,13 @@ function NewAddressScreen(props) {
                     autoCapitalize="none"
                     autoCorrect={false}
                     keyboardType='number-pad'
+                    maxLength={5}
                     value={zipcode}
                     onChangeText={text => setZipcode(text)}
                 />
             </View>
 
-            <TouchableOpacity onPress={() => addAddress(fullAddr)} style={{alignContent: "center", alignItems: "center"}}>
+            <TouchableOpacity onPress={() => addAddress(name, st1, st2, city, state, zipcode)} style={{alignContent: "center", alignItems: "center"}}>
                 <ImageBackground
                     style={styles.primaryButton}
                     source={require("../app/assets/Buttons/AddButton.png")}
@@ -155,6 +136,10 @@ const styles = StyleSheet.create({
       fontFamily: Platform.OS === "iOS" ? "Proxima Nova" : "Helvetica",
       fontWeight:"bold",
       color: "#fff",
-    }
+    },
+    centered: {
+        justifyContent: "center",
+        alignItems: "center"
+    },
 });
 export default NewAddressScreen;
