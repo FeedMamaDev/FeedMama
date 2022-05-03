@@ -7,7 +7,6 @@ import RestaurantScreen from '../../screens/RestaurantScreen';
 import CartScreen from '../../screens/CartScreen';
 import CheckoutScreen from '../../screens/CheckoutScreen';
 
-import ChangeAddress from '../../screens/ChangeAddress';
 import NewAddressChange from '../../screens/NewAddressChange';
 import NewCardChange from '../../screens/NewCardChange';
 import OrderProgressScreen from '../../screens/OrderProgressScreen';
