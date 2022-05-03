@@ -1,50 +1,121 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import React from 'react';
-import { ImageBackground, StyleSheet, TouchableOpacity, View, TextInput, Image, ScrollView , Text} from 'react-native';
+import { ImageBackground, StyleSheet, TouchableOpacity, View, TextInput, Image, ScrollView , Alert, Text} from 'react-native';
 import { Button, Divider } from 'react-native-elements';
-import CartItem from '../app/components/CartItem';
 import RestaurantAbout from '../app/components/RestaurantAbout';
 import CurrencyInput from 'react-native-currency-input';
 
+import Constants from 'expo-constants';
+import CartItem from '../app/components/CartItem';
+import * as SecureStore from 'expo-secure-store';
+import axios from 'axios';
+const { ngrokUrl } = Constants.manifest.extra;
+const isLocal = ngrokUrl && __DEV__
+
+const productionUrl = 'https://example.com'
+
+const baseUrl = isLocal ? ngrokUrl : productionUrl
+
 const timeEstimate="30-40 min";
 const fee="$2.99 Fee";
+var formatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+  
+    // These options are needed to round to whole numbers if that's what you want.
+    //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
+    //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
+  });
 
 const restaurantImage="../app/assets/Photos/FunkyFreshSpringRolls.jpg";
 const restaurantTitle="Funky Fresh Spring Rolls";
 const restaurantSubtitle=timeEstimate.concat(" | ",fee);
 
 function CheckoutScreen(props) {
-    const pickup_address='funkeyfresh styles, milwaukee, wi 53233'
-    const pickup_window='40-50min'
-    const [dropoff_address, setDropoff_address]=useState();
-    const [card, setCard]=useState();
+    const [dropoff_address, setDropoff_address]=useState("1313 W Wisconsin Ave, Milwaukee, WI 53233");
+    const [card, setCard]=useState("1234567890");
     
-    const [subTotal, setSubTotal]='$'+'15.00'
-    const [tip, setTip] = useState(0.00);
-    const total = '$' + {subTotal} + {tip}
+    const [subTotal, setSubTotal] = useState(0)
+    const [tip, setTip] = useState(0);
+    const [total, setTotal] = useState(0);
 
     const [dropoff_instructions, setDropoff_Intructions]= useState();
+    const [restaurant, setRestaurant] = useState({ name: "", description: "", address: "", city: "", state: "", zip: "" });
 
     const cartItems=props.route.params.cartItems.cartItems
-    console.log('-')
-    console.log(cartItems)
+    const id=props.route.params.id
+
+    useEffect(() => {
+        SecureStore.getItemAsync("FEEDMAMA_TOKEN").then(x => {
+            axios.get(`${baseUrl}/restaurants/${id}/info`, {
+                headers: {
+                'Authorization': `JWT ${x}` 
+                }
+            }).then((resp) => {
+                setRestaurant(resp.data)
+                console.log(resp.data)
+            }).catch((err) => {
+                Alert.alert('Error', err.response.data.message, [
+                { text: 'OK' }
+                ]);
+            });
+        })
+
+        let temp_subtotal = 0;
+        cartItems.forEach(x => {
+            temp_subtotal += x.quantity * parseInt(x.price) 
+        })
+        setSubTotal(temp_subtotal)
+        setTotal(temp_subtotal)
+    }, []);
+
+    function updateTip(text) {
+        let num = parseFloat(text)
+        setTip(num)
+        setTotal(subTotal + num)
+    }
+
+    function order() {
+        SecureStore.getItemAsync("FEEDMAMA_TOKEN").then(x => { 
+            axios.post(`${baseUrl}/order`, {
+                restaurant: id,
+                cart: cartItems,
+                tip: tip,
+                dropoff_instructions: dropoff_instructions,
+                card: card,
+                dropoff_address: dropoff_address
+                }, {
+                headers: {
+                    'Authorization': `JWT ${x}` 
+                }
+            }).then(() => {
+                Alert.alert('Order Created', 'Order created successfully!.', [
+                    { text: 'OK', onPress: () => { props.navigation.push("OrderProgress", {pickup_address:{pickup_address}, pickup_window:{pickup_window}, dropoff_address:{dropoff_address}, total:{total}}) } },
+                ]);
+            }).catch((err) => {
+                Alert.alert('Error', err.response.data.message, [
+                    { text: 'OK' }
+                ]);
+            });
+        })
+      }
 
     const cart=[
-        cartItems.map(({ title, subtitle, quantity, id }) => (
-          <CartItem foodItem={title} quantity={quantity} key={id}/>
-        ))
+        cartItems.map(({ name, price, quantity, id }) => (
+            <CartItem foodItem={name} price={price} quantity={quantity} key={id}/>
+          ))
       ]
 
     return (
         <View>
             <ScrollView>
                 <RestaurantAbout
-                    image={require("../app/assets/Photos/FunkyFreshSpringRolls.jpg")}
-                    title={restaurantTitle}
-                    subtitle={restaurantSubtitle}
+                    image={{uri: restaurant.img}}
+                    title={restaurant.name}
+                    subtitle={restaurant.description}
                 />
                 <Text style={styles.checkoutTitle}>{'Restaurant Address:'}</Text>
-                <Text style={styles.checkoutSubtitle}>{pickup_address}</Text>
+                <Text style={styles.checkoutSubtitle}>{restaurant.address + " " + restaurant.city + ", " + restaurant.state + " " + restaurant.zip}</Text>
                 <Divider width={.5} style={{marginVertical:10}}/>
                 <Text style={styles.checkoutTitle}>{dropoff_address}</Text>
                 <TouchableOpacity onPress={() => props.navigation.push("ChangeAddress")}>
@@ -55,9 +126,6 @@ function CheckoutScreen(props) {
                 <TouchableOpacity onPress={() => props.navigation.push("NewCard")}>
                     <Text style={styles.checkoutSubtitle}>+ Change Payment Method</Text>
                 </TouchableOpacity>
-                <Divider width={.5} style={{marginVertical:10}}/>
-                <Text style={styles.checkoutTitle}>{pickup_window}</Text>
-                <Divider width={.5} style={{marginVertical:10}}/>
                 <View style={{
                     padding: 10,
                     width:'100%'
@@ -65,22 +133,19 @@ function CheckoutScreen(props) {
                     {cart}
                 </View>
                 <Divider width={.5} style={{marginVertical:10}}/>
-                <View><Text style={styles.checkoutSubtitle}>Subtotal = {subTotal}</Text></View>
+                <View><Text style={styles.checkoutSubtitle}>Subtotal = {formatter.format(subTotal)}</Text></View>
                 <View style={styles.containerHorz}>
                     <Text style={styles.checkoutSubtitle}>Tip = </Text>
                     <CurrencyInput
                         value={tip}
-                        onChangeValue={setTip}
                         prefix="$"
                         delimiter=","
                         separator="."
                         precision={2}
-                        onChangeText={(formattedValue) => {
-                        console.log(formattedValue);
-                    }}
-                    />
+                        onChangeText={text => updateTip(text)
+                    }/>
                 </View>
-                <View><Text style={styles.checkoutTitle}>Total = {total}</Text></View>
+                <View><Text style={styles.checkoutTitle}>Total = {formatter.format(total)}</Text></View>
                 <Divider width={.5} style={{marginVertical:10}}/>
                 <TextInput 
                     style={styles.input} 
@@ -92,7 +157,7 @@ function CheckoutScreen(props) {
                     value={dropoff_instructions}
                     onChangeText={text => setDropoff_Intructions(text)}
                 />
-                <TouchableOpacity style={styles.centered} onPress={() => props.navigation.push("OrderProgress", {pickup_address:{pickup_address}, pickup_window:{pickup_window}, dropoff_address:{dropoff_address}, total:{total}})}>
+                <TouchableOpacity style={styles.centered} onPress={() => order()}>
                     <Image
                         source={require("../app/assets/Buttons/PlaceOrderButton.png")}
                         resizeMode="contain"/>

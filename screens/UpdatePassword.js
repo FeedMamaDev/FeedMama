@@ -29,22 +29,25 @@ function UpdatePassword(props){
     const userID = getValueFor("FEEDMAMA_TOKEN");
 
     function changePassword() {
-        console.log("In?")
-        axios.post(`${baseUrl}/changePassword/update`, {
-            currentPassword: currentPassword,
-            newPassword: newPassword,
-            verNewPassword: verNewPassword,
-            userID, userID
-          }).then((resp) => {
-              console.log(resp)
-            Alert.alert('Password Changed', 'Password changed successfully!.', [
-              { text: 'OK', onPress: () => { props.navigation.navigate("Account")} },
-            ]);
-          }).catch((err) => {
-            Alert.alert('Error', err.response.data.message, [
-              { text: 'OK' }
-            ]);
-          });
+        SecureStore.getItemAsync("FEEDMAMA_TOKEN").then(x => {
+            axios.post(`${baseUrl}/changePassword/update`, {
+                currentPassword: currentPassword,
+                newPassword: newPassword,
+                verNewPassword: verNewPassword,
+                userID: userID
+              }, { headers: {
+                'Authorization': `JWT ${x}`
+              }}).then((resp) => {
+                  console.log(resp)
+                Alert.alert('Password Changed', 'Password changed successfully!.', [
+                  { text: 'OK', onPress: () => { props.navigation.navigate("Account")} },
+                ]);
+              }).catch((err) => {
+                Alert.alert('Error', err.response.data.message, [
+                  { text: 'OK' }
+                ]);
+              });
+        })
     }
 
     return(

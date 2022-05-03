@@ -7,9 +7,11 @@ var bodyParser = require('body-parser')
 const crypto = require('crypto');
 const uuid = require('uuid').v4;
 const jwt = require("jsonwebtoken");
- 
+const verifyToken = require("../middleware/authenticate");
+
 // create application/json parser
 var jsonParser = bodyParser.json()
+router.use(verifyToken);
 
 router.post("/update", jsonParser, async function (req, res, next) {
     console.log("Working?")
@@ -33,13 +35,6 @@ router.post("/update", jsonParser, async function (req, res, next) {
             });
             return
         }
-        if (!req.body.userID){
-            res.status(400).json({
-              message: "Uh oh.. No User ID!"
-            });
-            return
-        }
-
         //Prior to query, check if new passwords match
         if(req.body.newPassword !== req.body.verNewPassword) {
             res.status(400).json({
@@ -47,42 +42,28 @@ router.post("/update", jsonParser, async function (req, res, next) {
               });
               return
         }
-
-        //query user from database
-        const user = await prisma.users.findFirst({where: { UserId: req.body.userID }});
-        if (!user){
-            res.status(400).json({
-              message: "Uh oh.. User not found!"
-            });
-            return
-        }
-
-        var checkCurrentPassword = crypto.createHash('sha256').update(req.body.password).digest('hex')
-        if(user.Password !== checkCurrentPassword) {
+        console.log(req.body)
+        var checkCurrentPassword = crypto.createHash('sha256').update(req.body.currentPassword).digest('hex')
+        if(req.user.Password !== checkCurrentPassword) {
         res.status(400).json({
             message: "The password you entered does not match your current password"
         })
         return
         }
-
         var newPassword = crypto.createHash('sha256').update(req.body.newPassword).digest('hex')
         console.log(req.body.newPassword)
         await prisma.users.update({
             where: {
-                UserId: userID
+                UserId: req.user.UserId
             },
             data: {
                 Password: newPassword
             }
         }); 
-
-
         res.status(200).json({
             message: "Password successfully updated!"
           });
           return
-        
-
     } catch (err) {
         console.error(`Error while getting programming languages `, err.message);
         next(err);

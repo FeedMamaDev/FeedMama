@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ImageBackground, StyleSheet, TouchableOpacity, View, Text, Image, ScrollView, Button} from 'react-native';
+import { ImageBackground, StyleSheet, TouchableOpacity, View, Text, Image, ScrollView, Button, Alert} from 'react-native';
 import { Divider } from 'react-native-elements';
 import RestaurantAbout from '../app/components/RestaurantAbout';
 import BigButton from '../app/components/BigButton';
@@ -103,7 +103,7 @@ function RestaurantScreen({route, navigation}){
     }
   }
 
-  function MenuItem({title,  subtitle, max_quantity, quantity, id}){
+  function MenuItem({title,  subtitle, max_quantity, quantity, id, price}){
     const [value, setValue]=useState(quantity);
 
     const incrementValue = () => {
@@ -129,6 +129,7 @@ function RestaurantScreen({route, navigation}){
                     alignContent:"flex-start"
                   }}>
                       <Text style={styles.title}>{title}</Text>
+                      <Text style={{fontWeight: "bold"}}>{price}</Text>
                       <Text style={styles.subTitle}>{subtitle}</Text>
                   </View>
                   <View style={{
@@ -149,7 +150,7 @@ function RestaurantScreen({route, navigation}){
   return (
     <View>
       <RestaurantAbout
-        image={restaurant.img}
+        image={{uri: restaurant.img}}
         title={restaurant.name}
         subtitle={restaurant.description}
       />
@@ -167,11 +168,11 @@ function RestaurantScreen({route, navigation}){
           width:'100%'
         }}>
         {meals.map(({ name, description, max_quantity, quantity, id, price }) => (
-          <MenuItem title={name} subtitle={"$" + price} max_quantity={max_quantity} quantity={quantity} id={id} key={id}/>
+          <MenuItem title={name} price={"$" + price} subtitle={description} max_quantity={max_quantity} quantity={quantity} id={id} key={id}/>
         ))}
         </View>
       </ScrollView>
-      <TouchableOpacity onPress={() => navigation.push("Cart", {menuItemDetails: {meals}})} style={{
+      <TouchableOpacity onPress={() => navigation.push("Cart", {id: id, menuItemDetails: {meals}})} style={{
         position: 'absolute',
         width: 50,
         height: 50,

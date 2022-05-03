@@ -23,6 +23,7 @@ function HomeScreen(props){
             'Authorization': `JWT ${x}` 
           }
         }).then((resp) => {
+          console.log(resp.data)
           setData(resp.data);
         }).catch((err) => {
           Alert.alert('Error', err.response.data.message, [
@@ -31,12 +32,6 @@ function HomeScreen(props){
         });
       })
     }, []);
-  
-
-    function printRestaurant() {
-     //Should be figured out with backend on what to do with acct info
-     console.log('Wooh! Should switch to restaurant page list view? - JC');
-    }
 
     return (
         <View
