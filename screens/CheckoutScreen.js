@@ -89,7 +89,7 @@ function CheckoutScreen(props) {
                     'Authorization': `JWT ${x}` 
                 }
             }).then(() => {
-                Alert.alert('Order Created', 'Order created successfully!.', [
+                Alert.alert('Order Created Successfully!', 'You should recieve a text message to track your order.', [
                     { text: 'OK', onPress: () => { props.navigation.push("OrderProgress", {pickup_address:{pickup_address}, pickup_window:{pickup_window}, dropoff_address:{dropoff_address}, total:{total}}) } },
                 ]);
             }).catch((err) => {
@@ -136,14 +136,14 @@ function CheckoutScreen(props) {
                 <View><Text style={styles.checkoutSubtitle}>Subtotal = {formatter.format(subTotal)}</Text></View>
                 <View style={styles.containerHorz}>
                     <Text style={styles.checkoutSubtitle}>Tip = </Text>
-                    <CurrencyInput
-                        value={tip}
+                    <TextInput
+                        placeholder='$0.00'
+                        maxLength={5}
                         prefix="$"
-                        delimiter=","
-                        separator="."
-                        precision={2}
-                        onChangeText={text => updateTip(text)
-                    }/>
+                        keyboardType='decimal-pad'
+                        value={tip}
+                        onChangeText={text => updateTip(text)}
+                    />
                 </View>
                 <View><Text style={styles.checkoutTitle}>Total = {formatter.format(total)}</Text></View>
                 <Divider width={.5} style={{marginVertical:10}}/>

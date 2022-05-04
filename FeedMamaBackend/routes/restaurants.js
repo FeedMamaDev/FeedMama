@@ -44,10 +44,10 @@ router.get("/:restId/items", jsonParser, async function (req, res, next) {
 
 router.get("/", jsonParser, async function (req, res, next) {
     try {
-        //const restaurants = await prisma.resturants.findMany();
+        const restaurants = await prisma.resturants.findMany();
         var items = [];
 
-        /* restaurants.forEach(rest => items.push({
+         restaurants.forEach(rest => items.push({
             id: rest.RestaurantID,
             name: rest.Name,
             description: rest.Description,
@@ -56,7 +56,7 @@ router.get("/", jsonParser, async function (req, res, next) {
             city: rest.City,
             state: rest.State,
             zip: rest.ZIP
-        })); */
+        })); 
         res.status(200).json(items);
     } catch (err) {
         console.error(`Error while trying to get restaurant items`, err.message);
