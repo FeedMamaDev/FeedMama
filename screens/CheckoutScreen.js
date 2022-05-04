@@ -111,7 +111,6 @@ function CheckoutScreen(props) {
         behavior={Platform.OS === "ios" ? "padding" : null}
         style={{flexGrow: 1}}
         >
-            <View>
                 <ScrollView>
                     <RestaurantAbout
                         image={{uri: restaurant.img}}
@@ -178,7 +177,6 @@ function CheckoutScreen(props) {
                             resizeMode="contain"/>
                     </TouchableOpacity>
                 </ScrollView>
-            </View>
         </KeyboardAvoidingView>
     );
 }

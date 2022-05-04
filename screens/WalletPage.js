@@ -5,7 +5,6 @@ import { Divider } from 'react-native-elements';
 import { ScrollView } from 'react-native-gesture-handler';
 import Constants from 'expo-constants';
 import CreditCard from '../app/components/CreditCard';
-import Constants from 'expo-constants';
 import * as SecureStore from 'expo-secure-store';
 import axios from 'axios';
 
