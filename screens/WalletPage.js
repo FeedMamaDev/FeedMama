@@ -43,8 +43,14 @@ function WalletPage(props){
                 'Authorization': `JWT ${x}` 
               }
             }).then((resp) => {
-                setCards(resp.data.cardList) 
-                console.log(cards)
+                try{
+                    setCards(resp.data.cardList) 
+                    console.log(cards)
+                } catch(err){
+                    Alert.alert('Add Card', 'Please Add a Card', [
+                        { text: 'OK', onPress: () => { props.navigation.navigate("AddCard")}},
+                      ]);
+                }   
               }).catch((err) => {
                 Alert.alert('Error', err.response.data.message, [
                   { text: 'OK' }
