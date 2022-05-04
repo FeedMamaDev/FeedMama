@@ -15,6 +15,11 @@ const baseUrl = isLocal ? ngrokUrl : productionUrl
 
 function WalletPage(props){
 
+    function delay(time)
+    {
+        return new Promise(resolve => setTimeout(resolve, time));
+    }
+
     function updatePrimary(PID){
         SecureStore.getItemAsync("FEEDMAMA_TOKEN").then(x => {
             axios.get(`${baseUrl}/user/${PID}/updateCards`, {
@@ -35,21 +40,23 @@ function WalletPage(props){
 
     const [cards, setCards] = useState([]);
 
-    const loadDataOnlyOnce = () => {
+     const loadDataOnlyOnce = () => {
         SecureStore.getItemAsync("FEEDMAMA_TOKEN").then(x => {
             axios.get(`${baseUrl}/user/pullCards`, {
               headers: {
                 'Authorization': `JWT ${x}` 
               }
             }).then((resp) => {
-                try{
-                    setCards(resp.data.cardList) 
-                    console.log(cards)
-                } catch(err){
-                    Alert.alert('Add Card', 'Please Add a Card', [
-                        { text: 'OK', onPress: () => { props.navigation.navigate("AddCard")}},
-                      ]);
-                }   
+                delay(1000).then(() => {
+                    if(resp.data.cardList === undefined){
+                        Alert.alert('Add Card', 'Please Add a Card', [
+                            { text: 'OK', onPress: () => { props.navigation.navigate("AddCard")}},
+                          ]);
+                    } else{
+                        setCards(resp.data.cardList) 
+                        console.log(cards)
+                    }
+                });
               }).catch((err) => {
                 Alert.alert('Error', err.response.data.message, [
                   { text: 'OK' }

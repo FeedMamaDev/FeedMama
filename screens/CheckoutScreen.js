@@ -67,6 +67,22 @@ function CheckoutScreen(props) {
         })
         setSubTotal(temp_subtotal)
         setTotal(temp_subtotal)
+
+        SecureStore.getItemAsync("FEEDMAMA_TOKEN").then(x => {
+            axios.get(`${baseUrl}/user/pullPrimary`, {
+                headers: {
+                'Authorization': `JWT ${x}` 
+                }
+            }).then((resp) => {
+                setCard(resp.data.card)
+                console.log(resp.data.card)
+            }).catch((err) => {
+                Alert.alert('Error', err.response.data.message, [
+                { text: 'OK' }
+                ]);
+            });
+        })
+
     }, []);
 
     function updateTip(text) {

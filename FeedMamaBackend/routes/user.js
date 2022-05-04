@@ -13,6 +13,39 @@ const verifyToken = require("../middleware/authenticate");
 var jsonParser = bodyParser.json()
 router.use(verifyToken);
 
+router.get("/pullPrimary", jsonParser, async function (req, res, next) {
+    try {
+        //Query User Information
+        console.log(req.user.UserId)
+        const primaryCard = await prisma.payment.findFirst({
+            where: { 
+                AND: [
+                    {
+                        UserId: {
+                            equals: req.user.UserId,
+                        },
+                    },
+                    {
+                        Primary: {
+                            equals: true,
+                        },
+                    },
+                ],
+            },
+        });
+
+        var lastFour = "••••" + primaryCard.Number.substring(primaryCard.Number.length - 4, primaryCard.Number.length + 1)
+
+        res.status(200).json({
+            card: lastFour
+        });
+        return
+
+    } catch (err) {
+        console.error(`No Primary Card `, err.message);
+        next(err);
+    }
+});
 
 router.get("/:PID/updateCards", jsonParser, async function (req, res, next) {
     try {
