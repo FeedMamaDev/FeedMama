@@ -49,7 +49,7 @@ function RestaurantFlow(){
         <RestaurantStack.Screen name="Cart" component={CartScreen}/>
         <RestaurantStack.Screen name="Checkout" component={CheckoutScreen}/>
         <RestaurantStack.Screen name="AddressFlow" component={AddressFlow}/>
-        <RestaurantStack.Screen name="NewCard" component={NewCardChange}/>
+        <RestaurantStack.Screen name="WalletFlow" component={WalletFlow}/>
         <RestaurantStack.Screen name="OrderProgress" component={OrderProgressScreen}/>
       </RestaurantStack.Navigator>
   );

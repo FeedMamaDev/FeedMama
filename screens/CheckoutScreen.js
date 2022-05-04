@@ -132,7 +132,7 @@ function CheckoutScreen(props) {
                         <Image source={require("../app/assets/Static/credit-card.png")} style={{width:30, height:30, marginBottom:5, marginLeft:5}}/>
                         <Text style={styles.checkoutTitle}>{card}</Text>
                     </View>
-                    <TouchableOpacity onPress={() => props.navigation.push("NewCard")}>
+                    <TouchableOpacity onPress={() => props.navigation.push("WalletFlow")}>
                         <Text style={styles.checkoutSubtitle}>+ Change Payment Method</Text>
                     </TouchableOpacity>
                     <View style={{
