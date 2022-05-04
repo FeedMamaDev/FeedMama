@@ -101,6 +101,8 @@ router.post("/", jsonParser, async function (req, res, next) {
             "pickup_address": rest.Address,
             "pickup_business_name": rest.Name,
             "pickup_phone_number": "4142168548",
+            "dropoff_contact_given_name": req.user.FirstName,
+            "dropoff_contact_family_name": req.user.LastName,
             "dropoff_address": req.user.Address,
             "dropoff_phone_number": req.user.Phone,
             "order_value": order.Total*100, 
