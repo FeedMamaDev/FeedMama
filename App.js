@@ -21,10 +21,10 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="LandingScreen" component={LandingScreen} />
-        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="Login" component={LoginScreen} options={{gestureEnabled: false}}/>
         <Stack.Screen name="UserType" component={SignUpUserTypeScreen} />
         <Stack.Screen name="AcctInfo" component={SignUpAcctInfoScreen} />
-        <Stack.Screen name="Tabs" component={Tabs} screenOptions={{ headerShown: false}}/>
+        <Stack.Screen name="Tabs" component={Tabs} screenOptions={{ headerShown: false}} options={{gestureEnabled: false}}/>
         <Stack.Screen name="MotherEnrollment" component={MotherEnrollment} screenOptions={{ headerShown: true}}/>
       </Stack.Navigator>
     </NavigationContainer>

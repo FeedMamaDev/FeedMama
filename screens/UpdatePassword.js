@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
-import {StyleSheet, Text, View, TouchableOpacity, Image, ImageBackground, TextInput, Alert} from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity, Image, ImageBackground, TextInput, Alert, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard} from 'react-native';
 import { Divider } from 'react-native-elements';
-import { ScrollView } from 'react-native-gesture-handler';
 
 import axios from 'axios';
 import Constants from 'expo-constants';
@@ -51,61 +50,65 @@ function UpdatePassword(props){
     }
 
     return(
+        <KeyboardAvoidingView enabled
+        behavior={Platform.OS === "ios" ? "padding" : null}
+        style={{flexGrow: 1}}
+        >
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View>
             <View style={{alignContent: "center", alignItems: "center", paddingTop: 50}}>
                 <Image source={require("../app/assets/Static/FeedMamaSecLogo.png")} resizeMode="contain"/>
             </View>
             <Divider style={{width: "100%", height: 6, backgroundColor: "#FF6C6C", marginTop: "5%"}}/>
-
-            <ScrollView style={{resizeMode:"repeat", height: "100%"}}>
                 <View style={styles.centered}>
                     <Text style={{fontSize: 36, marginTop: "5%", fontWeight: "bold"}}>Update Password</Text>
                 </View>
-                <Divider style={{width: "100%", height: 6, backgroundColor: "#FF6C6C", marginTop: "5%"}}/>
-                <View style={{alignContent: "center", alignItems: "center", paddingTop: 50}}>
-                <TextInput 
-                    style={styles.input} 
-                    placeholder={"Password"}
-                    autoCapitalize="none"
-                    icon="lock"
-                    secureTextEntry
-                    textContentType='password'
-                    value={currentPassword}
-                    onChangeText={text => setCurrentPassword(text)}
-                />
-                <TextInput 
-                    style={styles.input} 
-                    placeholder={"Password"}
-                    autoCapitalize="none"
-                    icon="lock"
-                    secureTextEntry
-                    textContentType='password'
-                    value={newPassword}
-                    onChangeText={text => setNewPassword(text)}
-                />
-                <TextInput 
-                    style={styles.input} 
-                    placeholder={"Password"}
-                    autoCapitalize="none"
-                    icon="lock"
-                    secureTextEntry
-                    textContentType='password'
-                    value={verNewPassword}
-                    onChangeText={text => setVerNewPassword(text)}
-                />
+                    <Divider style={{width: "100%", height: 6, backgroundColor: "#FF6C6C", marginTop: "5%"}}/>
+                    <View style={{alignContent: "center", alignItems: "center", paddingTop: 50}}>
+                        <Text style={styles.textStyle}>Current Password</Text>
+                        <TextInput 
+                            style={styles.input} 
+                            placeholder={"Current Password"}
+                            autoCapitalize="none"
+                            icon="lock"
+                            secureTextEntry
+                            textContentType='password'
+                            value={currentPassword}
+                            onChangeText={text => setCurrentPassword(text)}
+                        />
+                        <Text style={styles.textStyle}>New Password</Text>
+                        <TextInput 
+                            style={styles.input} 
+                            placeholder={"New Password"}
+                            autoCapitalize="none"
+                            icon="lock"
+                            secureTextEntry
+                            textContentType='password'
+                            value={newPassword}
+                            onChangeText={text => setNewPassword(text)}
+                        />
+                        <Text style={styles.textStyle}>Retype New Password</Text>
+                        <TextInput 
+                            style={styles.input} 
+                            placeholder={"New Password"}
+                            autoCapitalize="none"
+                            icon="lock"
+                            secureTextEntry
+                            textContentType='password'
+                            value={verNewPassword}
+                            onChangeText={text => setVerNewPassword(text)}
+                        />
+                        <TouchableOpacity onPress={() => changePassword()}>
+                            <ImageBackground
+                            style={styles.primaryButton}
+                            source={require("../app/assets/Buttons/SubmitButton.png")}
+                            resizeMode="contain">
+                            </ImageBackground>
+                        </TouchableOpacity>
                 </View>
-                <TouchableOpacity onPress={() => changePassword()}>
-
-                    <ImageBackground
-                    style={styles.primaryButton}
-                    source={require("../app/assets/Buttons/LoginButton-White.png")}
-                    resizeMode="contain">
-
-                    </ImageBackground>
-
-                </TouchableOpacity>
-            </ScrollView>
         </View>
+        </TouchableWithoutFeedback>
+        </KeyboardAvoidingView>
     );      
 }
 
@@ -115,18 +118,27 @@ const styles = StyleSheet.create({
       alignItems: "center"
     },
     input: {
-        width: 265,
-        height: 30,
+        width: "80%",
+        height: 40,
         backgroundColor: "rgba(255,255,255,1)",
         borderRadius: 12,
         marginBottom: "5%",
-        paddingLeft: 10
+        paddingLeft: 10,
+        borderColor: "black",
+        borderWidth: 1
     },
     primaryButton: {
         width: 200,
         height: 60,
-        marginTop: "5%",
-    }
+        marginTop: 30,
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    textStyle: {
+        fontSize: 16, 
+        fontWeight: "bold",
+        marginBottom: 10,
+    },
     
 });
 

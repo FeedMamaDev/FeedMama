@@ -25,7 +25,6 @@ function AccountScreen(props){
             </View>
 
 
-            <ScrollView style={{resizeMode:"repeat", height: "100%"}}>
 
                 <View style={styles.viewBar}>
                     <Text style={{marginLeft: 10, color: "white"}}>Profile</Text>
@@ -108,8 +107,6 @@ function AccountScreen(props){
                     </View>
                     <View style={{backgroundColor: "black", height: 1}}></View>
                 </TouchableOpacity>
-
-            </ScrollView>
 
         </View>
   

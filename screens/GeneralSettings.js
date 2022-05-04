@@ -22,7 +22,7 @@ async function getValueFor(key) {
 
 function GeneralSettings(props){
 
-        const userID = "0d174b64-211f-44e7-bf1a-6bc6c871fa48"; //getValueFor("FEEDMAMA_TOKEN");
+        const userID = getValueFor("FEEDMAMA_TOKEN");
         const [data, setData] = useState([]);
 
         const[fName, setFName] = useState();
@@ -33,28 +33,36 @@ function GeneralSettings(props){
         console.log("data: ", data)
         console.log("First Name:", fName)
 
-         useEffect(() => {
-            axios.get(`${baseUrl}/user/${userID}/pullUser`).then((resp) => {
+          useEffect(() => {
+            SecureStore.getItemAsync("FEEDMAMA_TOKEN").then(x => {
+            axios.get(`${baseUrl}/user/${userID}/pullUser`, {
+              headers: {
+                'Authorization': `JWT ${x}` 
+              }
+            }).then((resp) => {
                 setData(resp.data.userInfo);
-                setFName(data.FirstName);
-                setLName(data.LastName);
-                setPhone(data.Phone);
-                setEmail(data.Email);
+                setFName(resp.data.userInfo.FirstName);
+                setLName(resp.data.userInfo.LastName);
+                setPhone(resp.data.userInfo.Phone);
+                setEmail(resp.data.userInfo.Email);
               }).catch((err) => {
                 Alert.alert('Error', err.response.data.message, [
                   { text: 'OK' }
                 ]);
               });
-        }, []); 
+            }); 
+          },[]);
     
         function updateSettings() {
+          SecureStore.getItemAsync("FEEDMAMA_TOKEN").then(x => {
             axios.post(`${baseUrl}/user/pushUser`, {
                 fName: fName,
                 lName: lName,
                 phone: phone,
                 email: email,
-                userID: userID
-              }).then((resp) => {
+              }, { headers: {
+                'Authorization': `JWT ${x}`
+              }}).then((resp) => {
                   console.log(resp)
                 Alert.alert('Account Updated', 'Account updated successfully!.', [
                   { text: 'OK', onPress: () => { props.navigation.navigate("Account")} },
@@ -64,6 +72,7 @@ function GeneralSettings(props){
                   { text: 'OK' }
                 ]);
               });
+          });
         }
 
     return(
@@ -125,7 +134,7 @@ function GeneralSettings(props){
 
                                 <ImageBackground
                                 style={styles.primaryButton}
-                                source={require("../app/assets/Buttons/LoginButton-White.png")}
+                                source={require("../app/assets/Buttons/SubmitButton.png")}
                                 resizeMode="contain">
                                 </ImageBackground>
 
@@ -144,13 +153,15 @@ const styles = StyleSheet.create({
       alignItems: "center"
     },
     input: {
-        width: 265,
-        height: 30,
-        backgroundColor: "rgba(255,255,255,1)",
-        borderRadius: 12,
-        marginBottom: "5%",
-        paddingLeft: 10
-    },
+      width: "80%",
+      height: 40,
+      backgroundColor: "rgba(255,255,255,1)",
+      borderRadius: 12,
+      marginBottom: "5%",
+      paddingLeft: 10,
+      borderColor: "black",
+      borderWidth: 1
+  },
     primaryButton: {
         width: 200,
         height: 60,
@@ -158,7 +169,6 @@ const styles = StyleSheet.create({
     },
     textStyle: {
         fontSize: 16, 
-        marginTop: "5%", 
         fontWeight: "bold",
         marginBottom: 10,
     },

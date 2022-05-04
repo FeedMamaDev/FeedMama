@@ -72,7 +72,7 @@ function MotherEnrollment(props){
                 source={require("../app/assets/Buttons/SignUpButton-Salmon.png")}
                 resizeMode="contain">
             </ImageBackground>
-        </TouchableOpacity>
+          </TouchableOpacity>
 
       </View>
   );

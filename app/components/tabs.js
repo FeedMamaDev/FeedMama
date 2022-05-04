@@ -20,7 +20,7 @@ import NotificationSettings from '../../screens/NotificationSettings';
 import VerificationStatus from '../../screens/VerificationStatus';
 import ContactUsScreen from '../../screens/ContactUsScreen';
 import LogOutScreen from '../../screens/LogOutScreen';
-//import AddCard from '../../screens/AddCard';
+import AddCard from '../../screens/AddCard';
 import MotherEnrollment from '../../screens/MotherEnrollment';
 
 import HomeScreen from '../../screens/HomeScreen';
@@ -94,7 +94,7 @@ function AccountFlow(){
             <AccountStack.Screen name = 'Privacy' component={PrivacyPolicyScreen}/>
             <AccountStack.Screen name = 'ContactUsScreen' component={ContactUsScreen}/>
             <AccountStack.Screen name = 'LogOutScreen' component={LogOutScreen}/>
-            {/* <AccountStack.Screen name = 'AddCard' component={AddCard}/> */}
+            <AccountStack.Screen name = 'AddCard' component={AddCard}/>
             <AccountStack.Screen name = 'MotherEnrollment' component={MotherEnrollment}/>
         </AccountStack.Navigator>
     );

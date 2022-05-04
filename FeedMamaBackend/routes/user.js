@@ -7,9 +7,97 @@ var bodyParser = require('body-parser')
 const crypto = require('crypto');
 const uuid = require('uuid').v4;
 const jwt = require("jsonwebtoken");
+const verifyToken = require("../middleware/authenticate");
  
 // create application/json parser
 var jsonParser = bodyParser.json()
+router.use(verifyToken);
+
+router.get("/pullCards", jsonParser, async function (req, res, next) {
+    try {
+        var cards = [];
+        //Query User Information
+        const primaryCard = await prisma.payment.findFirst({
+            where: { 
+                AND: [
+                    {
+                        UserId: {
+                            equals: req.user.UserId,
+                        },
+                    },
+                    {
+                        Primary: {
+                            equals: true,
+                        },
+                    },
+                ],
+            },
+        });
+
+        //Put primary at the top of the list
+        cards.push({
+            lastFour: primaryCard.Number.substring(primaryCard.Number.length - 4, primaryCard.Number.length + 1),
+            exp: primaryCard.Expiration,
+            primary: true,
+            PID: primaryCard.PaymentId, //Payment ID
+            id: 0
+        });
+        console.log(cards);
+
+        //Try and see if there are more cards
+        try{
+            const nonPrimaryCards = await prisma.payment.findMany({
+                where: { 
+                    AND: [
+                        {
+                            UserId: {
+                                equals: req.user.UserId,
+                            },
+                        },
+                        {
+                            Primary: {
+                                equals: false,
+                            },
+                        },
+                    ],
+                },
+            });
+
+            //Push to list, offset by 1 for unique id number
+            for(let i = 1; i < nonPrimaryCards.length + 1; i++){
+                cards.push({
+                    lastFour: nonPrimaryCards.Number.substring(nonPrimaryCards.Number.length - 4, nonPrimaryCards.Number.length + 1),
+                    exp: primnonPrimaryCardsryCard.Expiration,
+                    primary: false,
+                    PID: nonPrimaryCards.PaymentId, //Payment ID
+                    id: i
+                });
+            }
+
+            console.log(cards);
+            res.status(200).json({
+                cardList: cards
+            });
+            return
+
+        } catch (err) {
+            console.log("No cards that are not primary?")
+            console.error(`No Primary Card or just Error? `, err.message);
+            next(err);
+        } finally {
+            console.log(cards);
+            res.status(200).json({
+                cardList: cards
+            });
+            return
+        }
+
+    } catch (err) {
+        console.error(`No Primary Card or just Error? `, err.message);
+        next(err);
+    }
+});
+
 
 router.post("/insertCard", jsonParser, async function (req, res, next) {
     console.log("Working?")
@@ -71,27 +159,47 @@ router.post("/insertCard", jsonParser, async function (req, res, next) {
         if (req.body.Primary){
            try{
 
-            //Unset current primary card
+            //Find Primary Payment ID of user
+            console.log("Finding Primary Payment ID of User")
+
+            const paymentObject = await prisma.payment.findFirst({
+                where: { 
+                    AND: [
+                        {
+                            UserId: {
+                                equals: req.user.UserId,
+                            },
+                        },
+                        {
+                            Primary: {
+                                equals: true,
+                            },
+                        },
+                    ],
+                },
+            });
+
+            //Unset Primary Card based off Primary PaymentId
             await prisma.payment.update({
                 where: {
-                    UserId: req.user.UserId,
-                    Primary: req.body.Primary
+                    PaymentId: paymentObject.PaymentId
                 },
                 data: {
-                    Primary: !req.body.Primary
+                    Primary: false
                 }
             }); 
 
             //Insert and set this card as primary
+            console.log("Current Primary Card Unset")
             await prisma.payment.create({ 
                 data: {
-                PaymentId: uuid(),
-                UserId: req.user.UserId,
-                Number: crypto.createHash('sha256').update(req.body.Value).digest('hex'),
-                Expiration: crypto.createHash('sha256').update(req.body.Date).digest('hex'),
-                CVC: crypto.createHash('sha256').update(req.body.CVV).digest('hex'),
-                ZIP: crypto.createHash('sha256').update(req.body.ZIP).digest('hex'),
-                Primary: true
+                    PaymentId: uuid(),
+                    UserId: req.user.UserId,
+                    Number: req.body.Value.replace(/\s/g, ''),
+                    Expiration: req.body.Date,
+                    CVC: req.body.CVV,
+                    ZIP: req.body.ZIP,
+                    Primary: true
               }});
 
               res.status(200).json({
@@ -100,8 +208,9 @@ router.post("/insertCard", jsonParser, async function (req, res, next) {
               return
 
            } catch (err) { //No primary card, set this one as primary
-                console.log("No primary card set yet")
-                console.log(req.body.userID)
+
+            console.log("No primary card set yet")
+                console.log(req.user.UserId)
 
                 console.log(req.body.Value)
                 console.log(req.body.Date)
@@ -111,12 +220,12 @@ router.post("/insertCard", jsonParser, async function (req, res, next) {
                 await prisma.payment.create({ 
                     data: {
                     PaymentId: uuid(),
-                    UserId: req.body.userID,
-                    Number: req.body.Value,
+                    UserId: req.user.UserId,
+                    Number: req.body.Value.replace(/\s/g, ''),
                     Expiration: req.body.Date,
                     CVC: req.body.CVV,
                     ZIP: req.body.ZIP,
-                    Primary: 1
+                    Primary: true
                 }});
 
                 res.status(200).json({
@@ -124,6 +233,23 @@ router.post("/insertCard", jsonParser, async function (req, res, next) {
                   });
                   return
           }
+        } else { //Non-primary
+            console.log("Adding Non-Primacy Card")
+            await prisma.payment.create({ 
+                data: {
+                PaymentId: uuid(),
+                UserId: req.body.userID,
+                Number: req.body.Value.replace(/\s/g, ''),
+                Expiration: req.body.Date,
+                CVC: req.body.CVV,
+                ZIP: req.body.ZIP,
+                Primary: false
+            }});
+
+            res.status(200).json({
+                message: "Card Added!"
+              });
+              return
         }
 
     } catch (err) {
@@ -137,7 +263,7 @@ router.get("/:userId/pullUser", jsonParser, async function (req, res, next) {
         //Query User Information
         const user = await prisma.users.findFirst({
             where: { 
-                UserId: req.params.userId
+                UserId: req.user.UserId,
             }
         });
 
@@ -194,7 +320,7 @@ router.post("/pushUser", jsonParser, async function (req, res, next) {
         //Update User Info
         await prisma.users.update({
             where: {
-                UserId: userID
+                UserId: req.user.UserId
             },
             data: {
                 FirstName: req.body.fName,
