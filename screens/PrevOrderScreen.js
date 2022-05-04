@@ -1,92 +1,78 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import React from 'react';
 import { ImageBackground, StyleSheet, TouchableOpacity, View, TextInput, Image, ScrollView , Text} from 'react-native';
 import { Button, Divider } from 'react-native-elements';
 import CartItem from '../app/components/CartItem';
 import RestaurantAbout from '../app/components/RestaurantAbout';
 
-const timeEstimate="30-40 min";
-const fee="$2.99 Fee";
+import Constants from 'expo-constants';
+import * as SecureStore from 'expo-secure-store';
+import axios from 'axios';
+const { ngrokUrl } = Constants.manifest.extra;
+const isLocal = ngrokUrl && __DEV__
 
-const restaurantImage="../app/assets/Photos/FunkyFreshSpringRolls.jpg";
-const restaurantTitle="Funky Fresh Spring Rolls";
-const restaurantSubtitle=timeEstimate.concat(" | ",fee);
+const productionUrl = 'https://example.com'
+
+const baseUrl = isLocal ? ngrokUrl : productionUrl
 
 function PrevOrderScreen(props) {
-    const pickup_address='funkeyfresh styles, milwaukee, wi 53233'
-    const pickup_window='40-50min'
-    const [dropoff_address, setDropoff_address]=useState();
-    const [card, setCard]=useState();
-    
-    const [subTotal, setSubTotal]='$'+'15.00'
-    const [tip, setTip] = useState();
-    const total = '$' + {subTotal} + {tip}
+    const orderID=props.route.params.OrderID
+    const [order, setOrder]=useState({Total: 0, Tip: 0});
+    const [restaurant, setRestaurant]=useState({img: "", name: "", description: "", address: "", city: "", state: "", zip: ""});
+    const [orderMeals, setOrderMeals]=useState([{ name: "", price: "", quantity: "", id: "" }]);
 
-    const [dropoff_instructions, setDropoff_Intructions]= useState();
-
-    const cartItems=props.route.params.cartItems.cartItems
-    console.log('-')
-    console.log(cartItems)
-
-    const cart=[
-        cartItems.map(({ title, subtitle, quantity, id }) => (
-          <CartItem foodItem={title} quantity={quantity} key={id}/>
-        ))
-      ]
+    useEffect(() => {
+        SecureStore.getItemAsync("FEEDMAMA_TOKEN").then(x => {
+            axios.post(`${baseUrl}/order/single/`, { id: orderID }, {
+                headers: {
+                'Authorization': `JWT ${x}` 
+                }
+            }).then((resp) => {
+                setOrder(resp.data.order)
+                setRestaurant(resp.data.restaurant)
+                setOrderMeals(resp.data.ordermeals)
+            }).catch((err) => {
+                Alert.alert('Error', err.response.data.message, [
+                { text: 'OK' }
+                ]);
+            });
+        })
+      }, []);
 
     return (
         <View>
             <ScrollView>
                 <RestaurantAbout
-                    image={require("../app/assets/Photos/FunkyFreshSpringRolls.jpg")}
-                    title={restaurantTitle}
-                    subtitle={restaurantSubtitle}
+                    image={{uri: restaurant.img}}
+                    title={restaurant.name}
+                    subtitle={restaurant.description}
                 />
                 <Divider width={1.8} style={{marginVertical:20}}/>
-                <Text style={styles.checkoutTitle}>{pickup_address}</Text>
+                <Text style={styles.checkoutTitle}>Pick up</Text>
+                <Text style={styles.checkoutSubtitle}>{restaurant.address}</Text>
                 <Divider width={.5} style={{marginVertical:10}}/>
-                <Text style={styles.checkoutTitle}>{dropoff_address}</Text>
-                <TouchableOpacity onPress={() => props.navigation.push("NewAddress")}>
-                    <Text style={styles.checkoutSubtitle}>+ New Drop Off Address</Text>
-                </TouchableOpacity>
+                <Text style={styles.checkoutTitle}>Drop Off</Text>
+                <Text style={styles.checkoutSubtitle}>1313 W Wisconsin Ave, Milwaukee, WI 53233</Text>
                 <Divider width={.5} style={{marginVertical:10}}/>
-                <Text style={styles.checkoutTitle}>{card}</Text>
-                <TouchableOpacity onPress={() => props.navigation.push("NewCard")}>
-                    <Text style={styles.checkoutSubtitle}>+ New Payment Method</Text>
-                </TouchableOpacity>
-                <Divider width={.5} style={{marginVertical:10}}/>
-                <Text style={styles.checkoutTitle}>{pickup_window}</Text>
+                <Text style={styles.checkoutTitle}>Items</Text>
+                {orderMeals.map(({ name, price, quantity, id }) => (
+                    <CartItem foodItem={name} price={price} quantity={quantity} key={id}/>
+                ))}
                 <Divider width={.5} style={{marginVertical:10}}/>
                 <View style={{
                     padding: 10,
                     width:'100%'
                 }}>
-                    {cart}
+                    
                 </View>
                 <Divider width={.5} style={{marginVertical:10}}/>
-                <View><Text style={styles.checkoutSubtitle}>Subtotal = {subTotal}</Text></View>
+                <View><Text style={styles.checkoutSubtitle}>Subtotal = {order.Total - order.Tip}</Text></View>
                 <View style={styles.containerHorz}>
-                    <Text style={styles.checkoutSubtitle}>Tip = </Text>
-                    <TextInput
-                    placeholder='$0.00'
-                    maxLength={5}
-                    keyboardType='number-pad'
-                    value={tip}
-                    onChangeText={text => setTip(text)}
-                    />
+                    <Text style={styles.checkoutSubtitle}>Tip = {order.Tip}</Text>
                 </View>
-                <View><Text style={styles.checkoutTitle}>Total = {total}</Text></View>
+                <View><Text style={styles.checkoutTitle}>Total = {order.Total}</Text></View>
                 <Divider width={.5} style={{marginVertical:10}}/>
-                <TextInput 
-                    style={styles.input} 
-                    placeholder="Drop Off Instructions"
-                    maxLength={50}
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    keyboardType='default'
-                    value={dropoff_instructions}
-                    onChangeText={text => setDropoff_Intructions(text)}
-                />
+                <View><Text style={styles.checkoutTitle}>Dropoff Instructions</Text></View>
             </ScrollView>
         </View>
     );

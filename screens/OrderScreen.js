@@ -1,21 +1,43 @@
-import { useState } from 'react';
-import { ImageBackground, StyleSheet, TouchableOpacity, View, TextInput, Image, ScrollView , Text} from 'react-native';
+import { useState, useEffect } from 'react';
+import { ImageBackground, StyleSheet, TouchableOpacity, View, TextInput, Image, ScrollView , Text, Alert} from 'react-native';
 import { Divider } from 'react-native-elements';
 import Card from '../app/components/Card';
 
+import Constants from 'expo-constants';
+import CartItem from '../app/components/CartItem';
+import * as SecureStore from 'expo-secure-store';
+import axios from 'axios';
+const { ngrokUrl } = Constants.manifest.extra;
+const isLocal = ngrokUrl && __DEV__
+
+const productionUrl = 'https://example.com'
+
+const baseUrl = isLocal ? ngrokUrl : productionUrl
 
 const OrderScreen = ({navigation}) => {
 
-        const [restImage, setRestImage] = useState( 
-            '../app/assets/Photos/FunkyFreshSpringRolls.jpg'
-        );  
+    const [orders, setOrders] = useState([{
+      DateTime: "",
+      OrderId: "",
+      ResturantImg: "",
+      ResturantName: "",
+    }]);
 
-        const restHomeSubtitle='04/02/22';
-      
-        function printItem() {
-          //Should be figured out with backend on what to do with acct info
-          console.log('Wooh! Selected a menu item - JC');
-        }
+    useEffect(() => {
+      SecureStore.getItemAsync("FEEDMAMA_TOKEN").then(x => {
+          axios.get(`${baseUrl}/order/previous`, {
+              headers: {
+              'Authorization': `JWT ${x}` 
+              }
+          }).then((resp) => {
+              setOrders(resp.data)
+          }).catch((err) => {
+              Alert.alert('Error', err.response.data.message, [
+              { text: 'OK' }
+              ]);
+          });
+      })
+    }, []);
         
             return (
               <View
@@ -31,19 +53,21 @@ const OrderScreen = ({navigation}) => {
                 <Divider style={{width: "100%", height: 6, backgroundColor: "#FF6C6C", marginTop: "5%"}}/>
 
                 <ScrollView style={{resizeMode:"repeat", height: "100%"}}>
-                  <View style={{
-                    backgroundColor: "#f8f4f4",
-                    padding: 20,
-                    paddingTop: 20,
-                    //flex: 3
-                  }}>
-                    <TouchableOpacity onPress={() => navigation.push("PrevOrder")}>
-                      <Card
-                        title="Funky Fresh Spring Rolls"
-                        subtitle={restHomeSubtitle}
-                        image={require("../app/assets/Photos/FunkyFreshSpringRolls.jpg")}/>
-                    </TouchableOpacity>
-                  </View>
+                    {orders.map(({DateTime, OrderId, ResturantImg, ResturantName}) => (
+                        <View style={{
+                          backgroundColor: "#f8f4f4",
+                          padding: 20,
+                          paddingTop: 20,
+                          //flex: 3
+                        }} key={OrderId}>
+                        <TouchableOpacity onPress={() => navigation.navigate("PrevOrder", { OrderID: OrderId })}>
+                          <Card
+                            title={ResturantName}
+                            subtitle={new Date(DateTime).toLocaleString()}
+                            image={{uri: ResturantImg}}/>
+                        </TouchableOpacity>
+                        </View>
+                    ))}
                 </ScrollView>
               </View>
             );

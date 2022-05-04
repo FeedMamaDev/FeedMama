@@ -95,4 +95,124 @@ router.post("/", jsonParser, async function (req, res, next) {
     }
 })
 
+router.get("/previous", jsonParser, async function (req, res, next) {
+    try {
+        console.log(req.body);
+
+        const orders = await prisma.orders.findMany({
+            where: {
+                UserID: {
+                    equals: req.user.UserId
+                }
+            }
+        });
+        const resturantsIds = orders.map(x => x.RestaurantID);
+
+        const restaurants = await prisma.resturants.findMany({
+            where: {
+                RestaurantID: { in: resturantsIds },
+            }
+        });
+
+        let dict = restaurants.reduce(
+            (dict, el, index) => (dict[el.RestaurantID] = el, dict),
+            {}
+        );
+
+        let restaurantOrders = []
+        orders.forEach(x => {
+            restaurantOrders.push({
+                OrderId: x.OrderID,
+                DateTime: x.DateTime,
+                ResturantName: dict[x.RestaurantID].Name, 
+                ResturantImg: dict[x.RestaurantID].ImageUrl
+            });
+        });
+
+        res.status(200).json(restaurantOrders);
+    } catch (err) {
+        console.error(`Error while getting previous orders`, err.message);
+        next(err);
+    }
+})
+
+router.post("/single", jsonParser, async function (req, res, next) {
+    try {
+        var id = req.body.id;
+        console.log(id)
+        console.log("DO")
+
+        const order = await prisma.orders.findFirst({
+            where: {
+                OrderID: {
+                    equals: id
+                }
+            }
+        });
+
+        if (order.UserID != req.user.UserId) {
+            res.status(403)
+            return
+        }
+
+        const orderItems = await prisma.orderMeals.findMany({
+            where: {
+                OrderID: { equals: id },
+            }
+        });
+
+        const rest = await prisma.resturants.findFirst({
+            where: {
+                RestaurantID: {
+                    equals: order.RestaurantID
+                }
+            }
+        });
+
+        const mealIds = orderItems.map(x => x.MealID);
+
+        const meals = await prisma.meals.findMany({
+            where: {
+                MealID: { in: mealIds },
+            }
+        });
+
+        let dict = meals.reduce(
+            (dict, el, index) => (dict[el.MealID] = el, dict),
+            {}
+        );
+
+        let ordermeals = []
+        orderItems.forEach(x => {
+            ordermeals.push({
+                quantity: x.Quantity,
+                id: x.OrderMealID,
+                price: x.Total / x.Quantity,
+                name: dict[x.MealID].Name
+            })
+        })
+        
+        console.log(ordermeals)
+        res.status(200).json(
+            {
+                restaurant: {
+                    id: rest.RestaurantID,
+                    name: rest.Name,
+                    img: rest.ImageUrl,
+                    description: rest.Description,
+                    address: rest.Address,
+                    city: rest.City,
+                    state: rest.State,
+                    zip: rest.ZIP
+                },
+                order: order,
+                ordermeals: ordermeals
+            }
+        );
+    } catch (err) {
+        console.error(`Error while getting previous orders`, err.message);
+        next(err);
+    }
+})
+
 module.exports = router;
