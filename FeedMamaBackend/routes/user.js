@@ -13,10 +13,52 @@ const verifyToken = require("../middleware/authenticate");
 var jsonParser = bodyParser.json()
 router.use(verifyToken);
 
-router.get("/pullCards", jsonParser, async function (req, res, next) {
+
+router.get("/:PID/updateCards", jsonParser, async function (req, res, next) {
     try {
         var cards = [];
+        var executeFinally = false;
+
+        //Get current primary
+        const paymentObject = await prisma.payment.findFirst({
+            where: { 
+                AND: [
+                    {
+                        UserId: {
+                            equals: req.user.UserId,
+                        },
+                    },
+                    {
+                        Primary: {
+                            equals: true,
+                        },
+                    },
+                ],
+            },
+        });
+
+        //Unset Primary Card based off Primary PaymentId
+        await prisma.payment.update({
+            where: {
+                PaymentId: paymentObject.PaymentId
+            },
+            data: {
+                Primary: false
+            }
+        }); 
+
+        //Set new Primary card
+        await prisma.payment.update({
+            where: {
+                PaymentId: req.params.PID
+            },
+            data: {
+                Primary: true
+            }
+        }); 
+
         //Query User Information
+        console.log(req.user.UserId)
         const primaryCard = await prisma.payment.findFirst({
             where: { 
                 AND: [
@@ -63,33 +105,138 @@ router.get("/pullCards", jsonParser, async function (req, res, next) {
                 },
             });
 
-            //Push to list, offset by 1 for unique id number
-            for(let i = 1; i < nonPrimaryCards.length + 1; i++){
-                cards.push({
-                    lastFour: nonPrimaryCards.Number.substring(nonPrimaryCards.Number.length - 4, nonPrimaryCards.Number.length + 1),
-                    exp: primnonPrimaryCardsryCard.Expiration,
-                    primary: false,
-                    PID: nonPrimaryCards.PaymentId, //Payment ID
-                    id: i
-                });
+            //console.log("Card Stuff: ", nonPrimaryCards[0].Number.substring(nonPrimaryCards.Number.length - 4, nonPrimaryCards.Number.length + 1))
+
+            if(nonPrimaryCards){
+                //Push to list, offset by 1 for unique id number
+                for(let i = 1; i < nonPrimaryCards.length + 1; i++){
+                    cards.push({
+                        lastFour: nonPrimaryCards[i-1].Number.substring(nonPrimaryCards[i-1].Number.length - 4, nonPrimaryCards[i-1].Number.length + 1),
+                        exp: nonPrimaryCards[i-1].Expiration,
+                        primary: false,
+                        PID: nonPrimaryCards[i-1].PaymentId, //Payment ID
+                        id: i
+                    });
+                }
             }
 
+            
+            console.log("Cards")
             console.log(cards);
             res.status(200).json({
                 cardList: cards
             });
+            console.log("Returning")
             return
 
         } catch (err) {
-            console.log("No cards that are not primary?")
+            executeFinally = true; //Only a primary card
             console.error(`No Primary Card or just Error? `, err.message);
             next(err);
         } finally {
+            if(executeFinally){
+                console.log(cards);
+                res.status(200).json({
+                    cardList: cards
+                });
+                return
+            }
+        }
+
+    } catch (err) {
+        console.error(`No Primary Card or just Error? `, err.message);
+        next(err);
+    }
+});
+
+router.get("/pullCards", jsonParser, async function (req, res, next) {
+    try {
+        var cards = [];
+        var executeFinally = false;
+        //Query User Information
+        console.log(req.user.UserId)
+        const primaryCard = await prisma.payment.findFirst({
+            where: { 
+                AND: [
+                    {
+                        UserId: {
+                            equals: req.user.UserId,
+                        },
+                    },
+                    {
+                        Primary: {
+                            equals: true,
+                        },
+                    },
+                ],
+            },
+        });
+
+        //Put primary at the top of the list
+        cards.push({
+            lastFour: primaryCard.Number.substring(primaryCard.Number.length - 4, primaryCard.Number.length + 1),
+            exp: primaryCard.Expiration,
+            primary: true,
+            PID: primaryCard.PaymentId, //Payment ID
+            id: 0
+        });
+        console.log(cards);
+
+        //Try and see if there are more cards
+        try{
+            const nonPrimaryCards = await prisma.payment.findMany({
+                where: { 
+                    AND: [
+                        {
+                            UserId: {
+                                equals: req.user.UserId,
+                            },
+                        },
+                        {
+                            Primary: {
+                                equals: false,
+                            },
+                        },
+                    ],
+                },
+            });
+
+            //console.log("Card Stuff: ", nonPrimaryCards[0].Number.substring(nonPrimaryCards.Number.length - 4, nonPrimaryCards.Number.length + 1))
+
+            if(nonPrimaryCards){
+                //Push to list, offset by 1 for unique id number
+                for(let i = 1; i < nonPrimaryCards.length + 1; i++){
+                    cards.push({
+                        lastFour: nonPrimaryCards[i-1].Number.substring(nonPrimaryCards[i-1].Number.length - 4, nonPrimaryCards[i-1].Number.length + 1),
+                        exp: nonPrimaryCards[i-1].Expiration,
+                        primary: false,
+                        PID: nonPrimaryCards[i-1].PaymentId, //Payment ID
+                        id: i
+                    });
+                }
+            }
+
+            
+            console.log("Cards")
             console.log(cards);
             res.status(200).json({
                 cardList: cards
             });
+            console.log("Returning")
             return
+
+        } catch (err) {
+            executeFinally = true; //Only a primary card
+            console.error(`No Primary Card or just Error? `, err.message);
+            next(err);
+        } finally {
+            if(executeFinally){
+                console.log(cards);
+                res.status(200).json({
+                    cardList: cards
+                });
+                return
+            }
         }
 
     } catch (err) {
