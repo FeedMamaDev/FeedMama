@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
-import { ImageBackground, StyleSheet, TouchableOpacity, View, TextInput, Image, ScrollView , Text, FlatList} from 'react-native';
+import { ImageBackground, StyleSheet, TouchableOpacity, View, TextInput, Image, ScrollView , Text, FlatList, KeyboardAvoidingView, TouchableWithoutFeedback, Platform, Keyboard} from 'react-native';
 import { Button, Divider } from 'react-native-elements';
 
 function NewAddressScreen(props) {
@@ -12,17 +12,19 @@ function NewAddressScreen(props) {
     const [zipcode, setZipcode]= useState();
 
     function addAddress(name, st1, st2, city, state, zipcode){
-        const newAddr=[{name}, {st1}, {st2}, {city}, {state}, {zipcode}]
-        console.log(newAddr)
         //Add address to the list of stored addresses
     }
 
     return (
+        <KeyboardAvoidingView enabled
+        behavior={Platform.OS === "ios" ? "padding" : null}
+        style={{flexGrow: 1}}
+        >
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View>
-            <TouchableOpacity style={{marginTop: "15%", marginLeft: 20, marginBottom: "15%"}} onPress={() => props.navigation.goBack()}>
-                <Text style={{fontSize: 30, fontWeight: "bold", color: "#FF6C6C"}}>{"< Back"}</Text>
-            </TouchableOpacity>
-
+            <View style={{alignContent: "center", alignItems: "center", margin: 50}}>
+                    <Image source={require("../app/assets/Static/FeedMamaSecLogo.png")} resizeMode="contain"/>
+            </View>
             <View style={styles.centered}>
                 <Text style={{fontSize: 16, fontWeight: "bold", marginBottom: "10%"}}>Please enter a new address:</Text>
             </View>
@@ -95,8 +97,9 @@ function NewAddressScreen(props) {
                     resizeMode="contain">
                 </ImageBackground>
             </TouchableOpacity>
-
         </View>
+        </TouchableWithoutFeedback>
+        </KeyboardAvoidingView>
     );
 }
 

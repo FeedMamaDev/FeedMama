@@ -35,6 +35,7 @@ const HomeStack = createNativeStackNavigator();
 const SearchStack = createNativeStackNavigator();
 const OrderHistoryStack = createNativeStackNavigator();
 const AccountStack = createNativeStackNavigator();
+const AddressStack = createNativeStackNavigator();
 
 const Tab = createBottomTabNavigator();
 
@@ -46,12 +47,22 @@ function RestaurantFlow(){
             component={RestaurantScreen} />
         <RestaurantStack.Screen name="Cart" component={CartScreen}/>
         <RestaurantStack.Screen name="Checkout" component={CheckoutScreen}/>
-        <RestaurantStack.Screen name="ChangeAddress" component={ChangeAddress}/>
-        <RestaurantStack.Screen name="NewAddress" component={NewAddressChange}/> 
+        <RestaurantStack.Screen name="AddressFlow" component={AddressFlow}/>
         <RestaurantStack.Screen name="NewCard" component={NewCardChange}/>
         <RestaurantStack.Screen name="OrderProgress" component={OrderProgressScreen}/>
       </RestaurantStack.Navigator>
   );
+}
+
+function AddressFlow(){
+    return(
+        <AddressStack.Navigator screenOptions={{
+            headerShown: false
+          }}>
+            <AddressStack.Screen name="ChangeAddress" component={ChangeAddress}/>
+            <AddressStack.Screen name="NewAddress" component={NewAddressChange}/>
+        </AddressStack.Navigator>
+    );
 }
 
 function OrderFlow(){
@@ -88,7 +99,7 @@ function AccountFlow(){
             <AccountStack.Screen name = 'GeneralSettings' component={GeneralSettings}/>
             <AccountStack.Screen name = 'UpdatePassword' component={UpdatePassword}/>
             <AccountStack.Screen name = 'WalletPage' component={WalletPage}/>
-            <AccountStack.Screen name = 'ChangeAddress' component={ChangeAddress}/>
+            <AccountStack.Screen name = 'AddressFlow' component={AddressFlow}/>
             <AccountStack.Screen name = 'NotificationSettings' component={NotificationSettings}/>
             <AccountStack.Screen name = 'VerificationStatus' component={VerificationStatus}/>
             <AccountStack.Screen name = 'Privacy' component={PrivacyPolicyScreen}/>

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import React from 'react';
-import { ImageBackground, StyleSheet, TouchableOpacity, View, TextInput, Image, ScrollView , Alert, Text} from 'react-native';
+import { ImageBackground, StyleSheet, TouchableOpacity, View, TextInput, Image, ScrollView , Alert, Text, KeyboardAvoidingView, TouchableWithoutFeedback, Platform, Keyboard} from 'react-native';
 import { Button, Divider } from 'react-native-elements';
 import RestaurantAbout from '../app/components/RestaurantAbout';
 import CurrencyInput from 'react-native-currency-input';
@@ -107,63 +107,79 @@ function CheckoutScreen(props) {
       ]
 
     return (
-        <View>
-            <ScrollView>
-                <RestaurantAbout
-                    image={{uri: restaurant.img}}
-                    title={restaurant.name}
-                    subtitle={restaurant.description}
-                />
-                <Text style={styles.checkoutTitle}>{'Restaurant Address:'}</Text>
-                <Text style={styles.checkoutSubtitle}>{restaurant.address + " " + restaurant.city + ", " + restaurant.state + " " + restaurant.zip}</Text>
-                <Divider width={.5} style={{marginVertical:10}}/>
-                <Text style={styles.checkoutTitle}>{dropoff_address}</Text>
-                <TouchableOpacity onPress={() => props.navigation.push("ChangeAddress")}>
-                    <Text style={styles.checkoutSubtitle}>+ Change Drop Off Address</Text>
-                </TouchableOpacity>
-                <Divider width={.5} style={{marginVertical:10}}/>
-                <Text style={styles.checkoutTitle}>{card}</Text>
-                <TouchableOpacity onPress={() => props.navigation.push("NewCard")}>
-                    <Text style={styles.checkoutSubtitle}>+ Change Payment Method</Text>
-                </TouchableOpacity>
-                <View style={{
-                    padding: 10,
-                    width:'100%'
-                }}>
-                    {cart}
-                </View>
-                <Divider width={.5} style={{marginVertical:10}}/>
-                <View><Text style={styles.checkoutSubtitle}>Subtotal = {formatter.format(subTotal)}</Text></View>
-                <View style={styles.containerHorz}>
-                    <Text style={styles.checkoutSubtitle}>Tip = </Text>
-                    <TextInput
-                        placeholder='$0.00'
-                        maxLength={5}
-                        prefix="$"
-                        keyboardType='decimal-pad'
-                        value={tip}
-                        onChangeText={text => updateTip(text)}
+        <KeyboardAvoidingView enabled
+        behavior={Platform.OS === "ios" ? "padding" : null}
+        style={{flexGrow: 1}}
+        >
+            <View>
+                <ScrollView>
+                    <RestaurantAbout
+                        image={{uri: restaurant.img}}
+                        title={restaurant.name}
+                        subtitle={restaurant.description}
                     />
-                </View>
-                <View><Text style={styles.checkoutTitle}>Total = {formatter.format(total)}</Text></View>
-                <Divider width={.5} style={{marginVertical:10}}/>
-                <TextInput 
-                    style={styles.input} 
-                    placeholder="Drop Off Instructions"
-                    maxLength={50}
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    keyboardType='default'
-                    value={dropoff_instructions}
-                    onChangeText={text => setDropoff_Intructions(text)}
-                />
-                <TouchableOpacity style={styles.centered} onPress={() => order()}>
-                    <Image
-                        source={require("../app/assets/Buttons/PlaceOrderButton.png")}
-                        resizeMode="contain"/>
-                </TouchableOpacity>
-            </ScrollView>
-        </View>
+                    <Text style={styles.checkoutTitle}>{'Restaurant Address:'}</Text>
+                    <Text style={styles.checkoutSubtitle}>{restaurant.address + " " + restaurant.city + ", " + restaurant.state + " " + restaurant.zip}</Text>
+                    <Divider width={.5} style={{marginVertical:10}}/>
+                    <View style={styles.containerHorz}>
+                        <Image source={require("../app/assets/Static/locationIcon.png")} style={{width:30, height:30, marginBottom:5, marginLeft:5}}/>
+                        <Text style={styles.checkoutTitle}>{dropoff_address}</Text>
+                    </View>
+                    <TouchableOpacity onPress={() => props.navigation.push("AddressFlow")}>
+                        <Text style={styles.checkoutSubtitle}>+ Change Drop Off Address</Text>
+                    </TouchableOpacity>
+                    <Divider width={.5} style={{marginVertical:10}}/>
+                    <View style={styles.containerHorz}>
+                        <Image source={require("../app/assets/Static/credit-card.png")} style={{width:30, height:30, marginBottom:5, marginLeft:5}}/>
+                        <Text style={styles.checkoutTitle}>{card}</Text>
+                    </View>
+                    <TouchableOpacity onPress={() => props.navigation.push("NewCard")}>
+                        <Text style={styles.checkoutSubtitle}>+ Change Payment Method</Text>
+                    </TouchableOpacity>
+                    <View style={{
+                        padding: 10,
+                        width:'100%'
+                    }}>
+                        {cart}
+                    </View>
+                    <Divider width={.5} style={{marginVertical:10}}/>
+                    <View><Text style={styles.checkoutSubtitle}>Subtotal = {formatter.format(subTotal)}</Text></View>
+                    <View style={styles.containerHorz}>
+                        <Text style={styles.checkoutSubtitle}>Tip = </Text>
+                        <TextInput
+                            placeholder='$0.00'
+                            maxLength={5}
+                            prefix="$"
+                            keyboardType='decimal-pad'
+                            value={tip}
+                            onChangeText={text => updateTip(text)}
+                        />
+                    </View>
+                    <View><Text style={styles.checkoutTitle}>Total = {formatter.format(total)}</Text></View>
+                    <Divider width={.5} style={{marginVertical:10}}/>
+                    <TextInput 
+                        style={styles.input} 
+                        placeholder="Drop Off Instructions"
+                        maxLength={50}
+                        autoCapitalize="none"
+                        autoCorrect={false}
+                        keyboardType='default'
+                        value={dropoff_instructions}
+                        onChangeText={text => setDropoff_Intructions(text)}
+                    />
+                    <View style={{margin:"2%"}}>
+                        <Text style={styles.supportText}>Delivery powered by DoorDash Drive.</Text>
+                        <Text style={styles.supportText}>Phone Support: (855)-973-1040</Text>
+                        <Text style={styles.supportText}>Email Support: drive-support@doordash.com</Text>
+                    </View>
+                    <TouchableOpacity style={styles.centered} onPress={() => order()}>
+                        <Image
+                            source={require("../app/assets/Buttons/PlaceOrderButton.png")}
+                            resizeMode="contain"/>
+                    </TouchableOpacity>
+                </ScrollView>
+            </View>
+        </KeyboardAvoidingView>
     );
 }
 
@@ -177,10 +193,9 @@ const styles = StyleSheet.create({
     containerHorz: {
     flex: 1,
     flexDirection: 'row',
-    alignItems: "center",
     },
     input: {
-    width: 265,
+    width: "95%",
     height: 60,
     backgroundColor: "rgba(245,245,245,.8)",
     borderRadius: 12,
@@ -214,6 +229,11 @@ const styles = StyleSheet.create({
     checkoutSubtitle:{
         margin:'2%',
         fontSize:14,
+        fontFamily: Platform.OS === "iOS" ? "Proxima Nova" : "Helvetica",
+        color: "#000",
+    },
+    supportText:{
+        fontSize:10,
         fontFamily: Platform.OS === "iOS" ? "Proxima Nova" : "Helvetica",
         color: "#000",
     },
