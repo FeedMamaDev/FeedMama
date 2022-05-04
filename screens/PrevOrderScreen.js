@@ -66,13 +66,12 @@ function PrevOrderScreen(props) {
                     
                 </View>
                 <Divider width={.5} style={{marginVertical:10}}/>
-                <View><Text style={styles.checkoutSubtitle}>Subtotal = {order.Total - order.Tip}</Text></View>
+                <View><Text style={styles.checkoutSubtitle}>Subtotal = ${order.Total - order.Tip}</Text></View>
                 <View style={styles.containerHorz}>
-                    <Text style={styles.checkoutSubtitle}>Tip = {order.Tip}</Text>
+                    <Text style={styles.checkoutSubtitle}>Tip = ${order.Tip}</Text>
                 </View>
-                <View><Text style={styles.checkoutTitle}>Total = {order.Total}</Text></View>
+                <View><Text style={styles.checkoutTitle}>Total = ${order.Total}</Text></View>
                 <Divider width={.5} style={{marginVertical:10}}/>
-                <View><Text style={styles.checkoutTitle}>Dropoff Instructions</Text></View>
             </ScrollView>
         </View>
     );
