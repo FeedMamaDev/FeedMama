@@ -2,6 +2,7 @@ const DoorDashClient = require("@doordash/sdk");
 const { v4: uuidv4 } = require("uuid");
 const axios = require('axios');
 
+
 const client = new DoorDashClient.DoorDashClient({
   "developer_id": "881e3e0b-2ed4-4106-b9d9-4b605b9765fe",
   "key_id": "8c5d00d7-9dea-4695-9ad0-f4d6dd24406f",
@@ -40,11 +41,13 @@ function getToken() {
   return token;
 
 }
-
-axios.post('https://openapi.doordash.com/drive/v2/deliveries', body,  { headers: { 'Authorization': 'Bearer ' + getToken(), 'Content-Type': 'application/json' } })
+function createOrder(){
+    axios.post('https://openapi.doordash.com/drive/v2/deliveries', body,  { headers: { 'Authorization': 'Bearer ' + getToken(), 'Content-Type': 'application/json' } })
     .then(function (response) {
         console.log(response.data);
     })
     .catch(function (error) {
         console.log(error);
     });
+}
+createOrder();
