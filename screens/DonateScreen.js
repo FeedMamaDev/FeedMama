@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, KeyboardAvoidingView, TouchableWithoutFeedback, Platform, Keyboard} from 'react-native';
 import { Divider } from 'react-native-elements';
 
 import CurrencyInput from 'react-native-currency-input';
@@ -9,52 +9,59 @@ export default function DonateScreen(props){
   const [donation, setDonation] = useState(0.00);
 
   return (
-      <View>
-          <View style={{alignContent: "center", alignItems: "center", paddingTop: 50}}>
-              <Image source={require("../app/assets/Static/FeedMamaSecLogo.png")} resizeMode="contain"/>
-          </View>
+    <KeyboardAvoidingView enabled
+    behavior={Platform.OS === "ios" ? "padding" : null}
+    style={{flexGrow: 1}}
+    >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View>
+            <View style={{alignContent: "center", alignItems: "center", paddingTop: 50}}>
+                <Image source={require("../app/assets/Static/FeedMamaSecLogo.png")} resizeMode="contain"/>
+            </View>
 
-          <Divider style={{width: "100%", height: 6, backgroundColor: "#FF6C6C", marginTop: "5%"}}/>
-              <View style={styles.centered}>
-                  <Text style={{fontSize: 36, marginTop: "5%", fontWeight: "bold", marginBottom: 10}}>Donate</Text>
-              </View>
-          <Divider style={{width: "100%", height: 6, backgroundColor: "#FF6C6C", marginTop: "5%"}}/>
+            <Divider style={{width: "100%", height: 6, backgroundColor: "#FF6C6C", marginTop: "5%"}}/>
+                <View style={styles.centered}>
+                    <Text style={{fontSize: 36, marginTop: "5%", fontWeight: "bold", marginBottom: 10}}>Donate</Text>
+                </View>
+            <Divider style={{width: "100%", height: 6, backgroundColor: "#FF6C6C", marginTop: "5%"}}/>
 
-          <View style={{
-            backgroundColor:"#FF6C6C",
-            height: "60%",
-            alignItems:"center",
-          }}>
-            <View style={{marginTop:"15%"}}/>
-            <Text style={styles.title}>Donate to Mothers in need!</Text>
-            <Text style={styles.title}>Enter amount below:</Text>
-            <View style={{marginTop:"10%"}}/>
-            <CurrencyInput
-              value={donation}
-              onChangeValue={setDonation}
-              prefix="$"
-              delimiter=","
-              separator="."
-              precision={2}
-              style={{
-                margin:'2%',
-                fontSize:48,
-                fontFamily: Platform.OS === "iOS" ? "Proxima Nova" : "Helvetica",
-                fontWeight:"bold",
-                color: "white", 
+            <View style={{
+              backgroundColor:"#FF6C6C",
+              height: "60%",
+              alignItems:"center",
+            }}>
+              <View style={{marginTop:"15%"}}/>
+              <Text style={styles.title}>Donate to Mothers in need!</Text>
+              <Text style={styles.title}>Enter amount below:</Text>
+              <View style={{marginTop:"10%"}}/>
+              <CurrencyInput
+                value={donation}
+                onChangeValue={setDonation}
+                prefix="$"
+                delimiter=","
+                separator="."
+                precision={2}
+                style={{
+                  margin:'2%',
+                  fontSize:48,
+                  fontFamily: Platform.OS === "iOS" ? "Proxima Nova" : "Helvetica",
+                  fontWeight:"bold",
+                  color: "white", 
+                }}
+                onChangeText={(formattedValue) => {
+                console.log(formattedValue);
               }}
-              onChangeText={(formattedValue) => {
-              console.log(formattedValue);
-            }}
-            />
-            <View style={{marginTop:"10%"}}/>
-            <Text style={styles.subtitle}>Donations will aid in the No-Cost Meals Program</Text>
-          </View>
+              />
+              <View style={{marginTop:"10%"}}/>
+              <Text style={styles.subtitle}>Donations will aid in the No-Cost Meals Program</Text>
+            </View>
 
-          <TouchableOpacity style={styles.centered}>
-              <Image source={require("../app/assets/Buttons/DonateButton.png")} resizeMode="contain"/> 
-          </TouchableOpacity>
-      </View>
+            <TouchableOpacity style={styles.centered}>
+                <Image source={require("../app/assets/Buttons/DonateButton.png")} resizeMode="contain"/> 
+            </TouchableOpacity>
+        </View>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 }
 

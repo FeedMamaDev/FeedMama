@@ -1,8 +1,9 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import {StyleSheet, Text, View, TouchableOpacity, Image, ImageBackground} from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity, Image, ImageBackground, Alert} from 'react-native';
 import { Divider } from 'react-native-elements';
 import { ScrollView } from 'react-native-gesture-handler';
+import Constants from 'expo-constants';
 import CreditCard from '../app/components/CreditCard';
 import * as SecureStore from 'expo-secure-store';
 import axios from 'axios';
@@ -14,9 +15,25 @@ const baseUrl = isLocal ? ngrokUrl : productionUrl
 
 function WalletPage(props){
 
-    function updatePrimary(){
-        console.log("Hello!")
+    function updatePrimary(PID){
+        SecureStore.getItemAsync("FEEDMAMA_TOKEN").then(x => {
+            axios.get(`${baseUrl}/user/${PID}/updateCards`, {
+              headers: {
+                'Authorization': `JWT ${x}` 
+              }
+            }).then((resp) => {
+                setCards(resp.data.cardList) 
+                console.log(cards)
+              }).catch((err) => {
+                Alert.alert('Error', err.response.data.message, [
+                  { text: 'OK' }
+                ]);
+              });
+            });
+
     }
+
+    const [cards, setCards] = useState([]);
 
     const loadDataOnlyOnce = () => {
         SecureStore.getItemAsync("FEEDMAMA_TOKEN").then(x => {
@@ -25,7 +42,14 @@ function WalletPage(props){
                 'Authorization': `JWT ${x}` 
               }
             }).then((resp) => {
-                console.log(resp)
+                try{
+                    setCards(resp.data.cardList) 
+                    console.log(cards)
+                } catch(err){
+                    Alert.alert('Add Card', 'Please Add a Card', [
+                        { text: 'OK', onPress: () => { props.navigation.navigate("AddCard")}},
+                      ]);
+                }   
               }).catch((err) => {
                 Alert.alert('Error', err.response.data.message, [
                   { text: 'OK' }
@@ -37,12 +61,6 @@ function WalletPage(props){
     useEffect(() => {
         loadDataOnlyOnce(); // this will fire only on first render
     }, []);
-
-    const [cards, setCards] = useState([
-        {lastFour:"0000", exp:"12/1", primary: true, id: "1"},
-        {lastFour:"1111", exp:"12/0", primary: false, id: "0"},
-        {lastFour:"2222", exp:"12/2", primary: false, id: "2"},
-    ]);
 
 
     return(
@@ -58,21 +76,20 @@ function WalletPage(props){
             <ScrollView style={{resizeMode:"repeat", height: "100%"}}>
                 <Text style={{fontSize: 20, marginTop: 25, marginLeft: 15 ,fontWeight: "bold"}}>Saved Payment Methods</Text>
                 <View style={{paddingTop: 20}}>
-                    {cards.map(({lastFour,exp, primary, id}) => (
-                        <TouchableOpacity onPress={() => updatePrimary()}>
-                            <CreditCard lastFour={lastFour} exp={exp} primary={primary} key={id}/>
-                        </TouchableOpacity>
-                    ))}
+                    {cards.map(({lastFour,exp, primary, id, PID}) => (
+                        primary === true ? <CreditCard lastFour={lastFour} exp={exp} primary={primary} key ={id}/> : <TouchableOpacity onPress={() => updatePrimary(PID)} key ={id}><CreditCard lastFour={lastFour} exp={exp} primary={primary}/></TouchableOpacity>))}
                 </View>
                 <View style={{backgroundColor: "black", height: 1}}></View>
-                <Text style={{fontSize: 20, marginTop: 25, marginLeft: 15 ,fontWeight: "bold"}}>Add Payment Method</Text>
-                <TouchableOpacity onPress={() => props.navigation.navigate("AddCard")}>
-                <ImageBackground
-                                style={styles.primaryButton}
-                                source={require("../app/assets/Buttons/AddButton.png")}
-                                resizeMode="contain">
-                                </ImageBackground>
-                </TouchableOpacity>
+                <View style={styles.centered}>
+                    <Text style={{fontSize: 20, marginTop: 25, marginLeft: 15 ,fontWeight: "bold"}}>Add Payment Method</Text>
+                    <TouchableOpacity onPress={() => props.navigation.navigate("AddCard")}>
+                    <ImageBackground
+                                    style={styles.primaryButton}
+                                    source={require("../app/assets/Buttons/AddButton.png")}
+                                    resizeMode="contain">
+                                    </ImageBackground>
+                    </TouchableOpacity>
+                </View>
             </ScrollView>
         </View>
     );      

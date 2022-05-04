@@ -238,7 +238,7 @@ function AddCard(props){
         <TouchableOpacity onPress={() => insertCard()}>
             <ImageBackground
               style={styles.primaryButton}
-              source={require("../app/assets/Buttons/LoginButton-White.png")}
+              source={require("../app/assets/Buttons/AddButton.png")}
               resizeMode="contain">
             </ImageBackground>
         </TouchableOpacity>

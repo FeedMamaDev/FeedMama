@@ -18,8 +18,8 @@ function ChangeAddress(props){
         console.log(primaryAddr)
     }
     return(
-        <View>
-            <View style={{alignContent: "center", alignItems: "center", paddingTop: 20}}>
+        <ScrollView>
+            <View style={{alignContent: "center", alignItems: "center", paddingTop: 50}}>
                 <Image source={require("../app/assets/Static/FeedMamaSecLogo.png")} resizeMode="contain"/>
             </View>
             <Divider style={{width: "100%", height: 6, backgroundColor: "#FF6C6C", marginTop: "5%"}}/>
@@ -27,10 +27,12 @@ function ChangeAddress(props){
                 <Text style={{fontSize: 36, marginTop: "5%", fontWeight: "bold"}}>Change Address</Text>
             </View>
             <Divider style={{width: "100%", height: 6, backgroundColor: "#FF6C6C", marginTop: "5%"}}/>
-            <ScrollView style={{resizeMode:"repeat", height: "100%"}}>
                 <Text style={styles.title}>Selected Address:</Text>
                 <Divider width={.75}/>
-                <AddressItem name={primaryAddr.name} st1={primaryAddr.st1} st2={primaryAddr.st2} city={primaryAddr.city} state={primaryAddr.state} zipcode={primaryAddr.zipcode} id={primaryAddr.id} key={primaryAddr.id}/>
+                <View style={styles.containerHorz}>
+                    <Image source={require("../app/assets/Static/locationIcon.png")} style={{width:30, height:30, margin:5, marginTop:15}}/>
+                    <AddressItem name={primaryAddr.name} st1={primaryAddr.st1} st2={primaryAddr.st2} city={primaryAddr.city} state={primaryAddr.state} zipcode={primaryAddr.zipcode} id={primaryAddr.id} key={primaryAddr.id}/>
+                </View>
                 <Text style={styles.subtitle}>(Change by selecting or adding one of the addresses below)</Text>
                 <Text style={styles.title}>Stored Addresses:</Text>
                 <Divider width={.75}/>
@@ -44,12 +46,15 @@ function ChangeAddress(props){
                         source={require("../app/assets/Buttons/AddButton.png")}
                         resizeMode="contain"/>
                 </TouchableOpacity>
-            </ScrollView>
-        </View>
+        </ScrollView>
     );      
 }
 
 const styles = StyleSheet.create({
+    containerHorz: {
+        flex: 1,
+        flexDirection: 'row',
+        },
     centered: {
       justifyContent: "center",
       alignItems: "center",

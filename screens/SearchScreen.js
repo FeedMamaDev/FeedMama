@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, Text, View, FlatList, Image, Alert } from "react-native";
+import { StyleSheet, Text, View, FlatList, Image, Alert, KeyboardAvoidingView, TouchableWithoutFeedback, Platform, Keyboard} from "react-native";
 import { ListItem, SearchBar } from "react-native-elements";
 import filter from "lodash.filter";
 import Constants from 'expo-constants';
@@ -66,28 +66,35 @@ class SearchScreen extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <SearchBar
-          placeholder="Search Here..."
-          lightTheme
-          round
-          value={this.state.searchValue}
-          onChangeText={(text) => this.searchFunction(text)}
-          autoCorrect={false}
-        />
-        <FlatList 
-          data={this.state.data}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.title}
-          numColumns={2}
-          columnWrapperStyle={styles.row}
-          style={{
-              width: "100%",
-              height: "100%",
-              marginTop: 20
-          }}
-        />
-      </View>
+      <KeyboardAvoidingView enabled
+      behavior={Platform.OS === "ios" ? "padding" : null}
+      style={{flexGrow: 1}}
+      >
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View style={styles.container}>
+            <SearchBar
+              placeholder="Search Here..."
+              lightTheme
+              round
+              value={this.state.searchValue}
+              onChangeText={(text) => this.searchFunction(text)}
+              autoCorrect={false}
+            />
+            <FlatList 
+              data={this.state.data}
+              renderItem={renderItem}
+              keyExtractor={(item) => item.title}
+              numColumns={2}
+              columnWrapperStyle={styles.row}
+              style={{
+                  width: "100%",
+                  height: "100%",
+                  marginTop: 20
+              }}
+            />
+          </View>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
     );
   }
 }

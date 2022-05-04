@@ -46,7 +46,7 @@ function AccountScreen(props){
                     <View style={{backgroundColor: "black", height: 1}}></View>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={{width: "100%"}} onPress={() => props.navigation.navigate("WalletPage")}>
+                <TouchableOpacity style={{width: "100%"}} onPress={() => props.navigation.navigate("WalletFlow")}>
                     <View style={{marginLeft: 20, marginTop: 10, marginBottom: 10, flexDirection:'row', justifyContent : 'space-between'}}>
                         <Text>Wallet</Text>
                         <Text style={{marginRight: 10}}>{">"}</Text>
@@ -54,7 +54,7 @@ function AccountScreen(props){
                     <View style={{backgroundColor: "black", height: 1}}></View>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={{width: "100%"}} onPress={() => props.navigation.navigate("ChangeAddress")}>
+                <TouchableOpacity style={{width: "100%"}} onPress={() => props.navigation.navigate("AddressFlow")}>
                     <View style={{marginLeft: 20, marginTop: 10, marginBottom: 10, flexDirection:'row', justifyContent : 'space-between'}}>
                         <Text>Change Address</Text>
                         <Text style={{marginRight: 10}}>{">"}</Text>

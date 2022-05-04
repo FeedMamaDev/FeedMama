@@ -8,7 +8,9 @@ var bodyParser = require('body-parser')
 const crypto = require('crypto');
 const uuid = require('uuid').v4;
 const jwt = require("jsonwebtoken");
- 
+const DoorDashClient = require("@doordash/sdk");
+const axios = require('axios');
+
 // create application/json parser
 var jsonParser = bodyParser.json()
 
@@ -87,6 +89,50 @@ router.post("/", jsonParser, async function (req, res, next) {
         }
         
         // Do DoorDash stuff
+
+        const client = new DoorDashClient.DoorDashClient({
+            "developer_id": "881e3e0b-2ed4-4106-b9d9-4b605b9765fe",
+            "key_id": "8c5d00d7-9dea-4695-9ad0-f4d6dd24406f",
+            "signing_secret": "Y28Q2pbCKUJfuDgH3Qkh8Fb2hptj3nDP91vSAJ0yEAw"
+        });
+
+        const body = JSON.stringify({
+            "external_delivery_id": uuid(), // keep track of the generated id here or in the response
+            "pickup_address": rest.Address,
+            "pickup_business_name": rest.Name,
+            "pickup_phone_number": "4142168548",
+            "dropoff_address": req.user.Address,
+            "dropoff_phone_number": req.user.Phone,
+            "order_value": order.Total*100, 
+            "tip": order.Tip*100,
+        });
+        
+        function getToken() {
+        
+          const jwt = require('jsonwebtoken');
+        
+          const data = {
+              "aud": "doordash",
+              "iss": "881e3e0b-2ed4-4106-b9d9-4b605b9765fe", 
+              "kid": "8c5d00d7-9dea-4695-9ad0-f4d6dd24406f", 
+              "exp": Math.floor((Date.now() / 1000) + 60),
+              "iat": Math.floor(Date.now() / 1000),
+          };
+        
+          const headers = { algorithm: 'HS256', header: { 'dd-ver': 'DD-JWT-V1' } }
+        
+          const token = jwt.sign(data, Buffer.from("Y28Q2pbCKUJfuDgH3Qkh8Fb2hptj3nDP91vSAJ0yEAw" , 'base64'), headers);
+        
+          return token;
+        
+        }
+        axios.post('https://openapi.doordash.com/drive/v2/deliveries', body,  { headers: { 'Authorization': 'Bearer ' + getToken(), 'Content-Type': 'application/json' } })
+        .then(function (response) {
+            console.log(response.data);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
 
         res.status(200);
     } catch (err) {
