@@ -14,7 +14,16 @@ const baseUrl = isLocal ? ngrokUrl : productionUrl
 
 function HomeScreen(props){
 
-    const [data, setData] = useState([]);
+    const [data, setData] = useState([{
+      address: "",
+      city: "",
+      description: "",
+      id: "",
+      img: "",
+      name: "",
+      state: "",
+      zip: "",
+    }]);
 
     useEffect(() => {
       SecureStore.getItemAsync("FEEDMAMA_TOKEN").then(x => {
