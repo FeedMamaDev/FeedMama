@@ -11,16 +11,17 @@ const productionUrl = 'https://example.com'
 const baseUrl = isLocal ? ngrokUrl : productionUrl
 
 async function getValueFor(key) {
-    let result = await SecureStore.getItemAsync(key);
-    if (result) {
-      return result
-    } else {
-      return ""
-    }
+  let result = await SecureStore.getItemAsync(key);
+  if (result) {
+    return result
+  } else {
+    return ""
+  }
 }
+
 function AddCard(props){
 
-    const userID = "0d174b64-211f-44e7-bf1a-6bc6c871fa48"; //getValueFor("FEEDMAMA_TOKEN");
+    const userID = getValueFor("FEEDMAMA_TOKEN");
     const [cardValue, setCardValue] = useState('');
     const [focusCardNum, setFocusCardNum] = useState(false);
 
@@ -54,14 +55,18 @@ function AddCard(props){
 
 
     function insertCard(){
-      axios.post(`${baseUrl}/user/insertCard`, {
+
+      SecureStore.getItemAsync("FEEDMAMA_TOKEN").then(x => {
+        axios.post(`${baseUrl}/user/insertCard`, {
           Value: cardValue,
           Date: cardDateValue,
           CVV: cardCVVValue,
           ZIP: cardZIPValue,
           Primary: isEnabled,
           userID: userID
-        }).then((resp) => {
+        }, { headers: {
+          'Authorization': `JWT ${x}`
+        }}).then((resp) => {
             console.log(resp)
           Alert.alert('Card Added', 'Card added successfully!.', [
             { text: 'OK', onPress: () => { props.navigation.navigate("Account")} },
@@ -71,6 +76,9 @@ function AddCard(props){
             { text: 'OK' }
           ]);
         });
+    })
+
+      
     }
 
     function printOutput(){
