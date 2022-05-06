@@ -13,6 +13,358 @@ const verifyToken = require("../middleware/authenticate");
 var jsonParser = bodyParser.json()
 router.use(verifyToken);
 
+router.get("/:AID/updateAddress", jsonParser, async function (req, res, next) {
+    try {
+        var addresses = [];
+        var executeFinally = false;
+
+        //Get current primary address
+        const addressObject = await prisma.address.findFirst({
+            where: { 
+                AND: [
+                    {
+                        UserId: {
+                            equals: req.user.UserId,
+                        },
+                    },
+                    {
+                        Primary: {
+                            equals: true,
+                        },
+                    },
+                ],
+            },
+        });
+
+        //Unset Primary Address based off Primary AddressID
+        console.log("Unsetting current primary address");
+        await prisma.address.update({
+            where: {
+                AddressId: addressObject.AddressId
+            },
+            data: {
+                Primary: false
+            }
+        }); 
+
+        //Set new Primary card
+        await prisma.address.update({
+            where: {
+                AddressId: req.params.AID
+            },
+            data: {
+                Primary: true
+            }
+        }); 
+
+        //Query User Information
+        const primaryAddress = await prisma.address.findFirst({
+            where: { 
+                AND: [
+                    {
+                        UserId: {
+                            equals: req.user.UserId,
+                        },
+                    },
+                    {
+                        Primary: {
+                            equals: true,
+                        },
+                    },
+                ],
+            },
+        });
+
+        if(primaryAddress.SecondaryAddress == null){
+            primaryAddress.SecondaryAddress = '';
+        }
+
+        //Put primary at the top of the list
+        addresses.push({
+            NameLine: [req.user.FirstName, ' ', req.user.LastName].join(''),
+            LocalLine: [primaryAddress.PrimaryAddress, ', ', primaryAddress.SecondaryAddress].join(''),
+            StateLine: [primaryAddress.City, ', ', primaryAddress.State, ' ', primaryAddress.Zip],
+            primary: true,
+            AID: primaryAddress.AddressId, //Address ID
+            id: 0
+        });
+        console.log("Primary Addresses")
+        console.log(addresses);
+
+        //Try and see if there are more addresses
+        try{
+            const nonPrimaryAddress = await prisma.address.findMany({
+                where: { 
+                    AND: [
+                        {
+                            UserId: {
+                                equals: req.user.UserId,
+                            },
+                        },
+                        {
+                            Primary: {
+                                equals: false,
+                            },
+                        },
+                    ],
+                },
+            });
+
+
+            if(nonPrimaryAddress){
+                //Push to list, offset by 1 for unique id number
+                for(let i = 1; i < nonPrimaryAddress.length + 1; i++){
+                    addresses.push({
+                        NameLine: [req.user.FirstName, ' ', req.user.LastName].join(''),
+                        LocalLine: [nonPrimaryAddress[i-1].PrimaryAddress, ', ', nonPrimaryAddress[i-1].SecondaryAddress].join(''),
+                        StateLine: [nonPrimaryAddress[i-1].City, ', ', nonPrimaryAddress[i-1].State, ' ', nonPrimaryAddress[i-1].Zip].join(''),
+                        primary: false,
+                        AID: nonPrimaryAddress[i-1].AddressId, //Address ID
+                        id: i
+                    });
+                }
+            }
+
+            
+            console.log("Primary Address and Non-Primary Address")
+            console.log(addresses);
+            res.status(200).json({
+                addressList: addresses
+            });
+            console.log("Returning")
+            return
+
+        } catch (err) {
+            executeFinally = true; //Only a primary card, no non-primary cards to return
+            console.error(`Only a primary address, no non-primary address to return (or there was an error) `, err.message);
+            next(err);
+        } finally {
+            if(executeFinally){
+                console.log(addresses);
+                res.status(200).json({
+                    addressList: addresses
+                });
+                return
+            }
+        }
+
+    } catch (err) {
+        console.error(`No Primary Card or just Error? `, err.message);
+        next(err);
+    }
+});
+
+router.get("/pullAddress", jsonParser, async function (req, res, next) {
+    try {
+        var addresses = [];
+        var executeFinally = false;
+
+        //Query User Information
+        const primaryAddress = await prisma.address.findFirst({
+            where: { 
+                AND: [
+                    {
+                        UserId: {
+                            equals: req.user.UserId,
+                        },
+                    },
+                    {
+                        Primary: {
+                            equals: true,
+                        },
+                    },
+                ],
+            },
+        });
+
+        if(primaryAddress.SecondaryAddress == null){
+            primaryAddress.SecondaryAddress = '';
+        }
+
+        //Put primary at the top of the list
+        addresses.push({
+            NameLine: [req.user.FirstName, ' ', req.user.LastName].join(''),
+            LocalLine: [primaryAddress.PrimaryAddress, ', ', primaryAddress.SecondaryAddress].join(''),
+            StateLine: [primaryAddress.City, ', ', primaryAddress.State, ' ', primaryAddress.Zip],
+            primary: true,
+            AID: primaryAddress.AddressId, //Address ID
+            id: 0
+        });
+        console.log("Primary Addresses")
+        console.log(addresses);
+
+        //Try and see if there are more addresses
+        try{
+            console.log("Trying to grab non-primary")
+            const nonPrimaryAddress = await prisma.address.findMany({
+                where: { 
+                    AND: [
+                        {
+                            UserId: {
+                                equals: req.user.UserId,
+                            },
+                        },
+                        {
+                            Primary: {
+                                equals: false,
+                            },
+                        },
+                    ],
+                },
+            });
+
+            console.log("Non-Primary grabbed")
+            if(nonPrimaryAddress){
+                //Push to list, offset by 1 for unique id number
+                for(let i = 1; i < nonPrimaryAddress.length + 1; i++){
+                    addresses.push({
+                        NameLine: [req.user.FirstName, ' ', req.user.LastName].join(''),
+                        LocalLine: [nonPrimaryAddress[i-1].PrimaryAddress, ', ', nonPrimaryAddress[i-1].SecondaryAddress].join(''),
+                        StateLine: [nonPrimaryAddress[i-1].City, ', ', nonPrimaryAddress[i-1].State, ' ', nonPrimaryAddress[i-1].Zip].join(''),
+                        primary: false,
+                        AID: nonPrimaryAddress[i-1].AddressId, //Address ID
+                        id: i
+                    });
+                }
+            }
+
+            
+            console.log("Primary Address and Non-Primary Address")
+            console.log(addresses);
+            res.status(200).json({
+                addressList: addresses
+            });
+            console.log("Returning")
+            return
+
+        } catch (err) {
+            executeFinally = true; //Only a primary address, no non-primary address to return
+            console.error(`Only a primary address, no non-primary address to return (or there was an error) `, err.message);
+            next(err);
+        } finally {
+            if(executeFinally){
+                console.log(addresses);
+                res.status(200).json({
+                    addressList: addresses
+                });
+                return
+            }
+        }
+
+    } catch (err) {
+        console.error(`Spooky Error? `, err.message);
+        next(err);
+    }
+});
+
+router.post("/insertAddress", jsonParser, async function (req, res, next) {
+    console.log("Working?")
+    try {
+        if (!req.body.PrimaryAddress){
+            res.status(400).json({
+              message: "Please enter a valid primary address"
+            });
+            return
+        }
+
+        if (!req.body.City){
+            res.status(400).json({
+              message: "Please enter a City"
+            });
+            return
+        }
+
+        if (!req.body.State || req.body.State.length > 2){
+            res.status(400).json({
+              message: "Please enter a valid state"
+            });
+            return
+        }
+
+        if (!req.body.ZIP || req.body.ZIP.length > 5){
+            res.status(400).json({
+              message: "Please enter a valid zipcode"
+            });
+            return
+        }
+
+        //Set as primary address
+        try{
+            //See if current primary address exists
+            console.log("Finding Primary Address ID of User");
+            const addressObject = await prisma.address.findFirst({
+                where: { 
+                    AND: [
+                        {
+                            UserId: {
+                                equals: req.user.UserId,
+                            },
+                        },
+                        {
+                            Primary: {
+                                equals: true,
+                            },
+                        },
+                    ],
+                },
+            });
+
+            //If one does, update to be non-primary
+            console.log("Unsetting current primary address");
+            await prisma.address.update({
+                where: {
+                    AddressId: addressObject.AddressId
+                },
+                data: {
+                    Primary: false
+                }
+            }); 
+
+            //Insert and set this address as primary
+            console.log("Inserting and setting new primary address");
+            await prisma.address.create({ 
+                data: {
+                    AddressId: uuid(),
+                    UserId: req.user.UserId,
+                    PrimaryAddress: req.body.PrimaryAddress,
+                    SecondaryAddress: req.body.SecondaryAddress,
+                    City: req.body.City,
+                    State: req.body.State,
+                    Zip: req.body.ZIP,
+                    Primary: true
+              }});
+
+              res.status(200).json({
+                message: "Address Added!"
+              });
+              return
+        }
+        catch(err){ //No Primary address, set this one as primary
+            console.log("No primary address, add in first one");
+            await prisma.address.create({ 
+                data: {
+                    AddressId: uuid(),
+                    UserId: req.user.UserId,
+                    PrimaryAddress: req.body.PrimaryAddress,
+                    SecondaryAddress: req.body.SecondaryAddress,
+                    City: req.body.City,
+                    State: req.body.State,
+                    Zip: req.body.ZIP,
+                    Primary: true
+              }});
+
+              res.status(200).json({
+                message: "Address Added!"
+              });
+              return
+        }
+
+    } catch (err) {
+        console.error(`Something spooky happened! `, err.message);
+        next(err);
+      }
+});
+
 router.get("/pullPrimary", jsonParser, async function (req, res, next) {
     try {
         //Query User Information

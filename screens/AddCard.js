@@ -1,6 +1,6 @@
 import {KeyboardAvoidingView, Platform, StyleSheet, View, TouchableOpacity, ImageBackground, Image, Text, Switch, Alert} from 'react-native';
 import {CardNumberTextInput, CardDateTextInput, CardCVVTextInput, CardZIPTextInput} from "../node_modules/rn-credit-card-textinput/src/index";
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import axios from 'axios';
 import Constants from 'expo-constants';
 import * as SecureStore from 'expo-secure-store';
@@ -76,10 +76,36 @@ function AddCard(props){
             { text: 'OK' }
           ]);
         });
-    })
-
-      
+      })
     }
+
+    const loadDataOnlyOnce = () => {
+      SecureStore.getItemAsync("FEEDMAMA_TOKEN").then(x => {
+          axios.get(`${baseUrl}/user/pullCards`, {
+            headers: {
+              'Authorization': `JWT ${x}` 
+            }
+          }).then((resp) => {
+              delay(1000).then(() => {
+                  if(resp.data.cardList.length === 0){
+                      Alert.alert('Oops!', 'We made a mistake', [
+                          { text: 'OK', onPress: () => { props.navigation.navigate("WalletPage")}},
+                        ]);
+                  }
+              });
+            }).catch((err) => {
+              Alert.alert('Error', err.response.data.message, [
+                { text: 'OK' }
+              ]);
+            });
+          });
+    };
+
+    /* useEffect(() => {
+      loadDataOnlyOnce(); // this will fire only on first render
+    }, []); */
+
+
 
     function printOutput(){
       console.log("Card Value: ", cardValue.length)

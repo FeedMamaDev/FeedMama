@@ -14,18 +14,54 @@ const baseUrl = isLocal ? ngrokUrl : productionUrl
 
 function HomeScreen(props){
 
-    const [data, setData] = useState([{
-      address: "",
-      city: "",
-      description: "",
-      id: "",
-      img: "",
-      name: "",
-      state: "",
-      zip: "",
-    }]);
+    const [data, setData] = useState([]);
+
+    const [reload, setReload] = useState(false);
+    const [counter, setCounter] = useState(0);
+
+    const loadDataOnlyOnce = () => {
+      SecureStore.getItemAsync("FEEDMAMA_TOKEN").then(x => {
+        axios.get(`${baseUrl}/restaurants/`, {
+            headers: {
+              'Authorization': `JWT ${x}` 
+            }
+          }).then((resp) => {
+                  console.log("Data: ", resp.data.items)
+                  if(resp.data.items === undefined){
+                      if(reload === false){
+                          setReload(true);
+                          setCounter(counter + 1)
+                      } else {
+                          setReload(false);
+                          setCounter(counter + 1)
+                      }
+                      
+                      /* Alert.alert('Add Card', 'Please Add a Card', [
+                          { text: 'OK', onPress: () => { props.navigation.navigate("AddCard")}},
+                        ]); */
+                  } else{
+                      //setReload(false);
+                      setData(resp.data.items);
+                  }
+            }).catch((err) => {
+              Alert.alert('Error', err.response.data.message, [
+                { text: 'OK' }
+              ]);
+            });
+          });
+    };
 
     useEffect(() => {
+      if(counter >= 10){
+          Alert.alert('Error', 'Could not load page', [
+              { text: 'OK'},
+            ]);
+      } else {
+          loadDataOnlyOnce(); // this will fire only on first render
+      }
+    }, [reload]);
+
+    /* useEffect(() => {
       SecureStore.getItemAsync("FEEDMAMA_TOKEN").then(x => {
         axios.get(`${baseUrl}/restaurants/`, {
           headers: {
@@ -40,7 +76,7 @@ function HomeScreen(props){
           ]);
         });
       })
-    },[]);
+    },[]); */
 
     return (
         <View

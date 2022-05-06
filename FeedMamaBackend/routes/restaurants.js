@@ -57,7 +57,7 @@ router.get("/", jsonParser, async function (req, res, next) {
             state: rest.State,
             zip: rest.ZIP
         })); 
-        res.status(200).json(items);
+        res.status(200).json({items: items});
     } catch (err) {
         console.error(`Error while trying to get restaurant items`, err.message);
         next(err);

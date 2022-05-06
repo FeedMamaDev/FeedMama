@@ -1,5 +1,5 @@
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
   binaryTargets = ["native"]
 }
 
@@ -10,21 +10,22 @@ datasource db {
 }
 
 model Users {
-  UserId               String       @id @db.UniqueIdentifier
-  Email                String
-  LastName             String
-  FirstName            String
-  Phone                String
-  Password             String
-  Address              String
-  City                 String
-  Role                 Int
-  ZIP                  String
-  Verified             Int?
-  VerificationAttempts Int?
-  Orders               Orders[]
-  Payment              Payment[]
-  Resturants           Resturants[]
+  UserId                 String       @id @db.UniqueIdentifier
+  Email                  String
+  LastName               String
+  FirstName              String
+  Phone                  String
+  Password               String
+  Address                String
+  City                   String
+  Role                   Int
+  ZIP                    String
+  Verified               Int?
+  VerificationAttempts   Int?
+  Address_AddressToUsers Address[]
+  Orders                 Orders[]
+  Payment                Payment[]
+  Resturants             Resturants[]
 }
 
 model Resturants {
@@ -39,6 +40,7 @@ model Resturants {
   State             String   @db.VarChar(255)
   ZIP               String   @db.VarChar(255)
   ProvidesFreeMeals Boolean?
+  Phone             String   @db.NVarChar(255)
   Users             Users    @relation(fields: [OwnerUserID], references: [UserId], onUpdate: NoAction, map: "FK__Resturant__Owner__1DB06A4F")
   Meals             Meals[]
   Orders            Orders[]
@@ -94,4 +96,16 @@ model OrderMeals {
   Total       Decimal @db.Decimal(18, 0)
   Meals       Meals   @relation(fields: [MealID], references: [MealID], onUpdate: NoAction, map: "FK__OrderMeal__MealI__367C1819")
   Orders      Orders  @relation(fields: [OrderID], references: [OrderID], onUpdate: NoAction, map: "FK__OrderMeal__Order__3587F3E0")
+}
+
+model Address {
+  AddressId        String   @id(map: "PK__Address__091C2AFB60F9B03F") @db.UniqueIdentifier
+  UserId           String   @db.UniqueIdentifier
+  PrimaryAddress   String?  @db.VarChar(255)
+  SecondaryAddress String?  @db.VarChar(255)
+  City             String?  @db.VarChar(255)
+  State            String?  @db.VarChar(10)
+  Zip              String?  @db.VarChar(10)
+  Primary          Boolean?
+  Users            Users    @relation(fields: [UserId], references: [UserId], onUpdate: NoAction, map: "Address_Users_FK")
 }

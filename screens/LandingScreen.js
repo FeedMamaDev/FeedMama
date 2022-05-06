@@ -22,7 +22,7 @@ function LandingScreen({route, navigation}){
                   'Authorization': `JWT ${x}` 
                 }
               }).then((resp) => {
-                navigation.navigate("Tabs");
+                navigation.navigate("Login");
               }).catch((err) => {
                 SecureStore.deleteItemAsync("FEEDMAMA_TOKEN").then(x => {
                     navigation.navigate("Login");

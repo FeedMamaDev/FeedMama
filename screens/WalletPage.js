@@ -39,6 +39,8 @@ function WalletPage(props){
     }
 
     const [cards, setCards] = useState([]);
+    const [reload, setReload] = useState(false);
+    const [counter, setCounter] = useState(0);
 
      const loadDataOnlyOnce = () => {
         SecureStore.getItemAsync("FEEDMAMA_TOKEN").then(x => {
@@ -47,16 +49,22 @@ function WalletPage(props){
                 'Authorization': `JWT ${x}` 
               }
             }).then((resp) => {
-                delay(1000).then(() => {
                     if(resp.data.cardList === undefined){
-                        Alert.alert('Add Card', 'Please Add a Card', [
+                        if(reload === false){
+                            setReload(true);
+                            setCounter(counter + 1)
+                        } else {
+                            setReload(false);
+                            setCounter(counter + 1)
+                        }
+                        
+                        /* Alert.alert('Add Card', 'Please Add a Card', [
                             { text: 'OK', onPress: () => { props.navigation.navigate("AddCard")}},
-                          ]);
+                          ]); */
                     } else{
+                        //setReload(false);
                         setCards(resp.data.cardList) 
-                        console.log(cards)
                     }
-                });
               }).catch((err) => {
                 Alert.alert('Error', err.response.data.message, [
                   { text: 'OK' }
@@ -66,8 +74,14 @@ function WalletPage(props){
     };
 
     useEffect(() => {
-        loadDataOnlyOnce(); // this will fire only on first render
-    }, []);
+        if(counter >= 10){
+            Alert.alert('Add Card', 'Please Add a Card', [
+                { text: 'OK', onPress: () => { props.navigation.navigate("AddCard")}},
+              ]);
+        } else {
+            loadDataOnlyOnce(); // this will fire only on first render
+        }
+    }, [reload]);
 
 
     return(

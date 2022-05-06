@@ -1,18 +1,46 @@
 import React from 'react';
 import { useState } from 'react';
-import { ImageBackground, StyleSheet, TouchableOpacity, View, TextInput, Image, ScrollView , Text, FlatList, KeyboardAvoidingView, TouchableWithoutFeedback, Platform, Keyboard} from 'react-native';
+import { ImageBackground, StyleSheet, TouchableOpacity, View, TextInput, Image, ScrollView , Text, FlatList, KeyboardAvoidingView, TouchableWithoutFeedback, Platform, Keyboard, Alert} from 'react-native';
 import { Button, Divider } from 'react-native-elements';
+import axios from 'axios';
+import Constants from 'expo-constants';
+import * as SecureStore from 'expo-secure-store';
+
+const { ngrokUrl } = Constants.manifest.extra;
+const isLocal = ngrokUrl && __DEV__
+const productionUrl = 'https://example.com'
+const baseUrl = isLocal ? ngrokUrl : productionUrl
+
 
 function NewAddressScreen(props) {
-    const [name, setName]= useState();
-    const [st1, setSt1]= useState();
-    const [st2, setSt2]= useState();
-    const [city, setCity]= useState();
-    const [state, setState]= useState();
-    const [zipcode, setZipcode]= useState();
+    const [st1, setSt1]= useState('');
+    const [st2, setSt2]= useState('');
+    const [city, setCity]= useState('');
+    const [state, setState]= useState('');
+    const [zipcode, setZipcode]= useState('');
 
-    function addAddress(name, st1, st2, city, state, zipcode){
+    function addAddress(){
         //Add address to the list of stored addresses
+        SecureStore.getItemAsync("FEEDMAMA_TOKEN").then(x => {
+            axios.post(`${baseUrl}/user/insertAddress`, {
+              PrimaryAddress: st1,
+              SecondaryAddress: st2,
+              City: city,
+              State: state,
+              ZIP: zipcode,
+            }, { headers: {
+              'Authorization': `JWT ${x}`
+            }}).then((resp) => {
+                console.log(resp)
+              Alert.alert('Address Added', 'Address added successfully!.', [
+                { text: 'OK', onPress: () => { props.navigation.navigate("ChangeAddress")} },
+              ]);
+            }).catch((err) => {
+              Alert.alert('Error', err.response.data.message, [
+                { text: 'OK' }
+              ]);
+            });
+        })
     }
 
     return (
@@ -33,16 +61,6 @@ function NewAddressScreen(props) {
 
                 <TextInput 
                     style={styles.input} 
-                    placeholder="Name"
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    keyboardType='default'
-                    textContentType='name'
-                    value={name}
-                    onChangeText={text => setName(text)}
-                />
-                <TextInput 
-                    style={styles.input} 
                     placeholder="Street Address 1"
                     autoCapitalize="none"
                     autoCorrect={false}
@@ -52,7 +70,7 @@ function NewAddressScreen(props) {
                 />
                 <TextInput 
                     style={styles.input} 
-                    placeholder="Street Address 2 (optional)"
+                    placeholder="Street Address 2 (e.g. Unit 101)"
                     autoCapitalize="none"
                     autoCorrect={false}
                     keyboardType='default'
@@ -90,7 +108,7 @@ function NewAddressScreen(props) {
                 />
             </View>
 
-            <TouchableOpacity onPress={() => addAddress(name, st1, st2, city, state, zipcode)} style={{alignContent: "center", alignItems: "center"}}>
+            <TouchableOpacity onPress={() => addAddress()} style={{alignContent: "center", alignItems: "center"}}>
                 <ImageBackground
                     style={styles.primaryButton}
                     source={require("../app/assets/Buttons/AddButton.png")}
@@ -117,7 +135,7 @@ const styles = StyleSheet.create({
     },
     input: {
     width: 265,
-    height: 30,
+    height: 40,
     backgroundColor: "rgba(245,245,245,.8)",
     borderRadius: 12,
     marginBottom: "5%",
